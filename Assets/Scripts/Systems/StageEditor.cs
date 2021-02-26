@@ -22,6 +22,9 @@ public class StageEditor : MonoBehaviour {
 	private List<Text> adjacentObjInfo;
 	[SerializeField]
 	private GameObject objList;
+
+	[SerializeField]
+	private GameObject editingArea;
 	#endregion
 
 
@@ -34,7 +37,7 @@ public class StageEditor : MonoBehaviour {
 
 	//カメラの遠さの求め方=BaseRange + cameraMode * StepRange
 	private float cameraBaseRange = 10;
-	private int cameraMode = 0; 
+	private int cameraMode = 0;
 	private int cameraMax = 3;
 	private float cameraStepRange = 5;
 
@@ -45,6 +48,10 @@ public class StageEditor : MonoBehaviour {
 	}
 	private float objTimer = 0;
 	private bool isObjListMode = false;
+
+	private bool isAreaMode = false;
+	private Vector3 startPos = new Vector3();
+
 
 	#endregion
 
@@ -126,44 +133,88 @@ public class StageEditor : MonoBehaviour {
 		if (InputManager.GetKeyDown(Keys.R)) {
 			objIndex++;
 		}
-		if(InputManager.GetKey(Keys.L) || InputManager.GetKey(Keys.R)) {
+		if (InputManager.GetKey(Keys.L) || InputManager.GetKey(Keys.R)) {
 			objTimer += Time.unscaledDeltaTime;
 		} else {
 			objTimer = 0;
 		}
-		if(objTimer > 1) {
+		if (objTimer > 1) {
 			isObjListMode = true;
 		}
 
+		if (InputManager.GetKeyDown(Keys.TRIGGER)) {
+			isAreaMode = true;
+			editingArea.SetActive(true);
+			startPos = transform.position;
+		}
+		if (InputManager.GetKeyUp(Keys.TRIGGER)) {
+			isAreaMode = false;
+			editingArea.SetActive(false);
+		}
+		editingArea.transform.localScale = new Vector3(Mathf.Abs(startPos.x - transform.position.x) + 1, 1, Mathf.Abs(startPos.z - transform.position.z) + 1);
+		editingArea.transform.position = (transform.position + startPos) * 0.5f;
+
 		//オブジェクト置く消す
 		if (InputManager.GetKey(Keys.A)) {
-			bool isExistObj = false;
-			Transform child = transform; //未割当回避
-			string childName = "";
-			for (int i = 0; i < Stage.instance.stageParent.transform.childCount; i++) {
-				child = Stage.instance.stageParent.transform.GetChild(i);
-				if (child.transform.position == transform.position) {
-					isExistObj = true;
-					childName = child.name;
-					break;
+			if (isAreaMode == true) {
+				Vector3 leftUp;
+				if (transform.position.x > startPos.x) {
+					if (transform.position.z > startPos.z) {
+						leftUp = new Vector3(startPos.x, 0, transform.position.z);
+					} else {
+						leftUp = startPos;
+					}
+				} else {
+					if (transform.position.z > startPos.z) {
+						leftUp = transform.position;
+					} else {
+						leftUp = new Vector3(transform.position.x, 0, startPos.z);
+					}
 				}
-			}
-			if (isExistObj == false ) {
-				Instantiate(Stage.instance.objectList[objIndex], transform.position, Quaternion.identity, Stage.instance.stageParent.transform);
-			} else if(childName != Stage.instance.objectList[objIndex].name + "(Clone)"){
-				Destroy(child.gameObject);
-				Instantiate(Stage.instance.objectList[objIndex], transform.position, Quaternion.identity, Stage.instance.stageParent.transform);
+				for (int i = 0; i < Mathf.Abs(startPos.x - transform.position.x) + 1; i++) {
+					for (int j = 0; j < Mathf.Abs(startPos.z - transform.position.z) + 1; j++) {
+						Stage.instance.GenerateObject(leftUp + new Vector3(i, 0, -j), Stage.instance.objectList[objIndex]);
+					}
+				}
+			} else {
+				Stage.instance.GenerateObject(transform.position, Stage.instance.objectList[objIndex]);
 			}
 		}
 
 		if (InputManager.GetKey(Keys.B)) {
-			for (int i = 0; i < Stage.instance.stageParent.transform.childCount; i++) {
-				var child = Stage.instance.stageParent.transform.GetChild(i);
-				if (child.transform.position == transform.position) {
-					Destroy(child.gameObject);
-					break;
+			void DestroyObj(Vector3 pos) {
+				var obj = Stage.instance.GetStageObject(pos);
+				if (obj != null) {
+					Destroy(obj);
 				}
 			}
+
+			if (isAreaMode == true) {
+				Vector3 leftUp;
+				if (transform.position.x > startPos.x) {
+					if (transform.position.z > startPos.z) {
+						leftUp = new Vector3(startPos.x, 0, transform.position.z);
+					} else {
+						leftUp = startPos;
+					}
+				} else {
+					if (transform.position.z > startPos.z) {
+						leftUp = transform.position;
+					} else {
+						leftUp = new Vector3(transform.position.x, 0, startPos.z);
+					}
+				}
+				for (int i = 0; i < Mathf.Abs(startPos.x - transform.position.x) + 1; i++) {
+					for (int j = 0; j < Mathf.Abs(startPos.z - transform.position.z) + 1; j++) {
+						DestroyObj(leftUp + new Vector3(i, 0, -j));
+					}
+				}
+			} else {
+
+			}
+
+
+
 		}
 	}
 
@@ -225,7 +276,7 @@ public class StageEditor : MonoBehaviour {
 		objInfo.text = Stage.instance.objectList[objIndex].name;
 
 		if (isObjListMode) {
-			for(int i = 0; i < adjacentObjInfo.Count; i++) {
+			for (int i = 0; i < adjacentObjInfo.Count; i++) {
 				int index = (objIndex + i - (adjacentObjInfo.Count / 2) + Stage.instance.objectList.Count) % Stage.instance.objectList.Count;
 				adjacentObjInfo[i].text = Stage.instance.objectList[index].name;
 			}

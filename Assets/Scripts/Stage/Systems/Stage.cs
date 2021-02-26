@@ -156,6 +156,22 @@ public class Stage : MonoBehaviour {
 
 	}
 
+	public void GenerateObject(Vector3 pos, GameObject obj) {
+		bool isExistObj = false;
+		GameObject existObj = GetStageObject(transform.position);
+		string objName = "";
+		if (existObj != null) {
+			isExistObj = true;
+			objName = existObj.name;
+		}
+		if (isExistObj == false) {
+			Instantiate(obj, pos, Quaternion.identity, stageParent.transform);
+		} else if (objName != obj.name + "(Clone)") {
+			Destroy(obj.gameObject);
+			Instantiate(obj, pos, Quaternion.identity, stageParent.transform);
+		}
+	}
+
 	/// <summary>
 	/// その座標のギミックオブジェクトを取得します
 	/// </summary>

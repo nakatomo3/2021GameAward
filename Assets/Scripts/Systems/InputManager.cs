@@ -15,6 +15,7 @@ public enum Keys {
 	SELECT,
 	L,
 	R,
+	TRIGGER,
 	LAST
 }
 

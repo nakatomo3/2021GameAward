@@ -44,6 +44,9 @@ public class SystemSupporter {
 		InputManager.AddKey(Keys.SELECT, "Select");
 		InputManager.AddKey(Keys.L, "L");
 		InputManager.AddKey(Keys.R, "R");
+		InputManager.AddAxis(Keys.TRIGGER, "LTrigger");
+		InputManager.AddAxis(Keys.TRIGGER, "RTrigger");
+
 
 		InputManager.AddKey(Keys.RIGHT, KeyCode.D);
 		InputManager.AddKey(Keys.LEFT, KeyCode.A);
