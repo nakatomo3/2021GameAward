@@ -49,7 +49,7 @@ public class Stage : MonoBehaviour {
 	#region ÉfÅ[É^ïî
 	public GameObject stageParent { get; private set; }
 	public List<List<char>> stageData { get; private set; }
-	private Vector2 startPosition = new Vector2();
+	public Vector2 startPosition { get; private set; }
 	#endregion
 
 	private void Awake() {
@@ -86,6 +86,14 @@ public class Stage : MonoBehaviour {
 
 		Instantiate(objectList[1]);
 		Instantiate(start);
+		Instantiate(objectList[0], new Vector3(-1, 0, 1), Quaternion.identity, stageParent.transform);
+		Instantiate(objectList[0], new Vector3(0, 0, 1), Quaternion.identity, stageParent.transform);
+		Instantiate(objectList[0], new Vector3(1, 0, 1), Quaternion.identity, stageParent.transform);
+		Instantiate(objectList[0], new Vector3(-1, 0, 0), Quaternion.identity, stageParent.transform);
+		Instantiate(objectList[0], new Vector3(1, 0, 0), Quaternion.identity, stageParent.transform);
+		Instantiate(objectList[0], new Vector3(-1, 0, -1), Quaternion.identity, stageParent.transform);
+		Instantiate(objectList[0], new Vector3(0, 0, -1), Quaternion.identity, stageParent.transform);
+		Instantiate(objectList[0], new Vector3(1, 0, -1), Quaternion.identity, stageParent.transform);
 
 	}
 
