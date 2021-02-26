@@ -97,6 +97,9 @@ public class Stage : MonoBehaviour {
 
 		if (InputManager.GetKeyDown(Keys.START)) {
 			isEditorMode = !isEditorMode;
+			if(SystemSupporter.IsUnityEditor() == true) {
+				player.transform.position = stageEditor.transform.position;
+			}
 		}
 	}
 

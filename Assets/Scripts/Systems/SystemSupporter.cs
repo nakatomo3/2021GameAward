@@ -51,4 +51,12 @@ public class SystemSupporter {
 		InputManager.AddKey(Keys.DOWN, KeyCode.S);
 
 	}
+
+	public static bool IsUnityEditor() {
+		#if UNITY_EDITOR
+			return true;
+		#else
+			return false;
+		#endif
+	}
 }
