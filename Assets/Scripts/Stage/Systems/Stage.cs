@@ -152,4 +152,19 @@ public class Stage : MonoBehaviour {
 	void GenerateObjct(float x, float y, char obj) {
 
 	}
+
+	/// <summary>
+	/// その座標のギミックオブジェクトを取得します
+	/// </summary>
+	/// <param name="pos">座標</param>
+	/// <returns>その座標のステージオブジェクト</returns>
+	public GameObject GetStageObject(Vector3 pos) {
+		for (int i = 0; i < Stage.instance.stageParent.transform.childCount; i++) {
+			var child = stageParent.transform.GetChild(i);
+			if (child.transform.position == pos) {
+				return child.gameObject;
+			}
+		}
+		return null;
+	}
 }
