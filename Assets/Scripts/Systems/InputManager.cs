@@ -11,6 +11,10 @@ public enum Keys {
 	DOWN,
 	LEFT,
 	RIGHT,
+	START,
+	SELECT,
+	L,
+	R,
 	LAST
 }
 
@@ -30,7 +34,7 @@ public class InputManager : MonoBehaviour {
 	/// <summary>
 	/// 初期化。データの読み込みなど
 	/// </summary>
-	public void Awake() {
+	public static void Init() {
 		if(isInit == true) {
 			return;
 		}

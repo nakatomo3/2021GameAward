@@ -25,10 +25,4 @@ public class Player : MonoBehaviour {
 
 	}
 
-	/// <summary>
-	/// 基本的にこの関数は変数を変更するのみ。一定タイミングで自動的にこの関数が呼ばれる。
-	/// </summary>
-	void Action() {
-
-	}
 }

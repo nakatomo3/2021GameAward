@@ -13,6 +13,9 @@ public class SystemSupporter {
 #endif
 	}
 
+	/// <summary>
+	/// デバッグのサポート、エンターでリロード、左シフトで3倍速
+	/// </summary>
 	public static void PlaySupport() {
 #if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.Return)){
@@ -28,4 +31,24 @@ public class SystemSupporter {
 #endif
 	}
 
+	public static void DebugInitInput() {
+		InputManager.AddKey(Keys.A, "A");
+		InputManager.AddKey(Keys.B, "B");
+		InputManager.AddKey(Keys.X, "X");
+		InputManager.AddKey(Keys.Y, "Y");
+		InputManager.AddAxis(Keys.RIGHT, "Right");
+		InputManager.AddAxis(Keys.LEFT, "Left");
+		InputManager.AddAxis(Keys.UP, "Up");
+		InputManager.AddAxis(Keys.DOWN, "Down");
+		InputManager.AddKey(Keys.START, "Start");
+		InputManager.AddKey(Keys.SELECT, "Select");
+		InputManager.AddKey(Keys.L, "L");
+		InputManager.AddKey(Keys.R, "R");
+
+		InputManager.AddKey(Keys.RIGHT, KeyCode.D);
+		InputManager.AddKey(Keys.LEFT, KeyCode.A);
+		InputManager.AddKey(Keys.UP, KeyCode.W);
+		InputManager.AddKey(Keys.DOWN, KeyCode.S);
+
+	}
 }
