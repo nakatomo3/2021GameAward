@@ -18,14 +18,12 @@ public class Player : MonoBehaviour {
 
     public static Player instance;
 
-
-    // public Text stepText;
     [SerializeField]
     private int stepMax;
     private int stepCount;
 
     private float stepTimer = 0;
-
+	//TODO:プレイヤーの残り時間
 
     private List<MoveVector> moveRecord;
     private List<float> stepTimers;
