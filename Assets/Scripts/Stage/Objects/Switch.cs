@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Switch : MonoBehaviour {
-
-	public uint channel;
+public class Switch : ChannelBase {
 
 	// Start is called before the first frame update
 	void Start() {
