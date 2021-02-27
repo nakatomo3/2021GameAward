@@ -247,8 +247,6 @@ public class Stage : MonoBehaviour {
 		//ƒtƒ@ƒCƒ‹‚ð•Â‚¶‚é
 		streamWriter.Flush();
 		streamWriter.Close();
-
-		Debug.Log(maxLeft + "," + maxRight + "," + maxUp + "," + maxDown);
 	}
 
 	public void WriteStage(float x, float y, char obj) {

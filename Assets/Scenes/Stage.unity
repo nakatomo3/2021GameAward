@@ -247,11 +247,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEditorMode: 0
   stagePath: Stage
-  objectIndex: 310032003300
+  objectIndex: 31003200330041004200
   objectList:
   - {fileID: 971652173244137915, guid: b7c0680d97a86774fa6363c6ef5237fd, type: 3}
   - {fileID: 1504008977111116728, guid: 4a939da66a52a2e429cbfa3f45d6a5e3, type: 3}
   - {fileID: 3297577982655666641, guid: ad2584f05d2b72e46ac8da32d897d92c, type: 3}
+  - {fileID: 5781263882930814557, guid: 03f8bd7e8b77b00429ef5292ee0abc9e, type: 3}
+  - {fileID: 8649697474690774499, guid: c9af8d2ce52911d4096830a6efd85217, type: 3}
   player: {fileID: 8781337088072814748, guid: a8fe6560176e2ea4aab5cbd43cff1789, type: 3}
   stageEditor: {fileID: 2088058459918452280, guid: 934fd0a0b5f77c64cb38e86dd526ba79, type: 3}
   camera: {fileID: 1934042798}
