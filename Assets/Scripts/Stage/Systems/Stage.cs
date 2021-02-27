@@ -205,37 +205,57 @@ public class Stage : MonoBehaviour {
 			}
 		}
 
+		var sizeX = maxRight - maxLeft + 1;
+		var sizeY = maxDown - maxUp + 1;
+
 		//stageDataを初期化
 		stageData = new List<List<char>>();
-		for (int y = 0; y < maxDown - maxUp + 1; y++) {
+		for (int y = 0; y < sizeY; y++) {
 			stageData.Add(new List<char>());
-			for (int x = 0; x < maxRight - maxLeft + 1; x++) {
+			for (int x = 0; x < sizeX; x++) {
 				stageData[y].Add('0');
 			}
 		}
+
+		//ファイルを開いてバッファ準備
+		StreamWriter streamWriter = new StreamWriter(Application.dataPath + "/Resources/StageDatas/" + stagePath + ".txt", false);
+		StringBuilder sb = new StringBuilder();
+		StringBuilder detailSb = new StringBuilder(); //詳細設定用StringBuilder
+
+		//ステージヘッダーに書き込み
+		sb.AppendLine("#StageData");
+		sb.AppendLine(sizeX.ToString() + "," + sizeY.ToString());
+		sb.AppendLine(0.ToString() + "\n"); //ステージデザイン
+		sb.AppendLine("#ObjectData");
+
+		//詳細ヘッダーに書き込み
+		detailSb.AppendLine("#Detail");
 
 		//stageDataに現在の状況を反映
 		for (int i = 0; i < stageParent.transform.childCount; i++) {
 			var obj = stageParent.transform.GetChild(i);
 			var posX = Mathf.CeilToInt(obj.position.x - maxLeft);
 			var posZ = Mathf.CeilToInt(obj.position.z - maxUp);
-			stageData[posZ][posX] = GetObjectCode(obj.name);
+			var code = GetObjectCode(obj.name);
+			stageData[posZ][posX] = code;
+
+			if (code >= 'A' && code <= 'Z') {
+				switch (code) {
+					case 'A':
+						detailSb.AppendLine(obj.GetComponent<Switch>().ToFileString());
+						break;
+					case 'B':
+						detailSb.AppendLine(obj.GetComponent<Door>().ToFileString());
+						break;
+				}
+			}
 		}
 
-		//ファイルを開いてバッファ準備
-		StreamWriter streamWriter = new StreamWriter(Application.dataPath + "/Resources/StageDatas/" + stagePath + ".txt", false);
-		StringBuilder sb = new StringBuilder();
-
-		//ステージヘッダーに書き込み
-		sb.Append("#StageData\n");
-		sb.Append((maxRight - maxLeft).ToString() + "," + (maxDown - maxUp).ToString() + "\n");
-		sb.Append(0.ToString() + "\n\n"); //ステージデザイン
-
-		sb.Append("#ObjectData\n");
 		//バッファにステージデータを書き込んでいく
 		for (int y = 0; y < stageData.Count; y++) {
 			for (int x = 0; x < stageData[y].Count; x++) {
-				sb.Append(stageData[y][x]);
+				var code = stageData[y][x];
+				sb.Append(code);
 			}
 			sb.Append("\n");
 
@@ -243,6 +263,7 @@ public class Stage : MonoBehaviour {
 
 		//書きこみ
 		streamWriter.WriteLine(sb.ToString());
+		streamWriter.WriteLine(detailSb.ToString());
 
 		//ファイルを閉じる
 		streamWriter.Flush();
@@ -298,14 +319,18 @@ public class Stage : MonoBehaviour {
 		return null;
 	}
 
-	private char GetObjectCode(string name) {
-		for (int i = 0; i < objectList.Count; i++) {
-			var objName = objectList[i].name;
-			if (name.Contains(objName)) {
-				return objectIndex[i];
-			}
-		}
-		Debug.LogError("オブジェクトのコード取得が出来ませんでした。" + name);
-		return '0';
+	public static char GetObjectCode(string name) {
+		//命名規則は「コード_名前」なのでコード単独の抽出可能
+		return name.Split('_')[0][0];
+
+		//問題があればこのコードに戻す
+		//for (int i = 0; i < objectList.Count; i++) {
+		//	var objName = objectList[i].name;
+		//	if (name.Contains(objName)) {
+		//		return objectIndex[i];
+		//	}
+		//}
+		//Debug.LogError("オブジェクトのコード取得が出来ませんでした。" + name);
+		//return '0';
 	}
 }

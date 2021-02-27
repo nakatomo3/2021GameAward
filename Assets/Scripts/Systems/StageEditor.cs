@@ -9,22 +9,37 @@ public class StageEditor : MonoBehaviour {
 	private bool isController = false;
 
 	#region インスペクタ参照部
+	[Disable]
 	[SerializeField]
 	private GameObject cursor;
 
+	[Disable]
 	[SerializeField]
 	private Text postionText;
 
+	[Disable]
 	[SerializeField]
 	private Text objInfo;
 
+	[Disable]
 	[SerializeField]
 	private List<Text> adjacentObjInfo;
+	[Disable]
 	[SerializeField]
 	private GameObject objList;
 
+	[Disable]
 	[SerializeField]
 	private GameObject editingArea;
+
+	[SerializeField]
+	private GameObject detailWindow;
+	[SerializeField]
+	private Text detailObjectName;
+	[SerializeField]
+	private Text detailOptionText;
+	[SerializeField]
+	private RectTransform optionCursor;
 	#endregion
 
 
@@ -52,6 +67,14 @@ public class StageEditor : MonoBehaviour {
 	private bool isAreaMode = false;
 	private Vector3 startPos = new Vector3();
 
+	private char editingChar = '0';
+	private MonoBehaviour editingScript;
+	private int optionMax = 1;
+	private int _optionCount;
+	private int optionCount {
+		get { return _optionCount; }
+		set { _optionCount = (value + optionMax) % optionMax; }
+	}
 
 	#endregion
 
@@ -73,13 +96,7 @@ public class StageEditor : MonoBehaviour {
 			objList.SetActive(isObjListMode);
 		}
 
-		if (InputManager.GetKeyDown(Keys.X)) {
-			cameraMode++;
-			cameraMode = (cameraMode + cameraMax) % cameraMax;
-		}
-
-		Stage.instance.camera.transform.position = transform.position + new Vector3(0, cameraBaseRange + cameraMode * cameraStepRange, 0);
-
+		CameraControl();
 		InformationUpdate();
 	}
 
@@ -216,6 +233,19 @@ public class StageEditor : MonoBehaviour {
 
 
 		}
+
+		if (InputManager.GetKeyDown(Keys.Y) && isAreaMode == false) {
+			var obj = Stage.instance.GetStageObject(transform.position);
+			if (obj == null) {
+				return;
+			}
+			var code = Stage.GetObjectCode(obj.name);
+			if (code >= 'A' && code <= 'Z') { //大文字なら詳細編集可能なコード
+				isDetailMode = true;
+				editingScript = obj.GetComponent<MonoBehaviour>();
+				editingChar = code;
+			}
+		}
 	}
 
 	private void ObjectListMode() {
@@ -267,6 +297,68 @@ public class StageEditor : MonoBehaviour {
 	}
 
 	private void DetailMode() {
+		if (InputManager.GetKeyUp(Keys.Y)) {
+			isDetailMode = false;
+		}
+
+		bool isLeftInput = false;
+		bool isRightInput = false;
+
+		if (InputManager.GetKeyDown(Keys.UP)) {
+			optionCount--;
+		} else if (InputManager.GetKeyDown(Keys.DOWN)) {
+			optionCount++;
+		} else if (InputManager.GetKey(Keys.LEFT)) {
+			inputTimer += Time.unscaledDeltaTime;
+			if (InputManager.GetKeyDown(Keys.LEFT)) {
+				isLeftInput = true;
+			}
+			if (inputTimer >= firstInterval + continuousInterval) {
+				inputTimer = firstInterval;
+				isLeftInput = true;
+			}
+		} else if (InputManager.GetKey(Keys.RIGHT)) {
+			inputTimer += Time.unscaledDeltaTime;
+			if (InputManager.GetKeyDown(Keys.RIGHT)) {
+				isRightInput = true;
+			}
+			if (inputTimer >= firstInterval + continuousInterval) {
+				inputTimer = firstInterval;
+				isRightInput = true;
+			}
+		} else {
+			inputTimer = 0;
+		}
+
+		if ((ChannelBase)editingScript != null && optionCount == 0) {
+			if (isLeftInput) {
+				((ChannelBase)editingScript).channel--;
+			}
+			if (isRightInput) {
+				((ChannelBase)editingScript).channel++;
+			}
+		}
+		optionCursor.anchoredPosition = new Vector2(-125, 105 + optionCount * -30);
+
+		switch (editingChar) {
+			case 'A':
+				optionMax = 1;
+				break;
+			case 'B':
+				optionMax = 1;
+				//2:反転モード
+				//3:ディレイ設定
+				break;
+		}
+	}
+
+	private void CameraControl() {
+		if (InputManager.GetKeyDown(Keys.X)) {
+			cameraMode++;
+			cameraMode = (cameraMode + cameraMax) % cameraMax;
+		}
+
+		Stage.instance.camera.transform.position = transform.position + new Vector3(0, cameraBaseRange + cameraMode * cameraStepRange, 0);
 
 	}
 
@@ -280,6 +372,27 @@ public class StageEditor : MonoBehaviour {
 				int index = (objIndex + i - (adjacentObjInfo.Count / 2) + Stage.instance.objectList.Count) % Stage.instance.objectList.Count;
 				adjacentObjInfo[i].text = Stage.instance.objectList[index].name;
 			}
+		}
+
+		if (isDetailMode) {
+			detailWindow.SetActive(true);
+			switch (editingChar) {
+				default:
+					Debug.LogError("不明なオブジェクトの詳細編集をしています");
+					detailObjectName.text = "不明なオブジェクト";
+					detailOptionText.text = "バグ報告をしてください";
+					break;
+				case 'A':
+					detailObjectName.text = "スイッチ";
+					detailOptionText.text = ((Switch)editingScript).ToEditorString();
+					break;
+				case 'B':
+					detailObjectName.text = "スイッチ";
+					detailOptionText.text = ((Door)editingScript).ToEditorString();
+					break;
+			}
+		} else {
+			detailWindow.SetActive(false);
 		}
 	}
 }
