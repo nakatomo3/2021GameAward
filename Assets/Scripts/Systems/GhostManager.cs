@@ -22,10 +22,6 @@ public class GhostManager : MonoBehaviour {
     public GameObject ghost;
     public List<GameObject> ghosts;
 
-
-    //public Text lifeText;
-
-    // Start is called before the first frame update
     void Start() {
         instance = this;
         moveRecords = new List<List<MoveVector>>();
@@ -35,9 +31,8 @@ public class GhostManager : MonoBehaviour {
 
     }
 
-    // Update is called once per frame
+
     void Update() {
-        // lifeText.text = "écã@ÅF" + (ghostMax - ghostCount) + "/" + ghostMax;
         for (int i = 0; i < stepTimers.Count; ++i) {
             stepTimers[i] += Time.deltaTime;
 

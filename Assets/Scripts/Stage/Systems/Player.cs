@@ -26,7 +26,6 @@ public class Player : MonoBehaviour {
 
     private float stepTimer = 0;
 
-    // new public GameObject camera;
 
     private List<MoveVector> moveRecord;
     private List<float> stepTimers;
@@ -53,12 +52,10 @@ public class Player : MonoBehaviour {
         Move();
         SettingStepInterval();
 
-        if (Input.GetKeyDown(KeyCode.Space) || stepCount > stepMax) {
+        if (InputManager.GetKeyDown(Keys.A) || stepCount > stepMax) {
             ResetStage();
         }
 
-        // stepText.text = "écÇËéûä‘ÅF" + (stepMax - stepTimer).ToString("0.0");
-        // camera.transform.position = new Vector3(0, 10, 0) + transform.position;
     }
 
     private void FixedUpdate() {
@@ -68,9 +65,6 @@ public class Player : MonoBehaviour {
         isEnemyCol = false;
         isSafe = false;
 
-        for (int i = 0; i < moveRecord.Count; ++i) {
-
-        }
     }
 
 
@@ -134,18 +128,7 @@ public class Player : MonoBehaviour {
         GhostManager.instance.AddGhost();
         stepCount = 0;
         transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-        // Switch.ResetStage();
         GhostManager.instance.ResetStage();
     }
 
-    private void OnTriggerStay(Collider other) {
-        //if (other.gameObject.CompareTag("EnemyCol") || other.gameObject.CompareTag("Ghost")) {
-        //    isEnemyCol = true;
-        //    Debug.Log("enemy");
-        //}
-        //if (other.gameObject.CompareTag("Safety")) {
-        //    isSafe = true;
-        //    Debug.Log("safe");
-        //}
-    }
 }
