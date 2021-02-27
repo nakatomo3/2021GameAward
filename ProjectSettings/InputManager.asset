@@ -7,7 +7,7 @@ InputManager:
   m_Axes:
   - serializedVersion: 3
     m_Name: A
-    descriptiveName: 
+    descriptiveName: "\u4EFB\u5929\u5802\u306EA\u30DC\u30BF\u30F3(\u7BB1\u30B3\u30F3\u306EB)"
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 1
@@ -23,7 +23,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: B
-    descriptiveName: 
+    descriptiveName: "\u4EFB\u5929\u5802\u306EB\u30DC\u30BF\u30F3(\u7BB1\u30B3\u30F3\u306EA)"
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 0
@@ -39,7 +39,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: X
-    descriptiveName: 
+    descriptiveName: "\u4EFB\u5929\u5802\u306EX\u30DC\u30BF\u30F3(\u7BB1\u30B3\u30F3\u306EY)"
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 3
@@ -55,7 +55,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Y
-    descriptiveName: 
+    descriptiveName: "\u4EFB\u5929\u5802\u306EY(\u7BB1\u30B3\u30F3\u306EX)"
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 2
