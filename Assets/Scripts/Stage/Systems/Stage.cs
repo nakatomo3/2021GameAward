@@ -75,6 +75,9 @@ public class Stage : MonoBehaviour {
 	}
 
 	void Start() {
+		gameObject.AddComponent<InputManager>();
+		gameObject.AddComponent<SwitchManager>();
+
 		if (InputManager.isInit == false) {
 			InputManager.Init();
 #if UNITY_EDITOR
@@ -82,19 +85,8 @@ public class Stage : MonoBehaviour {
 #endif
 		}
 
-		if (player != null) {
-			player = Instantiate(player);
-		} else {
-			Debug.LogError("プレイヤーが設定されていません");
-			SystemSupporter.ExitGame();
-		}
-
-		if (ghostManager != null) {
-			ghostManager = Instantiate(ghostManager);
-		} else {
-			Debug.LogError("ゴーストマネージャーが設定されていません");
-			SystemSupporter.ExitGame();
-		}
+		player = Instantiate(player);
+		ghostManager = Instantiate(ghostManager);
 
 		if (ReadCSV(stagePath) == false) {
 			Debug.LogError("ステージの読み込みで不具合が発生したため終了しました");

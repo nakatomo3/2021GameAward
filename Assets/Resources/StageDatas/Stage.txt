@@ -1,0 +1,9 @@
+#StageData
+2,2
+0
+
+#ObjectData
+111
+101
+111
+
