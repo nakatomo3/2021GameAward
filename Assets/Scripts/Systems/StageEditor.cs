@@ -210,7 +210,7 @@ public class StageEditor : MonoBehaviour {
 					}
 				}
 			} else {
-
+				DestroyObj(transform.position);
 			}
 
 
