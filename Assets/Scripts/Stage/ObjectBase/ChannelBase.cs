@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChannelBase : DetailBase {
+public abstract class ChannelBase : DetailBase {
 
 	public static uint channelMax = 16;
 

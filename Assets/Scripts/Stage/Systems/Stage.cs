@@ -235,19 +235,12 @@ public class Stage : MonoBehaviour {
 		for (int i = 0; i < stageParent.transform.childCount; i++) {
 			var obj = stageParent.transform.GetChild(i);
 			var posX = Mathf.CeilToInt(obj.position.x - maxLeft);
-			var posZ = Mathf.CeilToInt(obj.position.z - maxUp);
+			var posZ = Mathf.CeilToInt(maxDown - obj.position.z);
 			var code = GetObjectCode(obj.name);
 			stageData[posZ][posX] = code;
 
 			if (code >= 'A' && code <= 'Z') {
-				switch (code) {
-					case 'A':
-						detailSb.AppendLine(obj.GetComponent<Switch>().ToFileString());
-						break;
-					case 'B':
-						detailSb.AppendLine(obj.GetComponent<Door>().ToFileString());
-						break;
-				}
+				detailSb.AppendLine(obj.GetComponent<DetailBase>().ToFileString());
 			}
 		}
 
@@ -263,7 +256,10 @@ public class Stage : MonoBehaviour {
 
 		//‘‚«‚±‚İ
 		streamWriter.WriteLine(sb.ToString());
-		streamWriter.WriteLine(detailSb.ToString());
+		Debug.Log(detailSb.Length);
+		if(detailSb.Length > 10) { //‰½‚©‘‚«‚Ü‚ê‚Ä‚¢‚½‚ç
+			streamWriter.Write(detailSb.ToString());
+		}
 
 		//ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
 		streamWriter.Flush();

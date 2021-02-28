@@ -68,7 +68,7 @@ public class StageEditor : MonoBehaviour {
 	private Vector3 startPos = new Vector3();
 
 	private char editingChar = '0';
-	private MonoBehaviour editingScript;
+	private DetailBase editingScript;
 	private int optionMax = 1;
 	private int _optionCount;
 	private int optionCount {
@@ -242,7 +242,7 @@ public class StageEditor : MonoBehaviour {
 			var code = Stage.GetObjectCode(obj.name);
 			if (code >= 'A' && code <= 'Z') { //大文字なら詳細編集可能なコード
 				isDetailMode = true;
-				editingScript = obj.GetComponent<MonoBehaviour>();
+				editingScript = obj.GetComponent<DetailBase>();
 				editingChar = code;
 			}
 		}
@@ -376,6 +376,7 @@ public class StageEditor : MonoBehaviour {
 
 		if (isDetailMode) {
 			detailWindow.SetActive(true);
+			detailOptionText.text = editingScript.ToEditorString();
 			switch (editingChar) {
 				default:
 					Debug.LogError("不明なオブジェクトの詳細編集をしています");
@@ -384,11 +385,9 @@ public class StageEditor : MonoBehaviour {
 					break;
 				case 'A':
 					detailObjectName.text = "スイッチ";
-					detailOptionText.text = ((Switch)editingScript).ToEditorString();
 					break;
 				case 'B':
-					detailObjectName.text = "スイッチ";
-					detailOptionText.text = ((Door)editingScript).ToEditorString();
+					detailObjectName.text = "ドア";
 					break;
 			}
 		} else {
