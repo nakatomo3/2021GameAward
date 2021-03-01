@@ -60,6 +60,16 @@ public class Stage : MonoBehaviour {
 	public GameObject stageParent { get; private set; }
 	public List<List<char>> stageData { get; private set; }
 	public Vector2 startPosition { get; private set; }
+
+	private int visualMode = 0;
+
+	private List<string> comments = new List<string>();
+
+	private const string stageHeader = "#StageData";
+	private const string objectHeader = "#ObjectData";
+	private const string detailHeader = "#Detail";
+	private const string commentHeader = "#Comment";
+
 	#endregion
 
 	private void Awake() {
@@ -96,15 +106,7 @@ public class Stage : MonoBehaviour {
 		Instantiate(objectList[1]);
 		Instantiate(start);
 
-		//最初のエリア
-		Instantiate(objectList[0], new Vector3(-1, 0, 1), Quaternion.identity, stageParent.transform);
-		Instantiate(objectList[0], new Vector3(0, 0, 1), Quaternion.identity, stageParent.transform);
-		Instantiate(objectList[0], new Vector3(1, 0, 1), Quaternion.identity, stageParent.transform);
-		Instantiate(objectList[0], new Vector3(-1, 0, 0), Quaternion.identity, stageParent.transform);
-		Instantiate(objectList[0], new Vector3(1, 0, 0), Quaternion.identity, stageParent.transform);
-		Instantiate(objectList[0], new Vector3(-1, 0, -1), Quaternion.identity, stageParent.transform);
-		Instantiate(objectList[0], new Vector3(0, 0, -1), Quaternion.identity, stageParent.transform);
-		Instantiate(objectList[0], new Vector3(1, 0, -1), Quaternion.identity, stageParent.transform);
+
 
 	}
 
@@ -136,6 +138,71 @@ public class Stage : MonoBehaviour {
 			TextAsset csv = Resources.Load("StageDatas/" + path) as TextAsset;
 			StringReader reader = new StringReader(csv.text);
 
+			reader.ReadLine(); // ステージ全体のヘッダ読み込み
+			var line = reader.ReadLine();
+
+			//ステージ配列を初期化
+			stageData = new List<List<char>>();
+			var sizeX = int.Parse(line.Split(':')[1].Split(',')[0]);
+			var sizeY = int.Parse(line.Split(':')[1].Split(',')[1]);
+			for (int i = 0; i < sizeY; i++) {
+				stageData.Add(new List<char>());
+				for (int j = 0; j < sizeX; j++) {
+					stageData[i].Add('0');
+				}
+			}
+
+			visualMode = int.Parse(reader.ReadLine().Split(':')[1]);
+			line = reader.ReadLine();
+			var posX = int.Parse(line.Split(':')[1].Split(',')[0]);
+			var posY = int.Parse(line.Split(':')[1].Split(',')[1]);
+			reader.ReadLine();
+
+			//objectHeaderに当たるまでコメント読み込み
+			bool isComment = false;
+			while (line != objectHeader) {
+				if (isComment == true) {
+					comments.Add(line);
+				}
+				if (line == commentHeader) {
+					isComment = true;
+				}
+				line = reader.ReadLine();
+			}
+
+			//ステージ部分読み込みと生成
+			line = reader.ReadLine();
+			var lineCount = 0;
+			Debug.Log("read:" + line);
+			while (line != detailHeader || reader.Peek() > -1) {
+				if (line == "") {
+					reader.ReadLine();
+					continue;
+				}
+				var lineData = line.ToCharArray();
+				Debug.Log(line);
+				for (int i = 0; i < line.Length - 1; i++) {
+					var code = lineData[i];
+					stageData[lineCount][i] = code;
+					if (code != '0') {
+						Instantiate(objectList[objectIndex.FindIndex(n => code == n)], new Vector3(posX + i, 0, posY + lineCount), Quaternion.identity, stageParent.transform);
+					}
+				}
+				if (reader.Peek() <= -1) { //Detail終了時
+					Debug.Log("Detailなしで終了しました");
+					return true;
+				}
+				line = reader.ReadLine();
+				lineCount++;
+			}
+
+			//詳細読み込み
+			while (reader.Peek() > -1) {
+				line = reader.ReadLine();
+
+				Debug.Log(line);
+			}
+
 			//int lineCount = 0;
 			//while (reader.Peek() > -1) {
 
@@ -151,8 +218,18 @@ public class Stage : MonoBehaviour {
 			StreamWriter streamWriter = new StreamWriter(Application.dataPath + "/Resources/StageDatas/" + stagePath + ".txt", false);
 			streamWriter.Flush();
 			streamWriter.Close();
-		} catch (Exception) {
 
+			//最初のエリア
+			Instantiate(objectList[0], new Vector3(-1, 0, 1), Quaternion.identity, stageParent.transform);
+			Instantiate(objectList[0], new Vector3(0, 0, 1), Quaternion.identity, stageParent.transform);
+			Instantiate(objectList[0], new Vector3(1, 0, 1), Quaternion.identity, stageParent.transform);
+			Instantiate(objectList[0], new Vector3(-1, 0, 0), Quaternion.identity, stageParent.transform);
+			Instantiate(objectList[0], new Vector3(1, 0, 0), Quaternion.identity, stageParent.transform);
+			Instantiate(objectList[0], new Vector3(-1, 0, -1), Quaternion.identity, stageParent.transform);
+			Instantiate(objectList[0], new Vector3(0, 0, -1), Quaternion.identity, stageParent.transform);
+			Instantiate(objectList[0], new Vector3(1, 0, -1), Quaternion.identity, stageParent.transform);
+		} catch (Exception e) {
+			Debug.LogError(e);
 		}
 		return true;
 	}
@@ -223,10 +300,21 @@ public class Stage : MonoBehaviour {
 		StringBuilder detailSb = new StringBuilder(); //詳細設定用StringBuilder
 
 		//ステージヘッダーに書き込み
-		sb.AppendLine("#StageData");
-		sb.AppendLine(sizeX.ToString() + "," + sizeY.ToString());
-		sb.AppendLine(0.ToString() + "\n"); //ステージデザイン
-		sb.AppendLine("#ObjectData");
+		sb.AppendLine(stageHeader);
+		sb.AppendLine("size:" + sizeX.ToString() + "," + sizeY.ToString());
+		sb.AppendLine("design:" + 0.ToString()); //ステージデザイン
+		sb.AppendLine("pos:" + maxLeft + "," + maxUp);
+		sb.AppendLine();
+
+		sb.AppendLine(commentHeader);
+		for (int i = 0; i < comments.Count; i++) {
+			sb.AppendLine(comments[i]);
+		}
+		if (comments.Count == 0) {
+			sb.AppendLine();
+		}
+
+		sb.AppendLine(objectHeader);
 
 		//詳細ヘッダーに書き込み
 		detailSb.AppendLine("#Detail");
@@ -256,8 +344,7 @@ public class Stage : MonoBehaviour {
 
 		//書きこみ
 		streamWriter.WriteLine(sb.ToString());
-		Debug.Log(detailSb.Length);
-		if(detailSb.Length > 10) { //何か書き込まれていたら
+		if (detailSb.Length > 10) { //何か書き込まれていたら
 			streamWriter.Write(detailSb.ToString());
 		}
 

@@ -8,4 +8,7 @@ public abstract class DetailBase : MonoBehaviour {
 
 	//オブジェクト情報をステージエディタ用のstringに変換
 	public abstract string ToEditorString();
+
+	//オブジェクト情報のstringをオブジェクトの変数に反映
+	//public abstract void SetData(string information);
 }
