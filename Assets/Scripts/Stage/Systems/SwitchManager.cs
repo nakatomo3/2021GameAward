@@ -6,7 +6,7 @@ public class SwitchManager : MonoBehaviour {
 
 	public static SwitchManager instance;
 
-	bool[] channel = new bool[16];
+	public bool[] channel = new bool[16];
 
 	private void Awake() {
 		instance = this;

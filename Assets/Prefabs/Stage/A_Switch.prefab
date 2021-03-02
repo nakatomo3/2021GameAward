@@ -171,7 +171,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5781263882930814558}
-  - component: {fileID: 6400189730331592384}
+  - component: {fileID: 954758936506035183}
   m_Layer: 0
   m_Name: A_Switch
   m_TagString: Untagged
@@ -195,7 +195,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6400189730331592384
+--- !u!114 &954758936506035183
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -207,4 +207,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257934bf89ee76141b85f4d9d5faa39e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  channel: 0
+  render: {fileID: 5781263881449915920}
