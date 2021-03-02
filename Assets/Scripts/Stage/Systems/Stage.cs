@@ -180,11 +180,11 @@ public class Stage : MonoBehaviour {
 				}
 				var lineData = line.ToCharArray();
 				Debug.Log(line);
-				for (int i = 0; i < line.Length - 1; i++) {
+				for (int i = 0; i < line.Length; i++) {
 					var code = lineData[i];
 					stageData[lineCount][i] = code;
 					if (code != '0') {
-						Instantiate(objectList[objectIndex.FindIndex(n => code == n)], new Vector3(posX + i, 0, posY + lineCount), Quaternion.identity, stageParent.transform);
+						Instantiate(objectList[objectIndex.FindIndex(n => code == n)], new Vector3(posX + i, 0, posY - lineCount), Quaternion.identity, stageParent.transform);
 					}
 				}
 				if (reader.Peek() <= -1) { //Detail終了時
@@ -302,7 +302,7 @@ public class Stage : MonoBehaviour {
 		sb.AppendLine(stageHeader);
 		sb.AppendLine("size:" + sizeX.ToString() + "," + sizeY.ToString());
 		sb.AppendLine("design:" + 0.ToString()); //ステージデザイン
-		sb.AppendLine("pos:" + maxLeft + "," + maxUp);
+		sb.AppendLine("pos:" + maxLeft + "," + maxDown);
 		sb.AppendLine();
 
 		sb.AppendLine(commentHeader);
