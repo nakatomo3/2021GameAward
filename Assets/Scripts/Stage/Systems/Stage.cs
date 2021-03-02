@@ -176,8 +176,7 @@ public class Stage : MonoBehaviour {
 			Debug.Log("read:" + line);
 			while (line != detailHeader || reader.Peek() > -1) {
 				if (line == "") {
-					reader.ReadLine();
-					continue;
+					break;
 				}
 				var lineData = line.ToCharArray();
 				Debug.Log(line);
