@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
 
-public class Switch : ChannelBase
-{
+public class Switch : ChannelBase {
 
     private bool isUnderPlayer;
     public Renderer render;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         render = GetComponentInChildren<Renderer>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         if (this.transform.position == Player.instance.transform.position && isUnderPlayer == false) {
             if (SwitchManager.instance.channel[channel] == true) {
                 SwitchManager.instance.channel[channel] = false;
@@ -37,8 +34,7 @@ public class Switch : ChannelBase
 
     }
 
-    public override string ToFileString()
-    {
+    public override string ToFileString() {
         StringBuilder sb = new StringBuilder();
         sb.AppendLine("A_Switch");
         sb.AppendLine("pos:" + Mathf.CeilToInt(transform.position.x) + "," + Mathf.CeilToInt(transform.position.z));
@@ -46,8 +42,7 @@ public class Switch : ChannelBase
         return sb.ToString();
     }
 
-    public override string ToEditorString()
-    {
+    public override string ToEditorString() {
         StringBuilder sb = new StringBuilder();
         sb.AppendLine("チャンネル：　" + channel);
         return sb.ToString();
