@@ -28,7 +28,7 @@ public class Door : ChannelBase {
 
     // Update is called once per frame
     void Update() {
-        if (SwitchManager.instance.channel[channel] == true) {
+        if (SwitchManager.instance.channel[channel] == !isReverse) {
             Color color = render.material.color;
             color.a = 0.6f;
             render.material.color = color;
