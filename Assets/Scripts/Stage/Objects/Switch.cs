@@ -5,11 +5,13 @@ using System.Text;
 
 public class Switch : ChannelBase {
 
-    private bool isUnderPlayer;
-    public Renderer render;
+	[SerializeField]
+	private Renderer render;
 
-    // Start is called before the first frame update
-    void Start() {
+    private bool isUnderPlayer;
+
+	// Start is called before the first frame update
+	void Start() {
         render = GetComponentInChildren<Renderer>();
     }
 
@@ -28,7 +30,7 @@ public class Switch : ChannelBase {
                 render.material.color = color;
             }
             isUnderPlayer = true;
-        } else if (this.transform.position != Player.instance.transform.position) {
+        } else if (transform.position != Player.instance.transform.position) {
             isUnderPlayer = false;
         }
 
@@ -47,4 +49,21 @@ public class Switch : ChannelBase {
         sb.AppendLine("チャンネル：　" + channel);
         return sb.ToString();
     }
+
+	public override void SetData(string information) {
+		var options = information.Split('\n');
+		for (int i = 0; i < options.Length; i++) {
+			var option = options[i];
+			if (option.Contains(":")) {
+				var key = option.Split(':')[0];
+				var value = option.Split(':')[1];
+				switch (key) {
+					case "channel":
+						channel = uint.Parse(value);
+						break;
+				}
+			}
+		}
+		return;
+	}
 }

@@ -173,18 +173,18 @@ public class Stage : MonoBehaviour {
 			//ステージ部分読み込みと生成
 			line = reader.ReadLine();
 			var lineCount = 0;
-			Debug.Log("read:" + line);
-			while (line != detailHeader || reader.Peek() > -1) {
+			while (line != detailHeader && reader.Peek() > -1) {
 				if (line == "") {
+					line = reader.ReadLine();
 					break;
 				}
 				var lineData = line.ToCharArray();
 				Debug.Log(line);
 				for (int i = 0; i < line.Length; i++) {
-					var code = lineData[i];
-					stageData[lineCount][i] = code;
-					if (code != '0') {
-						Instantiate(objectList[objectIndex.FindIndex(n => code == n)], new Vector3(posX + i, 0, posY - lineCount), Quaternion.identity, stageParent.transform);
+					var _code = lineData[i];
+					stageData[lineCount][i] = _code;
+					if (_code != '0') {
+						Instantiate(objectList[objectIndex.FindIndex(n => _code == n)], new Vector3(posX + i, 0, posY - lineCount), Quaternion.identity, stageParent.transform);
 					}
 				}
 				if (reader.Peek() <= -1) { //Detail終了時
@@ -196,22 +196,32 @@ public class Stage : MonoBehaviour {
 			}
 
 			//詳細読み込み
+			var code = '0';
+			var information = "";
+			DetailBase detailBase = null;
 			while (reader.Peek() > -1) {
 				line = reader.ReadLine();
-
+				if (line == "") {
+					if (detailBase != null) {
+						detailBase.SetData(information);
+					}
+					continue;
+				}
+				if (line.Contains("_")) {		
+					code = line.Split('_')[0][0]; // ('_')
+				} else if (line.Contains(":")) {
+					if (line.Contains("pos")) {
+						var posString = line.Split(':')[1];
+						var pos = new Vector3(float.Parse(posString.Split(',')[0]), 0, float.Parse(posString.Split(',')[1]));
+						var obj = GetStageObject(pos);
+						detailBase = obj.GetComponent<DetailBase>();
+						continue;
+					}
+					information += line + "\n";
+				}
 				Debug.Log(line);
 			}
 
-			//int lineCount = 0;
-			//while (reader.Peek() > -1) {
-
-			//	string line = reader.ReadLine();
-			//	string[] values = line.Split(',');
-			//	for (int j = 0; j < values.Length; j++) {
-			//		stageData[lineCount][j] = values[j][0];
-			//	}
-			//	lineCount++;
-			//}
 		} catch (NullReferenceException) {
 			Debug.Log("ファイルが見つかりませんでした。新規作成モードにします");
 			StreamWriter streamWriter = new StreamWriter(Application.dataPath + "/Resources/StageDatas/" + stagePath + ".txt", false);
@@ -404,15 +414,5 @@ public class Stage : MonoBehaviour {
 	public static char GetObjectCode(string name) {
 		//命名規則は「コード_名前」なのでコード単独の抽出可能
 		return name.Split('_')[0][0];
-
-		//問題があればこのコードに戻す
-		//for (int i = 0; i < objectList.Count; i++) {
-		//	var objName = objectList[i].name;
-		//	if (name.Contains(objName)) {
-		//		return objectIndex[i];
-		//	}
-		//}
-		//Debug.LogError("オブジェクトのコード取得が出来ませんでした。" + name);
-		//return '0';
 	}
 }

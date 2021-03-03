@@ -329,7 +329,11 @@ public class StageEditor : MonoBehaviour {
 		} else {
 			inputTimer = 0;
 		}
+		if(optionCount >= optionMax) {
+			optionCount = 0;
+		}
 
+		//チャンネル設定を一括で出来るように
 		if ((ChannelBase)editingScript != null && optionCount == 0) {
 			if (isLeftInput) {
 				((ChannelBase)editingScript).channel--;
@@ -345,9 +349,26 @@ public class StageEditor : MonoBehaviour {
 				optionMax = 1;
 				break;
 			case 'B':
-				optionMax = 1;
-				//2:反転モード
-				//3:ディレイ設定
+				optionMax = 3;
+				switch (optionCount) {
+					case 0: //チャンネル編集
+						break;
+					case 1:
+						if (isLeftInput || isRightInput) {
+							((Door)editingScript).isReverse = !((Door)editingScript).isReverse;
+						}
+						break;
+					case 2:
+						if (isLeftInput) {
+							((Door)editingScript).rotate--;
+						}
+						if (isRightInput) {
+							((Door)editingScript).rotate++;
+						}
+						break;
+					default:
+						break;
+				}
 				break;
 		}
 	}
@@ -376,7 +397,7 @@ public class StageEditor : MonoBehaviour {
 
 		if (isDetailMode) {
 			detailWindow.SetActive(true);
-			detailOptionText.text = editingScript.ToEditorString();
+			detailOptionText.text = editingScript.ToEditorString(); //詳細編集のタイトル以外のテキスト
 			switch (editingChar) {
 				default:
 					Debug.LogError("不明なオブジェクトの詳細編集をしています");
