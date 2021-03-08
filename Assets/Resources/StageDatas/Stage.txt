@@ -1,9 +1,12 @@
 #StageData
-2,2
-0
+size:8,3
+design:0
+pos:0,0
+
+#Comment
 
 #ObjectData
-111
-101
-111
+01111111
+33333333
+33333333
 
