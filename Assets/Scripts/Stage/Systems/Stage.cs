@@ -98,6 +98,10 @@ public class Stage : MonoBehaviour {
 		player = Instantiate(player);
 		ghostManager = Instantiate(ghostManager);
 
+		if(StageSelect.isStageSelect == true) {
+			stagePath = StageSelect.stagePath;
+		}
+
 		if (ReadCSV(stagePath) == false) {
 			Debug.LogError("ステージの読み込みで不具合が発生したため終了しました");
 			SystemSupporter.ExitGame();
@@ -179,7 +183,6 @@ public class Stage : MonoBehaviour {
 					break;
 				}
 				var lineData = line.ToCharArray();
-				Debug.Log(line);
 				for (int i = 0; i < line.Length; i++) {
 					var _code = lineData[i];
 					stageData[lineCount][i] = _code;
