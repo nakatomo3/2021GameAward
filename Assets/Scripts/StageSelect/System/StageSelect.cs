@@ -14,9 +14,11 @@ public class StageSelect : MonoBehaviour {
 	#endregion
 
 	#region インスペクタ参照部
+	[Disable]
 	[SerializeField]
 	private Text stageName;
 
+	[Disable]
 	[SerializeField]
 	private GameObject createCaution; //ファイル作成しますよ
 	#endregion
