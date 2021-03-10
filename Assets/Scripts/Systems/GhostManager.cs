@@ -15,6 +15,9 @@ public class GhostManager : MonoBehaviour {
     private List<float> stepTimers;           //ゴーストごとの入力待機時間のカウント
     private List<int> nowSteps;               //ゴーストごとの現在の進んだ回数
 
+	[HideInInspector]
+	public List<List<bool>> isMoveSteps; //プレイヤーが移動したかどうか
+
     [SerializeField]
     private float viewAngle;
 
