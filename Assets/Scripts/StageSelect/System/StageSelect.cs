@@ -21,6 +21,9 @@ public class StageSelect : MonoBehaviour {
 	[Disable]
 	[SerializeField]
 	private GameObject createCaution; //ファイル作成しますよ
+
+	[SerializeField]
+	private GameObject fadeImage;
 	#endregion
 
 	#region データ部
@@ -48,6 +51,8 @@ public class StageSelect : MonoBehaviour {
 #endif
 		}
 
+		fadeImage.AddComponent<FadeIn>();
+
 		isStageSelect = true;
 	}
 
@@ -61,7 +66,8 @@ public class StageSelect : MonoBehaviour {
 		}
 		if (InputManager.GetKeyDown(Keys.A)) {
 			stagePath = path[stageIndex];
-			SceneManager.LoadScene("Stage");
+			var fade = fadeImage.AddComponent<FadeOut>();
+			fade.nextStagePath = "Stage";
 		}
 		if (!Resources.Load("StageDatas/" + path[stageIndex])) {
 			createCaution.SetActive(true);
