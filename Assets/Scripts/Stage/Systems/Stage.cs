@@ -43,7 +43,6 @@ public class Stage : MonoBehaviour {
 	private GameObject stageEditor;
 
 	[Disable]
-	[SerializeField]
 	new public GameObject camera;
 
 	[Disable]
@@ -69,6 +68,13 @@ public class Stage : MonoBehaviour {
 	private const string objectHeader = "#ObjectData";
 	private const string detailHeader = "#Detail";
 	private const string commentHeader = "#Comment";
+
+	public enum Mode {
+		START,
+		GAME,
+		DEAD,
+	}
+	public Mode nowMode = Mode.START;
 
 	#endregion
 
@@ -98,10 +104,11 @@ public class Stage : MonoBehaviour {
 		player = Instantiate(player);
 		ghostManager = Instantiate(ghostManager);
 
-		if(StageSelect.isStageSelect == true) {
+		if (StageSelect.isStageSelect == true) {
 			stagePath = StageSelect.stagePath;
 		}
 
+		//ステージの生成
 		if (ReadCSV(stagePath) == false) {
 			Debug.LogError("ステージの読み込みで不具合が発生したため終了しました");
 			SystemSupporter.ExitGame();
@@ -117,14 +124,21 @@ public class Stage : MonoBehaviour {
 	void Update() {
 		SystemSupporter.PlaySupport();
 
-		player.SetActive(!isEditorMode);
-		stageEditor.SetActive(isEditorMode);
+		switch (nowMode) {
+			case Mode.START:
+				nowMode = Mode.GAME; // どうせスタート時の演出ある
+				break;
+			case Mode.GAME:
+				if (InputManager.GetKeyDown(Keys.START) && SystemSupporter.IsUnityEditor() == true) {
+					isEditorMode = !isEditorMode;
+					player.transform.position = stageEditor.transform.position;
+				}
 
-		if (InputManager.GetKeyDown(Keys.START)) {
-			isEditorMode = !isEditorMode;
-			if (SystemSupporter.IsUnityEditor() == true) {
-				player.transform.position = stageEditor.transform.position;
-			}
+				player.SetActive(!isEditorMode);
+				stageEditor.SetActive(isEditorMode);
+				break;
+			case Mode.DEAD:
+				break;
 		}
 	}
 
@@ -210,7 +224,7 @@ public class Stage : MonoBehaviour {
 					}
 					continue;
 				}
-				if (line.Contains("_")) {		
+				if (line.Contains("_")) {
 					code = line.Split('_')[0][0]; // ('_')
 				} else if (line.Contains(":")) {
 					if (line.Contains("pos")) {

@@ -380,7 +380,7 @@ public class StageEditor : MonoBehaviour {
 		}
 
 		Stage.instance.camera.transform.position = transform.position + new Vector3(0, cameraBaseRange + cameraMode * cameraStepRange, 0);
-
+		Stage.instance.camera.transform.localEulerAngles = new Vector3(90, 0, 0);
 	}
 
 	private void InformationUpdate() {
