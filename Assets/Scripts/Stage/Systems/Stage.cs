@@ -74,6 +74,7 @@ public class Stage : MonoBehaviour {
 		GAME,
 		DEAD,
 	}
+	[Disable]
 	public Mode nowMode = Mode.START;
 
 	#endregion

@@ -23,7 +23,8 @@ public class Player : MonoBehaviour {
 	private int stepCount;
 
 	private float stepTimer = 0;
-	//TODO:プレイヤーの残り時間
+	private float remainingTime = 10; //プレイヤーの残り時間
+	private float remainingTimeMax = 10;
 
 	private List<MoveVector> moveRecord;
 	private List<float> stepTimers;
@@ -33,6 +34,9 @@ public class Player : MonoBehaviour {
 	private bool isSafe;
 
 	private string canStepCode = "12A";
+
+	[SerializeField]
+	private Text timerText;
 
 	private void Awake() {
 		moveRecord = new List<MoveVector>();
@@ -54,6 +58,8 @@ public class Player : MonoBehaviour {
 		Move();
 		SettingStepInterval();
 
+		UpdateTimer();
+
 		if (InputManager.GetKeyDown(Keys.A) || stepCount > stepMax) {
 			ResetStage();
 		}
@@ -68,7 +74,6 @@ public class Player : MonoBehaviour {
 		isSafe = false;
 
 	}
-
 
 	void Move() {
 		if (InputManager.GetKeyDown(Keys.LEFT)) {
@@ -119,8 +124,9 @@ public class Player : MonoBehaviour {
 
 	//入力の待ち時間を記録する
 	void SettingStepInterval() {
-		bool isMoveKey = InputManager.GetKeyDown(Keys.LEFT) ||
-			InputManager.GetKeyDown(Keys.UP) ||
+		bool isMoveKey = 
+			InputManager.GetKeyDown(Keys.LEFT)  ||
+			InputManager.GetKeyDown(Keys.UP)    ||
 			InputManager.GetKeyDown(Keys.RIGHT) ||
 			InputManager.GetKeyDown(Keys.DOWN);
 
@@ -151,6 +157,8 @@ public class Player : MonoBehaviour {
 		stepCount = 0;
 		transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
 		GhostManager.instance.ResetStage();
+
+		remainingTime = remainingTimeMax;
 	}
 
 	bool CanStep(Vector3 pos) {
@@ -170,4 +178,13 @@ public class Player : MonoBehaviour {
 		return false;
 	}
 
+	void UpdateTimer() {
+		if(stepCount > 0) {
+			remainingTime -= Time.deltaTime;
+		}
+		var intPart = Mathf.Floor(remainingTime); //整数部分
+		var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
+		timerText.text = "<size=72>" + intPart + ".</size>" 
+			+ "<size=32>" + fractionalPart + "</size>";
+	}
 }
