@@ -46,7 +46,7 @@ public static class FileCount {
 
 		var pos = selectionRect;
 		pos.x = pos.xMax - width * 1.1f;
-		pos.width = width;
+		pos.width = width * 1.1f;
 		pos.yMin++;
 
 		var color = GUI.color;
