@@ -51,7 +51,7 @@ public class StageSelect : MonoBehaviour {
 #endif
 		}
 
-		fadeImage.AddComponent<FadeIn>();
+		fadeImage.AddComponent<FadeIn>().timeScale = 2;
 
 		isStageSelect = true;
 	}
@@ -68,6 +68,7 @@ public class StageSelect : MonoBehaviour {
 			stagePath = path[stageIndex];
 			var fade = fadeImage.AddComponent<FadeOut>();
 			fade.nextStagePath = "Stage";
+			fade.timeScale = 2;
 		}
 		if (!Resources.Load("StageDatas/" + path[stageIndex])) {
 			createCaution.SetActive(true);

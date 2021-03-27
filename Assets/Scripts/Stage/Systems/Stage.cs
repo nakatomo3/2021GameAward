@@ -52,6 +52,10 @@ public class Stage : MonoBehaviour {
 	[Disable]
 	[SerializeField]
 	private GameObject ghostManager;
+
+	[Disable]
+	[SerializeField]
+	private GameObject fade;
 	#endregion
 
 
@@ -92,6 +96,9 @@ public class Stage : MonoBehaviour {
 	}
 
 	void Start() {
+
+		fade.AddComponent<FadeIn>().timeScale = 2;
+
 		gameObject.AddComponent<InputManager>();
 		gameObject.AddComponent<SwitchManager>();
 

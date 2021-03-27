@@ -20,8 +20,8 @@ public class FadeIn : MonoBehaviour {
 	void Update() {
 		timer += Time.deltaTime;
 
-		image.color = new Color(0, 0, 0, 1 - timer / timeScale);
-		if (timer >= 1 / timeScale) {
+		image.color = new Color(0, 0, 0, 1 - timeScale * timer);
+		if (1 - timeScale * timer < 0) {
 			Destroy(this);
 		}
 	}

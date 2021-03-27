@@ -20,8 +20,8 @@ public class FadeOut : MonoBehaviour {
 	void Update() {
 		timer += Time.deltaTime;
 
-		image.color = new Color(0, 0, 0, timer / timeScale);
-		if(timer >= 1/ timeScale && nextStagePath != "") {
+		image.color = new Color(0, 0, 0, timer * timeScale);
+		if (timer >= 1 / timeScale && nextStagePath != "") {
 			SceneManager.LoadScene(nextStagePath);
 		}
 	}
