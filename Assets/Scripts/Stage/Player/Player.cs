@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
 	private bool isEnemyCol;
 	private bool isSafe;
 
-	private string canStepCode = "12A";
+	private string canStepCode = "124A";
 
 	[SerializeField]
 	private Text timerText;
@@ -57,10 +57,11 @@ public class Player : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+
 		Move();
 		SettingStepInterval();
-
 		UpdateTimer();
+
 
 		if (InputManager.GetKeyDown(Keys.A) || stepCount > stepMax) {
 			ResetStage();
@@ -104,7 +105,7 @@ public class Player : MonoBehaviour {
 			moveRecord.Add(MoveVector.RIGHT);
 			transform.localEulerAngles = Vector3.up * 90;
 			stepCount++;
-			if(CanStep(transform.position + Vector3.right)) {
+			if (CanStep(transform.position + Vector3.right)) {
 				transform.position += Vector3.right;
 				isMoveStep.Add(true);
 			} else {
@@ -115,7 +116,7 @@ public class Player : MonoBehaviour {
 			moveRecord.Add(MoveVector.DOWN);
 			transform.localEulerAngles = Vector3.up * 180;
 			stepCount++;
-			if(CanStep(transform.position + Vector3.back)) {
+			if (CanStep(transform.position + Vector3.back)) {
 				transform.position += Vector3.back;
 				isMoveStep.Add(true);
 			} else {
@@ -126,9 +127,9 @@ public class Player : MonoBehaviour {
 
 	//“ü—Í‚Ì‘Ò‚¿ŠÔ‚ğ‹L˜^‚·‚é
 	void SettingStepInterval() {
-		bool isMoveKey = 
-			InputManager.GetKeyDown(Keys.LEFT)  ||
-			InputManager.GetKeyDown(Keys.UP)    ||
+		bool isMoveKey =
+			InputManager.GetKeyDown(Keys.LEFT) ||
+			InputManager.GetKeyDown(Keys.UP) ||
 			InputManager.GetKeyDown(Keys.RIGHT) ||
 			InputManager.GetKeyDown(Keys.DOWN);
 
@@ -183,12 +184,12 @@ public class Player : MonoBehaviour {
 	}
 
 	void UpdateTimer() {
-		if(stepCount > 0) {
+		if (stepCount > 0) {
 			remainingTime -= Time.deltaTime;
 		}
 		var intPart = Mathf.Floor(remainingTime); //®”•”•ª
 		var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
-		timerText.text = "<size=72>" + intPart + ".</size>" 
+		timerText.text = "<size=72>" + intPart + ".</size>"
 			+ "<size=32>" + fractionalPart + "</size>";
 	}
 }

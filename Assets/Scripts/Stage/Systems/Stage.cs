@@ -77,6 +77,7 @@ public class Stage : MonoBehaviour {
 		START,
 		GAME,
 		DEAD,
+		CLEAR
 	}
 	[Disable]
 	public Mode nowMode = Mode.START;
@@ -133,8 +134,9 @@ public class Stage : MonoBehaviour {
 		SystemSupporter.PlaySupport();
 
 		switch (nowMode) {
-			case Mode.START:
-				nowMode = Mode.GAME; // どうせスタート時の演出ある
+			case Mode.START:// どうせスタート時の演出ある
+				player.SetActive(false);
+				nowMode = Mode.GAME;
 				break;
 			case Mode.GAME:
 				if (InputManager.GetKeyDown(Keys.START) && SystemSupporter.IsUnityEditor() == true) {
@@ -146,6 +148,10 @@ public class Stage : MonoBehaviour {
 				stageEditor.SetActive(isEditorMode);
 				break;
 			case Mode.DEAD:
+				player.SetActive(false);
+				break;
+			case Mode.CLEAR:
+				player.SetActive(false);
 				break;
 		}
 	}
