@@ -10,12 +10,10 @@ public class GhostManager : MonoBehaviour {
     [HideInInspector]
     public List<List<MoveVector>> moveRecords;//[ゴースト番号][移動方向]
 
-    [HideInInspector]
     public List<List<float>> stepIntervals;   //[ゴースト番号][入力待機時間]
     private List<float> stepTimers;           //ゴーストごとの入力待機時間のカウント
     private List<int> nowSteps;               //ゴーストごとの現在の進んだ回数
 
-	[HideInInspector]
 	public List<List<bool>> isMoveSteps; //プレイヤーが移動したかどうか
 
     [SerializeField]
@@ -31,15 +29,16 @@ public class GhostManager : MonoBehaviour {
         stepIntervals = new List<List<float>>();
         stepTimers = new List<float>();
         nowSteps = new List<int>();
-
+		isMoveSteps = new List<List<bool>>();
     }
 
 
     void Update() {
-        for (int i = 0; i < stepTimers.Count; ++i) {
-            stepTimers[i] += Time.deltaTime;
-
-        }
+		if (Player.instance.stepCount > 0) {
+			for (int i = 0; i < stepTimers.Count; ++i) {
+				stepTimers[i] += Time.deltaTime;
+			}
+		}
         Move();
         CheckViewPlayer();
     }
@@ -51,9 +50,12 @@ public class GhostManager : MonoBehaviour {
                 stepTimers[i] = 0;
                 MoveNextStep(i);
                 nowSteps[i]++;
+				for(int j = 0; j < stepIntervals[i].Count; j++) {
+					Debug.Log(stepIntervals[i][j]);
+				}
             }
 
-            //最初の位置に戻す
+            //移動が最大数を超えていたら最初の位置に戻す
             if (stepIntervals[i].Count > 0) {
                 if (nowSteps[i] >= stepIntervals[i].Count - 1) {
                     ResetGhost(i);
@@ -101,19 +103,27 @@ public class GhostManager : MonoBehaviour {
     void MoveNextStep(int i) {
         switch (moveRecords[i][nowSteps[i]]) {
             case MoveVector.UP:
-                ghosts[i].transform.position += Vector3.forward;
+				if(isMoveSteps[i][nowSteps[i]] == true){
+	                ghosts[i].transform.position += Vector3.forward;
+				}
                 ghosts[i].transform.localEulerAngles = Vector3.up * 0;
                 break;
             case MoveVector.DOWN:
-                ghosts[i].transform.position += Vector3.back;
+				if (isMoveSteps[i][nowSteps[i]] == true) {
+					ghosts[i].transform.position += Vector3.back;
+				}
                 ghosts[i].transform.localEulerAngles = Vector3.up * 180;
                 break;
             case MoveVector.LEFT:
-                ghosts[i].transform.position += Vector3.left;
+				if (isMoveSteps[i][nowSteps[i]] == true) {
+					ghosts[i].transform.position += Vector3.left;
+				}
                 ghosts[i].transform.localEulerAngles = Vector3.up * -90;
                 break;
             case MoveVector.RIGHT:
-                ghosts[i].transform.position += Vector3.right;
+				if (isMoveSteps[i][nowSteps[i]] == true) {
+					ghosts[i].transform.position += Vector3.right;
+				}
                 ghosts[i].transform.localEulerAngles = Vector3.up * 90;
                 break;
         }

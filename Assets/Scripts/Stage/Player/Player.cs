@@ -20,7 +20,9 @@ public class Player : MonoBehaviour {
 
 	[SerializeField]
 	private int stepMax;
-	private int stepCount;
+	public int stepCount {
+		get; private set;
+	}
 
 	private float stepTimer = 0;
 	private float remainingTime = 10; //プレイヤーの残り時間
@@ -154,10 +156,12 @@ public class Player : MonoBehaviour {
 		}
 
 		GhostManager.instance.AddGhost();
+		GhostManager.instance.isMoveSteps.Add(isMoveStep);
 		stepCount = 0;
 		transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
 		GhostManager.instance.ResetStage();
 
+		isMoveStep = new List<bool>();
 		remainingTime = remainingTimeMax;
 	}
 
