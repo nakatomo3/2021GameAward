@@ -16,6 +16,8 @@ public enum Keys {
 	L,
 	R,
 	TRIGGER,
+	R_HORIZONTAL,
+	R_VERTICAL,
 	LAST
 }
 
@@ -30,7 +32,7 @@ public class InputManager : MonoBehaviour {
 	private static Dictionary<string, float> axes;
 	private static Dictionary<string, float> beforeAxes;
 
-	private static float threshold = 0.5f;
+	private static float threshold = 0.5f; //閾値
 
 	/// <summary>
 	/// 初期化。データの読み込みなど
@@ -188,6 +190,21 @@ public class InputManager : MonoBehaviour {
 			}
 		}
 		return false;
+	}
+
+	/// <summary>
+	/// keyの中から絶対値が一番大きいやつ
+	/// </summary>
+	/// <param name="key"></param>
+	/// <returns></returns>
+	public static float GetAxis(Keys key) {
+		float value = 0;
+		foreach(var axis in axesString[key]) {
+			if(Mathf.Abs(axes[axis]) > threshold && Mathf.Abs(axes[axis]) > Mathf.Abs(value)) {
+				value = axes[axis];
+			}
+		}
+		return value;
 	}
 
 	private static List<KeyCode> ConvertKeyCode(Keys key) {
