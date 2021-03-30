@@ -40,6 +40,8 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	private Text timerText;
 
+	private Image filter;
+
 	private void Awake() {
 		moveRecord = new List<MoveVector>();
 		stepTimers = new List<float>();
@@ -52,7 +54,7 @@ public class Player : MonoBehaviour {
 	}
 
 	public void Start() {
-
+		filter = Stage.instance.lastMomentFilter.GetComponent<Image>();
 	}
 
 	// Update is called once per frame
@@ -61,7 +63,6 @@ public class Player : MonoBehaviour {
 		Move();
 		SettingStepInterval();
 		UpdateTimer();
-
 
 		if (InputManager.GetKeyDown(Keys.A) || stepCount > stepMax) {
 			ResetStage();
@@ -169,6 +170,7 @@ public class Player : MonoBehaviour {
 	bool CanStep(Vector3 pos) {
 		var obj = Stage.instance.GetStageObject(pos);
 		if (obj == null) {
+			Stage.instance.nowMode = Stage.Mode.DEAD;
 			return true; //奈落でも進めるけど落ちる
 		}
 		var code = Stage.GetObjectCode(obj.name);
@@ -188,8 +190,32 @@ public class Player : MonoBehaviour {
 			remainingTime -= Time.deltaTime;
 		}
 		var intPart = Mathf.Floor(remainingTime); //整数部分
-		var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
-		timerText.text = "<size=72>" + intPart + ".</size>"
-			+ "<size=32>" + fractionalPart + "</size>";
+		//小数部分を一応残しておく
+		//var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
+		timerText.text = intPart.ToString();
+
+		if (remainingTime < 0) {
+			Stage.instance.nowMode = Stage.Mode.DEAD;
+		}
+
+		if(remainingTime < 2.8f) {
+			//今の状態が透過度を下げる状態か否か
+			//現在の時間が2.9秒からどれだけ離れているか、それを0.5fで割った値の整数部分が偶数→透過度を下げる
+			var isDown = Mathf.FloorToInt((2.8f - remainingTime) / 0.25f) % 2 == 0;
+			var alpha = (2.8f - remainingTime) / 0.25f - Mathf.Floor((2.8f - remainingTime) / 0.25f);
+			if (isDown == false) {
+				alpha = 1 - alpha;
+			}
+			filter.color = new Color(1, 1, 1, alpha);
+		} else if (remainingTime < 7) {
+			var isDown = Mathf.FloorToInt((7 - remainingTime) / 0.35f) % 2 == 0;
+			var alpha = (7 - remainingTime) / 0.35f - Mathf.Floor((7 - remainingTime) / 0.35f);
+			if(isDown == false) {
+				alpha = 1 - alpha;
+			}
+			filter.color = new Color(1, 1, 1, alpha  / 2);
+		} else {
+			filter.color = new Color(1, 1, 1, 0);
+		}
 	}
 }

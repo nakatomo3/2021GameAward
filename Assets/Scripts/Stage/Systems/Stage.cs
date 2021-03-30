@@ -55,7 +55,14 @@ public class Stage : MonoBehaviour {
 
 	[Disable]
 	[SerializeField]
+	private GameObject deathUI;
+
+	[Disable]
+	[SerializeField]
 	private GameObject fade;
+
+	[Disable]
+	public GameObject lastMomentFilter; //§ŒÀŠÔ‚ªc‚èƒMƒŠƒMƒŠ‚Å‚·‚æ[
 	#endregion
 
 
@@ -149,6 +156,7 @@ public class Stage : MonoBehaviour {
 				break;
 			case Mode.DEAD:
 				player.SetActive(false);
+				deathUI.SetActive(true);
 				break;
 			case Mode.CLEAR:
 				player.SetActive(false);
