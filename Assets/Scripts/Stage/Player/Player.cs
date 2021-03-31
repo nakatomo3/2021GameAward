@@ -172,7 +172,9 @@ public class Player : MonoBehaviour {
 	bool CanStep(Vector3 pos) {
 		var obj = Stage.instance.GetStageObject(pos);
 		if (obj == null) {
-			Stage.instance.nowMode = Stage.Mode.DEAD;
+			if(pos != Vector3.zero) {
+				Stage.instance.nowMode = Stage.Mode.DEAD;
+			}
 			return true; //“Ş—‚Å‚ài‚ß‚é‚¯‚Ç—‚¿‚é
 		}
 		var code = Stage.GetObjectCode(obj.name);
