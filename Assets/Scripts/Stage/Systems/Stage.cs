@@ -59,6 +59,10 @@ public class Stage : MonoBehaviour {
 
 	[Disable]
 	[SerializeField]
+	private GameObject clearUI;
+
+	[Disable]
+	[SerializeField]
 	private GameObject fade;
 
 	[Disable]
@@ -69,7 +73,8 @@ public class Stage : MonoBehaviour {
 	#region データ部
 	public GameObject stageParent { get; private set; }
 	public List<List<char>> stageData { get; private set; }
-	public Vector2 startPosition { get; private set; }
+	public Vector3 startPosition { get; private set; }
+	public Vector3 goalPosition { get; private set; }
 
 	private int visualMode = 0;
 
@@ -214,6 +219,7 @@ public class Stage : MonoBehaviour {
 			line = reader.ReadLine();
 			var lineCount = 0;
 			while (line != detailHeader && reader.Peek() > -1) {
+				//line引数で関数化出来そう
 				if (line == "") {
 					line = reader.ReadLine();
 					break;
@@ -224,6 +230,10 @@ public class Stage : MonoBehaviour {
 					stageData[lineCount][i] = _code;
 					if (_code != '0') {
 						Instantiate(objectList[objectIndex.FindIndex(n => _code == n)], new Vector3(posX + i, 0, posY - lineCount), Quaternion.identity, stageParent.transform);
+					}
+					if(_code == '9') {
+						goalPosition = new Vector3(i, 0, lineCount);
+						Debug.Log(goalPosition);
 					}
 				}
 				if (reader.Peek() <= -1) { //Detail終了時
