@@ -233,8 +233,7 @@ public class Stage : MonoBehaviour {
 						Instantiate(objectList[objectIndex.FindIndex(n => _code == n)], new Vector3(posX + i, 0, posY - lineCount), Quaternion.identity, stageParent.transform);
 					}
 					if(_code == '9') {
-						goalPosition = new Vector3(i, 0, lineCount);
-						Debug.Log(goalPosition);
+						goalPosition = new Vector3(posX + i, 0, posY - lineCount);
 					}
 				}
 				if (reader.Peek() <= -1) { //DetailI—¹Žž
