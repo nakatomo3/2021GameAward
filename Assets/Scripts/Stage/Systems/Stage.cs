@@ -74,7 +74,7 @@ public class Stage : MonoBehaviour {
 	public GameObject stageParent { get; private set; }
 	public List<List<char>> stageData { get; private set; }
 	public Vector3 startPosition { get; private set; }
-	public Vector3 goalPosition { get; private set; }
+	public Vector3 goalPosition { get; private set; } = Vector3.one * -1;
 
 	private int visualMode = 0;
 
@@ -165,6 +165,7 @@ public class Stage : MonoBehaviour {
 				break;
 			case Mode.CLEAR:
 				player.SetActive(false);
+				clearUI.SetActive(true);
 				break;
 		}
 	}
