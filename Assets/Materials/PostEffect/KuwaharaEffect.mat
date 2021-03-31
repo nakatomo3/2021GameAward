@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DotEffect
-  m_Shader: {fileID: 4800000, guid: 7b94ad9897d1428448a76962864eef01, type: 3}
+  m_Name: KuwaharaEffect
+  m_Shader: {fileID: 4800000, guid: 7373c4fbf3a20fe449c96cfd2e063e31, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -68,6 +68,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Radius: 4.25
     - _Scale: 5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
