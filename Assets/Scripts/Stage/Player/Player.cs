@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
 	private bool isEnemyCol;
 	private bool isSafe;
 
-	private string canStepCode = "124A";
+	private string canStepCode = "129A";
 
 	[SerializeField]
 	private Text timerText;
@@ -124,6 +124,8 @@ public class Player : MonoBehaviour {
 				isMoveStep.Add(false);
 			}
 		}
+
+		GoalCheck();
 	}
 
 	//入力の待ち時間を記録する
@@ -217,5 +219,16 @@ public class Player : MonoBehaviour {
 		} else {
 			filter.color = new Color(1, 1, 1, 0);
 		}
+	}
+
+	void GoalCheck() {
+		if(transform.position == Stage.instance.goalPosition) {
+			Stage.instance.nowMode = Stage.Mode.CLEAR;
+		}
+	}
+
+	//ダメージを受けると秒数が減る
+	public void Damage(float value) {
+		remainingTime -= value;
 	}
 }
