@@ -7,7 +7,7 @@ public class DamageField : MonoBehaviour {
     [SerializeField]
     private Renderer render;
 
-    private bool isOn = true;
+    private bool isDamage = true;
     private float count = 0.0f; 
     private float interval = 2.0f;
 
@@ -19,25 +19,25 @@ public class DamageField : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (transform.position == Player.instance.transform.position) {
-            if (isOn == false) {
+            if (isDamage == false) {
                 count += Time.deltaTime;
                 if (count >= interval) { // インターバルカウント
                     count = 0.0f;
-                    isOn = true;
+                    isDamage = true;
                     Color color = render.material.color;
                     color.g = 1.0f;
                     render.material.color = color;
                 }
             } else {
                 Player.instance.Damage(4); // ダメージ処理
-                isOn = false;
+                isDamage = false;
                 Color color = render.material.color;
                 color.g = 0.0f;
                 render.material.color = color;
             }
-        } else {
+        } else { // プレイヤーが離れたらリセット
             count = 0.0f;
-            isOn = true;
+            isDamage = true;
             Color color = render.material.color;
             color.g = 1.0f;
             render.material.color = color;
