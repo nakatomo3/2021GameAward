@@ -103,7 +103,7 @@ public class GhostManager : MonoBehaviour {
             float dot = Vector3.Dot(direction, ghosts[i].transform.forward);
             float angle = Mathf.Acos(dot);
 
-            if (Mathf.Abs(dot) > 0.9 || Mathf.Abs(angle) < viewAngle / 180 * 3.14) {
+            if (Mathf.Abs(angle) < viewAngle / 180 * 3.14 || ghosts[i].transform.forward== direction) {
                 Debug.Log("ゴースト" + i + "がプレイヤーを見つけた");
             }
         }
