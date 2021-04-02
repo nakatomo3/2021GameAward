@@ -41,23 +41,26 @@ public class GhostManager : MonoBehaviour {
 		}
         Move();
         CheckViewPlayer();
+
+
+       
     }
 
     public void Move() {
         for (int i = 0; i < ghostCount; i++) {
+            bool isStepMax = nowSteps[i] >= stepIntervals[i].Count - 1;
+
             //stepTimersが入力待機時間を超えたら移動する
-            if (stepIntervals[i][nowSteps[i]] < stepTimers[i]) {
+            if (stepIntervals[i][nowSteps[i]] < stepTimers[i] && isStepMax==false) {
                 stepTimers[i] = 0;
-                MoveNextStep(i);
                 nowSteps[i]++;
-				for(int j = 0; j < stepIntervals[i].Count; j++) {
-					Debug.Log(stepIntervals[i][j]);
-				}
+                MoveNextStep(i);
+                
             }
 
             //移動が最大数を超えていたら最初の位置に戻す
-            if (stepIntervals[i].Count > 0) {
-                if (nowSteps[i] >= stepIntervals[i].Count - 1) {
+            if (stepIntervals[i].Count > 0 && stepIntervals[i][nowSteps[i]] < stepTimers[i]) {
+                if (isStepMax==true) {
                     ResetGhost(i);
                 }
             }
@@ -71,6 +74,13 @@ public class GhostManager : MonoBehaviour {
             stepTimers[i] = 0;
             nowSteps[i] = 0;
         }
+
+
+        for (int i = 0; i < ghosts.Count; ++i) {
+            if (nowSteps[i] == 0) {
+                MoveNextStep(i);
+            }
+        }
     }
 
     //ゴーストの位置をリセット
@@ -78,6 +88,7 @@ public class GhostManager : MonoBehaviour {
         ghosts[i].transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         ghosts[i].transform.rotation = Quaternion.identity;
         nowSteps[i] = 0;
+        stepTimers[i] = 0;
         MoveNextStep(i);
     }
 
@@ -100,7 +111,7 @@ public class GhostManager : MonoBehaviour {
 
 
     //moveRecordsをもとに次の場所に移動する
-    void MoveNextStep(int i) {
+    public void MoveNextStep(int i) {
         switch (moveRecords[i][nowSteps[i]]) {
             case MoveVector.UP:
 				if(isMoveSteps[i][nowSteps[i]] == true){
