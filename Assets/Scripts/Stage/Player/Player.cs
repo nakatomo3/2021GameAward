@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
 	private bool isEnemyCol;
 	private bool isSafe;
 
-	private string canStepCode = "129A";
+	private string canStepCode = "129Ad";
 
 	[SerializeField]
 	private Text timerText;
