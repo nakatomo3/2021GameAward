@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewAngle: 0
-  viewRange: 6.03
+  viewDist: 0
   ghost: {fileID: 6024939284749529318, guid: a76491682304ca14ebee940a73bdde02, type: 3}
   ghosts: []

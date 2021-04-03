@@ -133,6 +133,7 @@ public class GhostManager : MonoBehaviour {
 
                 if (isHideWall == false) {
                     Debug.Log("ゴースト" + i + "がプレイヤーを見つけた");
+					Player.instance.GhostGameOver();
                 }
             }
         }

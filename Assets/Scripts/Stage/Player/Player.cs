@@ -199,7 +199,7 @@ public class Player : MonoBehaviour {
 		timerText.text = intPart.ToString();
 
 		if (remainingTime < 0) {
-			Stage.instance.nowMode = Stage.Mode.DEAD;
+			TimeUp();
 		}
 
 		if(remainingTime < 2.8f) {
@@ -232,6 +232,16 @@ public class Player : MonoBehaviour {
 	//ダメージを受けると秒数が減る
 	public void Damage(float value) {
 		remainingTime -= value;
+	}
+
+	//タイムアップ演出
+	private void TimeUp() {
+		Stage.instance.nowMode = Stage.Mode.DEAD;
+	}
+
+	//ゴーストでゲームオーバー演出
+	public void GhostGameOver() {
+		Stage.instance.nowMode = Stage.Mode.DEAD;
 	}
 
 	//落ち時の演出
