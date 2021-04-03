@@ -173,7 +173,7 @@ public class Player : MonoBehaviour {
 		var obj = Stage.instance.GetStageObject(pos);
 		if (obj == null) {
 			if(pos != Vector3.zero) {
-				Stage.instance.nowMode = Stage.Mode.DEAD;
+				Fall();
 			}
 			return true; //奈落でも進めるけど落ちる
 		}
@@ -232,5 +232,10 @@ public class Player : MonoBehaviour {
 	//ダメージを受けると秒数が減る
 	public void Damage(float value) {
 		remainingTime -= value;
+	}
+
+	//落ち時の演出
+	public void Fall() {
+		Stage.instance.nowMode = Stage.Mode.DEAD;
 	}
 }
