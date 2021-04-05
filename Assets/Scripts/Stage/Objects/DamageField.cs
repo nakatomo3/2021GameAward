@@ -9,7 +9,7 @@ public class DamageField : MonoBehaviour {
 
     private bool isDamage = true;
     private float count = 0.0f; 
-    private float interval = 2.0f;
+    private float interval = 1.0f;
 
     // Start is called before the first frame update
     void Start() {
@@ -29,7 +29,7 @@ public class DamageField : MonoBehaviour {
                     render.material.color = color;
                 }
             } else {
-                Player.instance.Damage(4); // ダメージ処理
+                Player.instance.Damage(1); // ダメージ処理
                 isDamage = false;
                 Color color = render.material.color;
                 color.g = 0.0f;
