@@ -11,10 +11,7 @@ public class GhostNormal : Ghost {
     // Update is called once per frame
     void Update() {
         Vector3 dist = Player.instance.transform.position - this.transform.position;
-        bool isFind=CheckViewPlayer(this.transform.forward, dist);
+        CheckViewPlayer(this.transform.forward, dist);
 
-        if (isFind == true) {
-            Debug.Log("‚Ý‚Á‚¯");
-        }
     }
 }

@@ -55,6 +55,8 @@ public class Ghost : MonoBehaviour {
                     }
                 }
             }
+
+            Player.instance.GhostGameOver();
             return true;
         }
 
