@@ -329,12 +329,14 @@ public class StageEditor : MonoBehaviour {
 		} else {
 			inputTimer = 0;
 		}
-		if(optionCount >= optionMax) {
+		if (optionCount >= optionMax) {
 			optionCount = 0;
 		}
 
+		
+
 		//チャンネル設定を一括で出来るように
-		if ((ChannelBase)editingScript != null && optionCount == 0) {
+		if (editingScript is ChannelBase && optionCount == 0) {
 			if (isLeftInput) {
 				((ChannelBase)editingScript).channel--;
 			}
@@ -353,12 +355,12 @@ public class StageEditor : MonoBehaviour {
 				switch (optionCount) {
 					case 0: //チャンネル編集
 						break;
-					case 1:
+					case 1: // 反転
 						if (isLeftInput || isRightInput) {
 							((Door)editingScript).isReverse = !((Door)editingScript).isReverse;
 						}
 						break;
-					case 2:
+					case 2: //回転
 						if (isLeftInput) {
 							((Door)editingScript).rotate--;
 						}
@@ -367,6 +369,27 @@ public class StageEditor : MonoBehaviour {
 						}
 						break;
 					default:
+						break;
+				}
+				break;
+			case 'E':
+				optionMax = 2;
+				switch (optionCount) {
+					case 0: //インターバル
+						if (isRightInput) {
+							((PulseField)editingScript).modeInterval += 0.1f;
+						}
+						if (isLeftInput) {
+							((PulseField)editingScript).modeInterval -= 0.1f;
+						}
+						break;
+					case 1: //遅延
+						if (isRightInput) {
+							((PulseField)editingScript).delay += 0.1f;
+						}
+						if (isLeftInput) {
+							((PulseField)editingScript).delay -= 0.1f;
+						}
 						break;
 				}
 				break;
@@ -409,6 +432,9 @@ public class StageEditor : MonoBehaviour {
 					break;
 				case 'B':
 					detailObjectName.text = "ドア";
+					break;
+				case 'E':
+					detailObjectName.text = "パルスフィールド";
 					break;
 			}
 		} else {

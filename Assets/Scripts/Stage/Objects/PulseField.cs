@@ -1,15 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
-public class PulseField : MonoBehaviour {
+public class PulseField : DetailBase {
 
     [SerializeField]
     private Renderer render;
 
     private float pulseTimer;
-    public float modeInterval = 2.0f; // モード切替間隔
-    public float delay = 0;           // 遅延
+	private float _modeInterval;
+    public float modeInterval { // モード切替間隔
+		get { return _modeInterval; }
+		set {
+			_modeInterval = Mathf.Round(value * 10) / 10;
+			if(value < 0.1f) {
+				_modeInterval = 0.1f;
+			}
+			if(value > 10) {
+				_modeInterval = 10;
+			}
+		}
+	}
+	private float _delay;
+    public float delay { // 遅延
+		get { return _delay; }
+		set {
+			_delay = Mathf.Round(value * 10) / 10;
+			if (value < 0.0f) {
+				_delay = 0.0f;
+			}
+			if (value > 10) {
+				_delay = 10;
+			}
+		}
+	}
     private bool isPulse = false;
 
     private bool isDamage = true;
@@ -20,6 +45,7 @@ public class PulseField : MonoBehaviour {
     void Start() {
         render = GetComponentInChildren<Renderer>();
         pulseTimer = -delay;
+		modeInterval = 2.0f;
     }
 
     // Update is called once per frame
@@ -65,4 +91,38 @@ public class PulseField : MonoBehaviour {
             render.material.color = color;
         }
     }
+	
+	public override string ToFileString() {
+		StringBuilder sb = new StringBuilder();
+		sb.AppendLine("E_PulseField");
+		sb.AppendLine("interval:" + Mathf.FloorToInt(modeInterval));
+		sb.AppendLine("delay:" + Mathf.FloorToInt(delay));
+		return sb.ToString();
+	}
+
+	public override string ToEditorString() {
+		StringBuilder sb = new StringBuilder();
+		sb.AppendLine("インターバル：　" + modeInterval);
+		sb.AppendLine("遅延：　" + delay);
+		return sb.ToString();
+	}
+
+	public override void SetData(string information) {
+		var options = information.Split('\n');
+		for (int i = 0; i < options.Length; i++) {
+			var option = options[i];
+			if (option.Contains(":")) {
+				var key = option.Split(':')[0];
+				var value = option.Split(':')[1];
+				switch (key) {
+					case "interval":
+						modeInterval = float.Parse(value);
+						break;
+					case "delay":
+						delay = float.Parse(value);
+						break;
+				}
+			}
+		}
+	}
 }
