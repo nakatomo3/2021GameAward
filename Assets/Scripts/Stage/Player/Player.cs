@@ -147,8 +147,9 @@ public class Player : MonoBehaviour {
 	}
 
 	void ResetStage() {
-		//--ˆÚ“®•ûŒü‚Æ“ü—Í‘Ò‚¿ŽžŠÔ‚ðGhostManager‚É‹L˜^‚·‚é---//
-		List<float> temp = stepTimers;
+        //--ˆÚ“®•ûŒü‚Æ“ü—Í‘Ò‚¿ŽžŠÔ‚ðGhostManager‚É‹L˜^‚·‚é---//
+        stepTimers.Add(stepTimer);
+        List<float> temp = stepTimers;
 		List<MoveVector> temp2 = moveRecord;
 
 		GhostManager.instance.stepIntervals.Add(temp);
