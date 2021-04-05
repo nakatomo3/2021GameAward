@@ -25,7 +25,7 @@ public class Player : MonoBehaviour {
 	}
 
 	private float stepTimer = 0;
-	private float remainingTime = 10; //プレイヤーの残り時間
+	private float remainingTime = 20; //プレイヤーの残り時間
 	private float remainingTimeMax = 10;
 
 	private List<MoveVector> moveRecord;
@@ -38,7 +38,14 @@ public class Player : MonoBehaviour {
 	private string canStepCode = "129Ad";
 
 	[SerializeField]
-	private Text timerText;
+	private Sprite[] timerNumbers;
+
+	[SerializeField]
+	private Image oneOnly;
+	[SerializeField]
+	private Image tenDigit;
+	[SerializeField]
+	private Image oneDigit;
 
 	private Image filter;
 
@@ -196,7 +203,23 @@ public class Player : MonoBehaviour {
 		var intPart = Mathf.Floor(remainingTime); //整数部分
 		//小数部分を一応残しておく
 		//var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
-		timerText.text = intPart.ToString();
+		if(remainingTime > 10) {
+			var ten = Mathf.FloorToInt(remainingTime / 10);
+			var one = Mathf.FloorToInt(remainingTime - ten * 10);
+			tenDigit.sprite = timerNumbers[ten];
+			oneDigit.sprite = timerNumbers[one];
+			tenDigit.enabled = true;
+			oneDigit.enabled = true;
+			oneOnly.enabled = false;
+		} else if(remainingTime > 0){
+			var one = Mathf.FloorToInt(remainingTime);
+			oneOnly.sprite = timerNumbers[one];
+			tenDigit.enabled = false;
+			oneDigit.enabled = false;
+			oneOnly.enabled = true;
+		} else {
+			oneOnly.sprite = timerNumbers[0];
+		}
 
 		if (remainingTime < 0) {
 			TimeUp();
