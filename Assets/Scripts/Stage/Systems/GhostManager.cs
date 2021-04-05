@@ -44,8 +44,6 @@ public class GhostManager : MonoBehaviour {
         }
         Move();
         CheckViewPlayer();
-
-
     }
 
     public void Move() {
@@ -53,11 +51,10 @@ public class GhostManager : MonoBehaviour {
             bool isStepMax = nowSteps[i] >= stepIntervals[i].Count - 1;
 
             //stepTimersが入力待機時間を超えたら移動する
-            if (stepIntervals[i][nowSteps[i]] < stepTimers[i] && isStepMax == false) {
+            if (stepIntervals[i][nowSteps[i]] < stepTimers[i] && isStepMax==false) {               
                 stepTimers[i] = 0;
-                nowSteps[i]++;
                 MoveNextStep(i);
-
+                nowSteps[i]++;
             }
 
             //移動が最大数を超えていたら最初の位置に戻す
@@ -77,12 +74,6 @@ public class GhostManager : MonoBehaviour {
             nowSteps[i] = 0;
         }
 
-
-        for (int i = 0; i < ghosts.Count; ++i) {
-            if (nowSteps[i] == 0) {
-                MoveNextStep(i);
-            }
-        }
     }
 
     //ゴーストの位置をリセット
@@ -91,7 +82,6 @@ public class GhostManager : MonoBehaviour {
         ghosts[i].transform.rotation = Quaternion.identity;
         nowSteps[i] = 0;
         stepTimers[i] = 0;
-        MoveNextStep(i);
     }
 
 
@@ -124,7 +114,11 @@ public class GhostManager : MonoBehaviour {
 
                     //壁に隠れているか判定する
                     if (obj != null) {
-                        if (obj.name[0] == '3') {
+                        if (obj.name[0] == '2') {
+                            isHideWall = true;
+                            break;
+
+                        } else if (obj.name[0] == '3') {
                             isHideWall = true;
                             break;
                         }
@@ -133,7 +127,6 @@ public class GhostManager : MonoBehaviour {
 
                 if (isHideWall == false) {
                     Debug.Log("ゴースト" + i + "がプレイヤーを見つけた");
-					Player.instance.GhostGameOver();
                 }
             }
         }
