@@ -21,4 +21,8 @@ public abstract class DetailBase : MonoBehaviour {
 	/// </summary>
 	/// <param name="information">パラメーター。各行ごとに連結している</param>
 	public abstract void SetData(string information);
+
+	protected string ConvertPos() {
+		return Mathf.CeilToInt(transform.position.x) + "," + Mathf.CeilToInt(transform.position.z);
+	}
 }

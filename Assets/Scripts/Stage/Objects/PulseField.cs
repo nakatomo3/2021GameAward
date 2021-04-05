@@ -45,7 +45,9 @@ public class PulseField : DetailBase {
     void Start() {
         render = GetComponentInChildren<Renderer>();
         pulseTimer = -delay;
-		modeInterval = 2.0f;
+		if(modeInterval == 0) {
+			modeInterval = 2.0f;
+		}
     }
 
     // Update is called once per frame
@@ -95,8 +97,9 @@ public class PulseField : DetailBase {
 	public override string ToFileString() {
 		StringBuilder sb = new StringBuilder();
 		sb.AppendLine("E_PulseField");
-		sb.AppendLine("interval:" + Mathf.FloorToInt(modeInterval));
-		sb.AppendLine("delay:" + Mathf.FloorToInt(delay));
+		sb.AppendLine("pos:" + ConvertPos());
+		sb.AppendLine("interval:" + modeInterval);
+		sb.AppendLine("delay:" + delay);
 		return sb.ToString();
 	}
 

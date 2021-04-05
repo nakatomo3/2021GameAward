@@ -42,7 +42,7 @@ public class Door : ChannelBase {
     public override string ToFileString() {
         StringBuilder sb = new StringBuilder();
         sb.AppendLine("B_Door");
-        sb.AppendLine("pos:" + Mathf.CeilToInt(transform.position.x) + "," + Mathf.CeilToInt(transform.position.z));
+        sb.AppendLine("pos:" + ConvertPos());
         sb.AppendLine("channel:" + channel);
 		sb.AppendLine("reverse:" + isReverse);
         return sb.ToString();
