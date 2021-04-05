@@ -8,13 +8,13 @@ public class PulseField : MonoBehaviour {
     private Renderer render;
 
     private float pulseTimer;
-    public float modeInterval = 2.0f; // パルス発生間隔
+    public float modeInterval = 2.0f; // モード切替間隔
     public float delay = 0;           // 遅延
     private bool isPulse = false;
 
     private bool isDamage = true;
-    private float count = 0.0f;
-    private float DamageInterval = 1.0f;
+    private float timer = 0.0f;
+    private float damageInterval = 1.0f;
 
     // Start is called before the first frame update
     void Start() {
@@ -28,7 +28,7 @@ public class PulseField : MonoBehaviour {
 
         if (pulseTimer >= modeInterval) {
             pulseTimer = 0;
-            isPulse = !isPulse; // パルスONOFFを切り替える
+            isPulse = !isPulse; // モードを切り替える
         }
 
         if (isPulse == true) { // パルスONの時はダメージブロックと同等の処理
@@ -37,23 +37,23 @@ public class PulseField : MonoBehaviour {
             render.material.color = color;
             if (transform.position == Player.instance.transform.position) {
                 if (isDamage == false) {
-                    count += Time.deltaTime;
-                    if (count >= DamageInterval) { // インターバルカウント
-                        count = 0.0f;
+                    timer += Time.deltaTime;
+                    if (timer >= damageInterval) { // インターバルカウント
+                        timer = 0.0f;
                         isDamage = true;
                         color = render.material.color;
                         color.g = 1.0f;
                         render.material.color = color;
                     }
                 } else {
-                    Player.instance.Damage(4); // ダメージ処理
+                    Player.instance.Damage(1); // ダメージ処理
                     isDamage = false;
                     color = render.material.color;
                     color.g = 0.0f;
                     render.material.color = color;
                 }
             } else { // プレイヤーが離れたらリセット
-                count = 0.0f;
+                timer = 0.0f;
                 isDamage = true;
                 color = render.material.color;
                 color.g = 1.0f;
