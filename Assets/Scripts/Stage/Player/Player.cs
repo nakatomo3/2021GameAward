@@ -2,12 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public enum MoveVector {
     UP,
     DOWN,
     LEFT,
     RIGHT
+}
+public enum Skill {
+    LOOP,
+    RESET,
+    RUNE,
+    VEIL,
+    MAX
 }
 
 
@@ -20,6 +28,16 @@ public class Player : MonoBehaviour {
 
     [SerializeField]
     private float moveIntervalMax;
+
+    [SerializeField]
+    private float[] skillIntervalMax = new float[(int)Skill.MAX];
+    private float[] skillTimer = new float[(int)Skill.MAX];
+
+
+    [SerializeField]
+    private GameObject rune;
+    [SerializeField]
+    private GameObject veil;
 
     [SerializeField]
     private int stepMax;
@@ -35,6 +53,11 @@ public class Player : MonoBehaviour {
     private bool canMove = true;
     private Vector3 oldStepPos;
     private Vector3 newStepPos;
+
+
+    private bool isVeilCharge = false;
+    private float veilTimer = 0;
+    private float veilPowerCount = 0;
 
     private List<MoveVector> moveRecord;
     private List<float> stepTimers;
@@ -80,10 +103,8 @@ public class Player : MonoBehaviour {
         Move();
         SettingStepInterval();
         UpdateTimer();
+        UseSkill();
 
-        if (InputManager.GetKeyDown(Keys.A) || stepCount > stepMax) {
-            ResetStage();
-        }
 
     }
 
@@ -184,6 +205,59 @@ public class Player : MonoBehaviour {
 
     }
 
+    void UseSkill() {
+        bool[] isSkillButton = new bool[(int)Skill.MAX];
+        Action[] action = new Action[(int)Skill.MAX]; //関数を入れる用
+
+        //判定を入れる
+        isSkillButton[(int)Skill.LOOP] = InputManager.GetKeyDown(Keys.Y) && skillTimer[(int)Skill.LOOP] >= skillIntervalMax[(int)Skill.LOOP] || stepCount > stepMax;
+        isSkillButton[(int)Skill.RESET] = InputManager.GetKeyDown(Keys.X) && skillTimer[(int)Skill.RESET] >= skillIntervalMax[(int)Skill.RESET];
+        isSkillButton[(int)Skill.RUNE] = InputManager.GetKeyDown(Keys.B);
+        isSkillButton[(int)Skill.VEIL] = InputManager.GetKeyDown(Keys.A) && skillTimer[(int)Skill.VEIL] >= skillIntervalMax[(int)Skill.VEIL];
+
+        //関数を入れる
+        action[(int)Skill.LOOP] = Loop;
+        action[(int)Skill.RESET] = ResetStage;
+        action[(int)Skill.RUNE] = Rune;
+        action[(int)Skill.VEIL] = Veil;
+
+
+        //スキルを使うか判定して使ったらTimeを0にする
+        for (int i = 0; i < (int)Skill.MAX; ++i) {
+            if (isSkillButton[i] == true) {
+                action[i]();
+            }
+        }
+        VeilCharge();
+    }
+
+    void Loop() {
+        //--移動方向と入力待ち時間をGhostManagerに記録する---//
+        stepTimers.Add(stepTimer + 5);
+        List<float> temp = stepTimers;
+        List<MoveVector> temp2 = moveRecord;
+
+        GhostManager.instance.stepIntervals.Add(temp);
+        GhostManager.instance.moveRecords.Add(temp2);
+
+        for (int i = 0; i < stepTimers.Count; ++i) {
+            stepTimers = new List<float>();
+            moveRecord = new List<MoveVector>();
+        }
+
+        GhostManager.instance.AddGhost();
+        GhostManager.instance.isMoveSteps.Add(isMoveStep);
+        stepCount = 0;
+        oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+        newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+        transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+        GhostManager.instance.ResetStage();
+
+        isMoveStep = new List<bool>();
+        remainingTime = remainingTimeMax;
+
+        skillTimer[(int)Skill.LOOP] = 0;
+    }
     void ResetStage() {
         //--移動方向と入力待ち時間をGhostManagerに記録する---//
         stepTimers.Add(stepTimer + 5);
@@ -208,6 +282,31 @@ public class Player : MonoBehaviour {
 
         isMoveStep = new List<bool>();
         remainingTime = remainingTimeMax;
+        skillTimer[(int)Skill.RESET] = 0;
+    }
+    void Rune() {
+        Instantiate(rune, this.transform.position, transform.rotation);
+        skillTimer[(int)Skill.RUNE] = 0;
+    }
+    void Veil() {
+        isVeilCharge = true;
+    }
+    void VeilCharge() {
+        if (isVeilCharge == true) {
+            //0.5秒毎に威力を上げる
+            veilTimer += Time.deltaTime;
+            if (veilTimer >= 0.5f) {
+                veilPowerCount++;
+                veilTimer = 0;
+            }
+
+            if (InputManager.GetKeyUp(Keys.A)) {
+                Instantiate(veil, this.transform.position, transform.rotation).GetComponent<Veil>().shotPower = veilPowerCount;
+                skillTimer[(int)Skill.VEIL] = 0;
+                veilPowerCount = 0;
+                isVeilCharge = false;
+            }
+        }
     }
 
     bool CanStep(Vector3 pos) {
@@ -277,6 +376,11 @@ public class Player : MonoBehaviour {
             filter.color = new Color(1, 1, 1, alpha / 2);
         } else {
             filter.color = new Color(1, 1, 1, 0);
+        }
+
+        //スキルのインターバルをカウント
+        for (int i = 0; i < (int)Skill.MAX; ++i) {
+            skillTimer[i] += Time.deltaTime;
         }
     }
 
