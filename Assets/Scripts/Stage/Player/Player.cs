@@ -19,6 +19,9 @@ public class Player : MonoBehaviour {
     public static Player instance;
 
     [SerializeField]
+    private float moveIntervalMax;
+
+    [SerializeField]
     private int stepMax;
     public int stepCount {
         get; private set;
@@ -27,6 +30,11 @@ public class Player : MonoBehaviour {
     private float stepTimer = 0;
     private float remainingTime = 20; //プレイヤーの残り時間
     private float remainingTimeMax = 10;
+
+    private float moveIntervalTimer = 0;
+    private bool canMove = true;
+    private Vector3 oldStepPos;
+    private Vector3 newStepPos;
 
     private List<MoveVector> moveRecord;
     private List<float> stepTimers;
@@ -62,6 +70,8 @@ public class Player : MonoBehaviour {
 
     public void Start() {
         filter = Stage.instance.lastMomentFilter.GetComponent<Image>();
+        oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+        newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
     }
 
     // Update is called once per frame
@@ -69,7 +79,7 @@ public class Player : MonoBehaviour {
 
         Move();
         SettingStepInterval();
-        //UpdateTimer();
+        UpdateTimer();
 
         if (InputManager.GetKeyDown(Keys.A) || stepCount > stepMax) {
             ResetStage();
@@ -87,50 +97,71 @@ public class Player : MonoBehaviour {
     }
 
     void Move() {
-        if (InputManager.GetKeyDown(Keys.LEFT)) {
-            moveRecord.Add(MoveVector.LEFT);
-            transform.localEulerAngles = Vector3.up * -90;
-            stepCount++;
-            if (CanStep(transform.position + Vector3.left)) {
-                transform.position += Vector3.left;
-                isMoveStep.Add(true);
-            } else {
-                isMoveStep.Add(false);
+
+        if (moveIntervalTimer > moveIntervalMax) {
+            transform.position = newStepPos;
+            oldStepPos = newStepPos;
+            canMove = true;
+        } else {
+            //次の移動先に線形補完で移動する
+            canMove = false;
+            moveIntervalTimer += Time.deltaTime;
+            transform.position = Vector3.Lerp(oldStepPos, newStepPos, moveIntervalTimer / moveIntervalMax);
+
+        }
+
+
+        if (canMove == true) {
+            if (InputManager.GetKeyDown(Keys.LEFT)) {
+                moveRecord.Add(MoveVector.LEFT);
+                transform.localEulerAngles = Vector3.up * -90;
+                stepCount++;
+                if (CanStep(transform.position + Vector3.left)) {
+                    newStepPos = transform.position + Vector3.left;
+                    isMoveStep.Add(true);
+                } else {
+                    isMoveStep.Add(false);
+                }
+                moveIntervalTimer = 0;
+            }
+            if (InputManager.GetKeyDown(Keys.UP)) {
+                moveRecord.Add(MoveVector.UP);
+                transform.localEulerAngles = Vector3.up * 0;
+                stepCount++;
+                if (CanStep(transform.position + Vector3.forward)) {
+                    newStepPos = transform.position + Vector3.forward;
+                    isMoveStep.Add(true);
+                } else {
+                    isMoveStep.Add(false);
+                }
+                moveIntervalTimer = 0;
+            }
+            if (InputManager.GetKeyDown(Keys.RIGHT)) {
+                moveRecord.Add(MoveVector.RIGHT);
+                transform.localEulerAngles = Vector3.up * 90;
+                stepCount++;
+                if (CanStep(transform.position + Vector3.right)) {
+                    newStepPos = transform.position + Vector3.right;
+                    isMoveStep.Add(true);
+                } else {
+                    isMoveStep.Add(false);
+                }
+                moveIntervalTimer = 0;
+            }
+            if (InputManager.GetKeyDown(Keys.DOWN)) {
+                moveRecord.Add(MoveVector.DOWN);
+                transform.localEulerAngles = Vector3.up * 180;
+                stepCount++;
+                if (CanStep(transform.position + Vector3.back)) {
+                    newStepPos = transform.position + Vector3.back;
+                    isMoveStep.Add(true);
+                } else {
+                    isMoveStep.Add(false);
+                }
+                moveIntervalTimer = 0;
             }
         }
-        if (InputManager.GetKeyDown(Keys.UP)) {
-            moveRecord.Add(MoveVector.UP);
-            transform.localEulerAngles = Vector3.up * 0;
-            stepCount++;
-            if (CanStep(transform.position + Vector3.forward)) {
-                transform.position += Vector3.forward;
-                isMoveStep.Add(true);
-            } else {
-                isMoveStep.Add(false);
-            }
-        }
-        if (InputManager.GetKeyDown(Keys.RIGHT)) {
-            moveRecord.Add(MoveVector.RIGHT);
-            transform.localEulerAngles = Vector3.up * 90;
-            stepCount++;
-            if (CanStep(transform.position + Vector3.right)) {
-                transform.position += Vector3.right;
-                isMoveStep.Add(true);
-            } else {
-                isMoveStep.Add(false);
-            }
-        }
-        if (InputManager.GetKeyDown(Keys.DOWN)) {
-            moveRecord.Add(MoveVector.DOWN);
-            transform.localEulerAngles = Vector3.up * 180;
-            stepCount++;
-            if (CanStep(transform.position + Vector3.back)) {
-                transform.position += Vector3.back;
-                isMoveStep.Add(true);
-            } else {
-                isMoveStep.Add(false);
-            }
-        }
+
 
         GoalCheck();
     }
@@ -155,7 +186,7 @@ public class Player : MonoBehaviour {
 
     void ResetStage() {
         //--移動方向と入力待ち時間をGhostManagerに記録する---//
-        stepTimers.Add(stepTimer+5);
+        stepTimers.Add(stepTimer + 5);
         List<float> temp = stepTimers;
         List<MoveVector> temp2 = moveRecord;
 
@@ -170,6 +201,8 @@ public class Player : MonoBehaviour {
         GhostManager.instance.AddGhost();
         GhostManager.instance.isMoveSteps.Add(isMoveStep);
         stepCount = 0;
+        oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+        newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         GhostManager.instance.ResetStage();
 

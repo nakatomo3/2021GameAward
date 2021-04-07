@@ -540,6 +540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ec3e891494ceb43ad3e28200b90ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveIntervalMax: 0.2
   stepMax: 20
   timerNumbers:
   - {fileID: -7754988575891523622, guid: e6c69f6b36a59eb458cafc7b095f4876, type: 3}
