@@ -350,7 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEditorMode: 0
   stagePath: Stage
-  objectIndex: 31003200330039004100420064004500
+  objectIndex: 3100320033003900410042006400450068005900
   objectList:
   - {fileID: 971652173244137915, guid: b7c0680d97a86774fa6363c6ef5237fd, type: 3}
   - {fileID: 1504008977111116728, guid: 4a939da66a52a2e429cbfa3f45d6a5e3, type: 3}
@@ -360,6 +360,8 @@ MonoBehaviour:
   - {fileID: 8649697474690774499, guid: c9af8d2ce52911d4096830a6efd85217, type: 3}
   - {fileID: 2386440019043748282, guid: b1e8ee3f66b806148988131b8e07a81d, type: 3}
   - {fileID: 4970078883280676290, guid: d679e8fcbff91454b84db6924e365997, type: 3}
+  - {fileID: 5784270443847477316, guid: 2d4a1f97a4ad6d14ba604e63cf6c7cb1, type: 3}
+  - {fileID: 145226418261022328, guid: dbe575a64a3f02f46a9aa3370eb884fc, type: 3}
   player: {fileID: 8781337088072814748, guid: a8fe6560176e2ea4aab5cbd43cff1789, type: 3}
   stageEditor: {fileID: 2088058459918452280, guid: 934fd0a0b5f77c64cb38e86dd526ba79, type: 3}
   camera: {fileID: 1934042798}
@@ -442,7 +444,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 2000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -623,7 +625,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 2000
   field of view: 60
   orthographic: 0
   orthographic size: 5

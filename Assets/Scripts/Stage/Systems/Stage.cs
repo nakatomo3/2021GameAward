@@ -76,6 +76,11 @@ public class Stage : MonoBehaviour {
 	public Vector3 startPosition { get; private set; }
 	public Vector3 goalPosition { get; private set; } = Vector3.one * -1;
 
+	public List<Vector3> checkPoints { get; private set; } = new List<Vector3>();
+	public List<int> maxTimes { get; private set; } = new List<int>();
+	public List<int> maxLoop { get; private set; } = new List<int>();
+	public int checkPointCount { get; private set; } = 0;
+
 	private int visualMode = 0;
 
 	private List<string> comments = new List<string>();
@@ -202,7 +207,16 @@ public class Stage : MonoBehaviour {
 			line = reader.ReadLine();
 			var posX = int.Parse(line.Split(':')[1].Split(',')[0]);
 			var posY = int.Parse(line.Split(':')[1].Split(',')[1]);
-			reader.ReadLine();
+			line = reader.ReadLine(); //Loop回数
+			var checkPointString = line.Split(':')[1].Split(',');
+			for(int i = 0; i < checkPointString.Length; i++) {
+				maxLoop.Add(int.Parse(checkPointString[i]));
+			}
+			line = reader.ReadLine(); //時間
+			checkPointString = line.Split(':')[1].Split(',');
+			for (int i = 0; i < checkPointString.Length; i++) {
+				maxTimes.Add(int.Parse(checkPointString[i]));
+			}
 
 			//objectHeaderに当たるまでコメント読み込み
 			bool isComment = false;
@@ -362,6 +376,23 @@ public class Stage : MonoBehaviour {
 		sb.AppendLine("size:" + sizeX.ToString() + "," + sizeY.ToString());
 		sb.AppendLine("design:" + 0.ToString()); //ステージデザイン
 		sb.AppendLine("pos:" + maxLeft + "," + maxDown);
+		var loops = "";
+		for(int i = 0; i < maxLoop.Count; i++) {
+			loops += maxLoop[i];
+			if(i != maxLoop.Count - 1) {
+				loops += ",";
+			}
+		}
+		sb.AppendLine("loop:" + loops);
+		var times = "";
+		for (int i = 0; i < maxTimes.Count; i++) {
+			times += maxTimes[i];
+			if (i != maxTimes.Count - 1) {
+				times += ",";
+			}
+		}
+		sb.Append("time:" + times);
+		sb.AppendLine();
 		sb.AppendLine();
 
 		sb.AppendLine(commentHeader);
@@ -409,10 +440,6 @@ public class Stage : MonoBehaviour {
 		//ファイルを閉じる
 		streamWriter.Flush();
 		streamWriter.Close();
-	}
-
-	public void WriteStage(float x, float y, char obj) {
-
 	}
 
 	/// <summary>

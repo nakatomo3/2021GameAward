@@ -436,6 +436,9 @@ public class StageEditor : MonoBehaviour {
 				case 'E':
 					detailObjectName.text = "パルスフィールド";
 					break;
+				case 'Y':
+					detailObjectName.text = "チェックポイント";
+					break;
 			}
 		} else {
 			detailWindow.SetActive(false);
