@@ -43,7 +43,7 @@ public class Player : MonoBehaviour {
     private bool isEnemyCol;
     private bool isSafe;
 
-    private string canStepCode = "129Ad";
+    private string canStepCode = "1289ACdEIZ"; //BAFAGAH‚Í‘«ê‚Ìó‘Ô‚ª•Ï‚í‚é‚Ì‚ÅŠÖ”“à•”‚Å”»’è
 
     [SerializeField]
     private Sprite[] timerNumbers;
