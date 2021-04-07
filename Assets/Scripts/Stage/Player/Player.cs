@@ -79,7 +79,7 @@ public class Player : MonoBehaviour {
 
         Move();
         SettingStepInterval();
-        //UpdateTimer();
+        UpdateTimer();
 
         if (InputManager.GetKeyDown(Keys.A) || stepCount > stepMax) {
             ResetStage();
