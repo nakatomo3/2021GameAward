@@ -39,15 +39,17 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private GameObject veil;
 
-    [SerializeField]
-    private int stepMax;
+    public int stepMax;
     public int stepCount {
         get; private set;
     }
 
+	public int loopMax;
+	public int loopCount;
+
     private float stepTimer = 0;
-    private float remainingTime = 20; //プレイヤーの残り時間
-    private float remainingTimeMax = 10;
+    public float remainingTime = 20; //プレイヤーの残り時間
+    public float remainingTimeMax = 10;
 
     private float moveIntervalTimer = 0;
     private bool canMove = true;
@@ -389,6 +391,15 @@ public class Player : MonoBehaviour {
             Stage.instance.nowMode = Stage.Mode.CLEAR;
         }
     }
+
+	public void CheckPoint(float time, int _loopMax) {
+		remainingTime = 0;
+		remainingTimeMax = time;
+		loopMax = _loopMax;
+		loopCount = 0;
+
+
+	}
 
     //ダメージを受けると秒数が減る
     public void Damage(float value) {
