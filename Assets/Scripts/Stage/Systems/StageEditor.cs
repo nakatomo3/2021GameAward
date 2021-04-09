@@ -393,6 +393,29 @@ public class StageEditor : MonoBehaviour {
 						break;
 				}
 				break;
+			case 'Y':
+				optionMax = 3;
+				switch (optionCount) {
+					case 0: //channel
+						break;
+					case 1: //time
+						if (isRightInput) {
+							((CheckPoint)editingScript).time += 0.1f;
+						}
+						if (isLeftInput) {
+							((CheckPoint)editingScript).time -= 0.1f;
+						}
+						break;
+					case 2:
+						if (isRightInput) {
+							((CheckPoint)editingScript).loopMax++;
+						}
+						if (isLeftInput) {
+							((CheckPoint)editingScript).loopMax--;
+						}
+						break;
+				}
+				break;
 		}
 	}
 
