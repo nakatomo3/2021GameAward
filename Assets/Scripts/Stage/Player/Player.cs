@@ -338,7 +338,7 @@ public class Player : MonoBehaviour {
         var intPart = Mathf.Floor(remainingTime); //®”•”•ª
                                                   //¬”•”•ª‚ðˆê‰žŽc‚µ‚Ä‚¨‚­
                                                   //var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
-        if (remainingTime > 10) {
+        if (remainingTime >= 10) {
             var ten = Mathf.FloorToInt(remainingTime / 10);
             var one = Mathf.FloorToInt(remainingTime - ten * 10);
             tenDigit.sprite = timerNumbers[ten];
