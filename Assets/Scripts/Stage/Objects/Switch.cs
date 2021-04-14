@@ -5,14 +5,17 @@ using System.Text;
 
 public class Switch : ChannelBase {
 
-	[SerializeField]
-	private Renderer render;
+    [SerializeField]
+    private GameObject switchOn;
+    [SerializeField]
+    private GameObject switchOff;
 
     private bool isUnderPlayer;
 
-	// Start is called before the first frame update
-	void Start() {
-        render = GetComponentInChildren<Renderer>();
+    // Start is called before the first frame update
+    void Start() {
+        switchOn.SetActive(false);
+        switchOff.SetActive(true);
     }
 
     // Update is called once per frame
@@ -20,14 +23,13 @@ public class Switch : ChannelBase {
         if (this.transform.position == Player.instance.transform.position && isUnderPlayer == false) {
             if (SwitchManager.instance.channel[channel] == true) {
                 SwitchManager.instance.channel[channel] = false;
-                Color color = render.material.color;
-                color.a = 1.0f;
-                render.material.color = color;
+                switchOn.SetActive(false);
+                switchOff.SetActive(true);
+
             } else {
                 SwitchManager.instance.channel[channel] = true;
-                Color color = render.material.color;
-                color.a = 0.6f;
-                render.material.color = color;
+                switchOn.SetActive(true);
+                switchOff.SetActive(false);
             }
             isUnderPlayer = true;
         } else if (transform.position != Player.instance.transform.position) {
@@ -50,20 +52,20 @@ public class Switch : ChannelBase {
         return sb.ToString();
     }
 
-	public override void SetData(string information) {
-		var options = information.Split('\n');
-		for (int i = 0; i < options.Length; i++) {
-			var option = options[i];
-			if (option.Contains(":")) {
-				var key = option.Split(':')[0];
-				var value = option.Split(':')[1];
-				switch (key) {
-					case "channel":
-						channel = uint.Parse(value);
-						break;
-				}
-			}
-		}
-		return;
-	}
+    public override void SetData(string information) {
+        var options = information.Split('\n');
+        for (int i = 0; i < options.Length; i++) {
+            var option = options[i];
+            if (option.Contains(":")) {
+                var key = option.Split(':')[0];
+                var value = option.Split(':')[1];
+                switch (key) {
+                    case "channel":
+                        channel = uint.Parse(value);
+                        break;
+                }
+            }
+        }
+        return;
+    }
 }
