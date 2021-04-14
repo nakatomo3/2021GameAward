@@ -129,7 +129,7 @@ public class Stage : MonoBehaviour {
 		}
 
 		player = Instantiate(player);
-		Instantiate(particles[visualMode], player.transform);
+		Instantiate(particles[visualMode], camera.transform);
 		ghostManager = Instantiate(ghostManager);
 
 		if (StageSelect.isStageSelect == true) {
