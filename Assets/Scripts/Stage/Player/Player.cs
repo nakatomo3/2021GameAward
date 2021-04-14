@@ -91,7 +91,7 @@ public class Player : MonoBehaviour {
         Move();
         SettingStepInterval();
         UpdateTimer();
-        
+
 
 
     }
@@ -124,7 +124,7 @@ public class Player : MonoBehaviour {
             if (InputManager.GetKeyDown(Keys.LEFT)) {
                 moveRecord.Add(MoveVector.LEFT);
                 transform.localEulerAngles = Vector3.up * -90;
-                isMoved=true;
+                isMoved = true;
                 if (CanStep(transform.position + Vector3.left)) {
                     newStepPos = transform.position + Vector3.left;
                     isMoveStep.Add(true);
@@ -234,7 +234,7 @@ public class Player : MonoBehaviour {
             oneOnly.enabled = false;
         } else if (remainingTime > 0) {
             var one = Mathf.FloorToInt(remainingTime);
-           // oneOnly.sprite = timerNumbers[one];
+            oneOnly.sprite = timerNumbers[one];
             tenDigit.enabled = false;
             oneDigit.enabled = false;
             oneOnly.enabled = true;
@@ -274,11 +274,11 @@ public class Player : MonoBehaviour {
         }
     }
 
-	public void CheckPoint(float time, int _loopMax) {
-		remainingTime = time;
-		remainingTimeMax = time;
+    public void CheckPoint(float time, int _loopMax) {
+        remainingTime = time;
+        remainingTimeMax = time;
         skill.skillMax[(int)Skill.LOOP] = _loopMax;
-		skill.skillNum[(int)Skill.LOOP] = skill.skillMax[(int)Skill.LOOP];
+        skill.skillNum[(int)Skill.LOOP] = skill.skillMax[(int)Skill.LOOP];
 
 
     }

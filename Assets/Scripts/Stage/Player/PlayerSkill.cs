@@ -13,7 +13,7 @@ public enum Skill {
     MAX
 }
 public class PlayerSkill : MonoBehaviour {
- 
+
     private enum SkillGauge {
         YELLOW,
         WHITE,
@@ -73,7 +73,7 @@ public class PlayerSkill : MonoBehaviour {
     }
 
     private void Start() {
-        for(int i=0; i < (int)SkillGauge.MAX; ++i) {
+        for (int i = 0; i < (int)SkillGauge.MAX; ++i) {
             uiDefaultColor[i] = loopUI[i].color;
         }
 
@@ -96,7 +96,7 @@ public class PlayerSkill : MonoBehaviour {
 
         //判定を入れる
         isSkillButton[(int)Skill.LOOP] = InputManager.GetKeyDown(Keys.Y) &&
-                                         skillReChargeTimer[(int)Skill.LOOP] >= skillReChargeMax[(int)Skill.LOOP] && 
+                                         skillReChargeTimer[(int)Skill.LOOP] >= skillReChargeMax[(int)Skill.LOOP] &&
                                          skillNum[(int)Skill.LOOP] > 0;
 
         isSkillButton[(int)Skill.RESET] = InputManager.GetKeyDown(Keys.X) &&
@@ -104,11 +104,11 @@ public class PlayerSkill : MonoBehaviour {
                                           skillNum[(int)Skill.RESET] > 0;
 
         isSkillButton[(int)Skill.RUNE] = InputManager.GetKeyDown(Keys.B) &&
-                                         skillReChargeTimer[(int)Skill.RUNE] >= skillReChargeMax[(int)Skill.RUNE] && 
+                                         skillReChargeTimer[(int)Skill.RUNE] >= skillReChargeMax[(int)Skill.RUNE] &&
                                          skillNum[(int)Skill.RUNE] > 0;
 
         isSkillButton[(int)Skill.VEIL] = InputManager.GetKeyDown(Keys.A) &&
-                                         skillReChargeTimer[(int)Skill.VEIL] >= skillReChargeMax[(int)Skill.VEIL] && 
+                                         skillReChargeTimer[(int)Skill.VEIL] >= skillReChargeMax[(int)Skill.VEIL] &&
                                          skillNum[(int)Skill.VEIL] > 0;
 
         //関数を入れる
@@ -125,7 +125,7 @@ public class PlayerSkill : MonoBehaviour {
             }
 
             //スキルの処理
-            if (isSkillCharge[i] == true ) {
+            if (isSkillCharge[i] == true) {
                 action[i]();
 
                 //スキルをチャージする
@@ -139,7 +139,7 @@ public class PlayerSkill : MonoBehaviour {
             }
 
             //スキルのリチャージ
-            if (skillNum[i] > 0 && isSkillReCharge[i]==true) {
+            if (skillNum[i] > 0 && isSkillReCharge[i] == true) {
                 skillReChargeTimer[i] += Time.deltaTime;
                 if (skillReChargeTimer[i] >= skillReChargeMax[i]) {
                     skillReChargeTimer[i] = skillReChargeMax[i];
@@ -184,7 +184,7 @@ public class PlayerSkill : MonoBehaviour {
         }
 
         //一定時間チャージしたら発動
-        if (skillChargeTimer[(int)Skill.LOOP]>= skillChargeMax[(int)Skill.LOOP]) {
+        if (skillChargeTimer[(int)Skill.LOOP] >= skillChargeMax[(int)Skill.LOOP]) {
             skillNum[(int)Skill.LOOP]--;
 
             //--移動方向と入力待ち時間をGhostManagerに記録する---//
@@ -221,15 +221,14 @@ public class PlayerSkill : MonoBehaviour {
             isSkillCharge[(int)Skill.RESET] = false;
         }
 
-       
+
         if (skillChargeTimer[(int)Skill.RESET] >= skillChargeMax[(int)Skill.RESET]) {
-           // skillNum[(int)Skill.RESET]--;
 
             Player.instance.isMoved = false;
             Player.instance.oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
             Player.instance.newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
             transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-            
+
 
             Player.instance.remainingTime = Player.instance.remainingTimeMax;
             skillReChargeTimer[(int)Skill.RESET] = 0;
@@ -249,22 +248,20 @@ public class PlayerSkill : MonoBehaviour {
     void Rune() {
 
 
-        if (InputManager.GetKeyUp(Keys.B)&& skillChargeTimer[(int)Skill.RUNE] >= skillChargeMax[(int)Skill.RUNE]) {
-           // skillNum[(int)Skill.RUNE]-=55;
+        if (InputManager.GetKeyUp(Keys.B) && skillChargeTimer[(int)Skill.RUNE] >= skillChargeMax[(int)Skill.RUNE]) {
 
             Instantiate(rune, this.transform.position, transform.rotation);
             skillReChargeTimer[(int)Skill.RUNE] = 0;
             isSkillCharge[(int)Skill.RUNE] = false;
 
-        }else if (InputManager.GetKeyUp(Keys.B)) {
+        } else if (InputManager.GetKeyUp(Keys.B)) {
             isSkillCharge[(int)Skill.RUNE] = false;
         }
     }
     void Veil() {
         if (InputManager.GetKeyUp(Keys.A)) {
-           // skillNum[(int)Skill.VEIL]--;
 
-            Instantiate(veil, this.transform.position, transform.rotation).GetComponent<Veil>().shotPower = skillChargeTimer[(int)Skill.VEIL]/0.5f;
+            Instantiate(veil, this.transform.position, transform.rotation).GetComponent<Veil>().shotPower = skillChargeTimer[(int)Skill.VEIL] / 0.5f;
             skillReChargeTimer[(int)Skill.VEIL] = 0;
             isSkillCharge[(int)Skill.VEIL] = false;
 
@@ -289,10 +286,10 @@ public class PlayerSkill : MonoBehaviour {
 
         //リチャージ中は色を暗くする
         if (skillReChargeTimer[(int)Skill.LOOP] < skillReChargeMax[(int)Skill.LOOP]) {
-            loopUI[(int)SkillGauge.YELLOW].color = uiDefaultColor[(int)SkillGauge.YELLOW]* 0.5f;
-            loopUI[(int)SkillGauge.BLUE].color   = uiDefaultColor[(int)SkillGauge.BLUE]  * 0.5f;
-            loopUI[(int)SkillGauge.WHITE].color  = uiDefaultColor[(int)SkillGauge.WHITE] * 0.5f;
-            loopNum.color= uiDefaultColor[(int)SkillGauge.WHITE] * 0.5f;
+            loopUI[(int)SkillGauge.YELLOW].color = uiDefaultColor[(int)SkillGauge.YELLOW] * 0.5f;
+            loopUI[(int)SkillGauge.BLUE].color = uiDefaultColor[(int)SkillGauge.BLUE] * 0.5f;
+            loopUI[(int)SkillGauge.WHITE].color = uiDefaultColor[(int)SkillGauge.WHITE] * 0.5f;
+            loopNum.color = uiDefaultColor[(int)SkillGauge.WHITE] * 0.5f;
         } else {
             loopUI[(int)SkillGauge.YELLOW].color = uiDefaultColor[(int)SkillGauge.YELLOW];
             loopUI[(int)SkillGauge.BLUE].color = uiDefaultColor[(int)SkillGauge.BLUE];

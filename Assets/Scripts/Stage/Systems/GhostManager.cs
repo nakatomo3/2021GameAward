@@ -32,7 +32,7 @@ public class GhostManager : MonoBehaviour {
 
 
     void Update() {
-        if (Player.instance.isMoved==true) {
+        if (Player.instance.isMoved == true) {
             for (int i = 0; i < stepTimers.Count; ++i) {
                 stepTimers[i] += Time.deltaTime;
             }
@@ -79,7 +79,7 @@ public class GhostManager : MonoBehaviour {
     }
 
     public void DeleteGhost() {
-        for(int i=0; i < ghosts.Count; ++i) {
+        for (int i = 0; i < ghosts.Count; ++i) {
             Destroy(ghosts[i].gameObject);
         }
 
