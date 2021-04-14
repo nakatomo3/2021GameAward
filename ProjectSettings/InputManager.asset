@@ -10,7 +10,7 @@ InputManager:
     descriptiveName: "\u4EFB\u5929\u5802\u306EA\u30DC\u30BF\u30F3(\u7BB1\u30B3\u30F3\u306EB)"
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 1
+    positiveButton: joystick button 0
     altNegativeButton: 
     altPositiveButton: space
     gravity: 1000
@@ -26,7 +26,7 @@ InputManager:
     descriptiveName: "\u4EFB\u5929\u5802\u306EB\u30DC\u30BF\u30F3(\u7BB1\u30B3\u30F3\u306EA)"
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 0
+    positiveButton: joystick button 1
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -42,7 +42,7 @@ InputManager:
     descriptiveName: "\u4EFB\u5929\u5802\u306EX\u30DC\u30BF\u30F3(\u7BB1\u30B3\u30F3\u306EY)"
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 3
+    positiveButton: joystick button 2
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -58,7 +58,7 @@ InputManager:
     descriptiveName: "\u4EFB\u5929\u5802\u306EY(\u7BB1\u30B3\u30F3\u306EX)"
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 2
+    positiveButton: joystick button 3
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

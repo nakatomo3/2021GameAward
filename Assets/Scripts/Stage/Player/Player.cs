@@ -121,7 +121,7 @@ public class Player : MonoBehaviour {
 
 
         if (canMove == true) {
-            if (InputManager.GetKeyDown(Keys.LEFT)) {
+            if (InputManager.GetKey(Keys.LEFT)) {
                 moveRecord.Add(MoveVector.LEFT);
                 transform.localEulerAngles = Vector3.up * -90;
                 isMoved = true;
@@ -133,7 +133,7 @@ public class Player : MonoBehaviour {
                 }
                 moveIntervalTimer = 0;
             }
-            if (InputManager.GetKeyDown(Keys.UP)) {
+            if (InputManager.GetKey(Keys.UP)) {
                 moveRecord.Add(MoveVector.UP);
                 transform.localEulerAngles = Vector3.up * 0;
                 isMoved = true;
@@ -145,7 +145,7 @@ public class Player : MonoBehaviour {
                 }
                 moveIntervalTimer = 0;
             }
-            if (InputManager.GetKeyDown(Keys.RIGHT)) {
+            if (InputManager.GetKey(Keys.RIGHT)) {
                 moveRecord.Add(MoveVector.RIGHT);
                 transform.localEulerAngles = Vector3.up * 90;
                 isMoved = true;
@@ -157,7 +157,7 @@ public class Player : MonoBehaviour {
                 }
                 moveIntervalTimer = 0;
             }
-            if (InputManager.GetKeyDown(Keys.DOWN)) {
+            if (InputManager.GetKey(Keys.DOWN)) {
                 moveRecord.Add(MoveVector.DOWN);
                 transform.localEulerAngles = Vector3.up * 180;
                 isMoved = true;
@@ -178,15 +178,15 @@ public class Player : MonoBehaviour {
     //入力の待ち時間を記録する
     void SettingStepInterval() {
         bool isMoveKey =
-            InputManager.GetKeyDown(Keys.LEFT) ||
-            InputManager.GetKeyDown(Keys.UP) ||
-            InputManager.GetKeyDown(Keys.RIGHT) ||
-            InputManager.GetKeyDown(Keys.DOWN);
+            InputManager.GetKey(Keys.LEFT) ||
+            InputManager.GetKey(Keys.UP) ||
+            InputManager.GetKey(Keys.RIGHT) ||
+            InputManager.GetKey(Keys.DOWN);
 
         stepTimer += Time.deltaTime;
 
         //移動キーを押したら入力待ち時間を記録する
-        if (isMoveKey == true) {
+        if (isMoveKey == true　&& canMove==true) {
             stepTimers.Add(stepTimer);
             stepTimer = 0;
         }
