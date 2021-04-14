@@ -32,7 +32,7 @@ public class GhostManager : MonoBehaviour {
 
 
     void Update() {
-        if (Player.instance.stepCount > 0) {
+        if (Player.instance.isMoved==true) {
             for (int i = 0; i < stepTimers.Count; ++i) {
                 stepTimers[i] += Time.deltaTime;
             }
@@ -76,6 +76,20 @@ public class GhostManager : MonoBehaviour {
         ghosts[i].transform.rotation = Quaternion.identity;
         nowSteps[i] = 0;
         stepTimers[i] = 0;
+    }
+
+    public void DeleteGhost() {
+        for(int i=0; i < ghosts.Count; ++i) {
+            Destroy(ghosts[i].gameObject);
+        }
+
+        moveRecords.Clear();
+        stepIntervals.Clear();
+        stepTimers.Clear();
+        nowSteps.Clear();
+        isMoveSteps.Clear();
+        ghosts.Clear();
+        ghostCount = 0;
     }
 
 
