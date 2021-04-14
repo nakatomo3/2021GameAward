@@ -67,6 +67,9 @@ public class Stage : MonoBehaviour {
 
 	[Disable]
 	public GameObject lastMomentFilter; //§ŒÀŠÔ‚ªc‚èƒMƒŠƒMƒŠ‚Å‚·‚æ[
+
+	[SerializeField]
+	private GameObject[] particles;
 	#endregion
 
 
@@ -122,12 +125,11 @@ public class Stage : MonoBehaviour {
 
 		if (InputManager.isInit == false) {
 			InputManager.Init();
-#if UNITY_EDITOR
 			SystemSupporter.DebugInitInput();
-#endif
 		}
 
 		player = Instantiate(player);
+		Instantiate(particles[visualMode], player.transform);
 		ghostManager = Instantiate(ghostManager);
 
 		if (StageSelect.isStageSelect == true) {
