@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
+
 
 public enum MoveVector {
     UP,
@@ -10,13 +10,7 @@ public enum MoveVector {
     LEFT,
     RIGHT
 }
-public enum Skill {
-    LOOP,
-    RESET,
-    RUNE,
-    VEIL,
-    MAX
-}
+
 
 
 /// <summary>
@@ -26,49 +20,40 @@ public class Player : MonoBehaviour {
 
     public static Player instance;
 
+    [HideInInspector]
+    public PlayerSkill skill;
+
     [SerializeField]
     private float moveIntervalMax;
 
-    [SerializeField]
-    private float[] skillIntervalMax = new float[(int)Skill.MAX];
-    private float[] skillTimer = new float[(int)Skill.MAX];
+    [HideInInspector]
+    public bool isMoved = false;
 
 
-    [SerializeField]
-    private GameObject rune;
-    [SerializeField]
-    private GameObject veil;
-
-    public int stepMax;
-    public int stepCount {
-        get; private set;
-    }
-
-	public int loopMax;
-	public int loopCount;
-
-    private float stepTimer = 0;
+    public float stepTimer = 0;
     public float remainingTime = 20; //プレイヤーの残り時間
     public float remainingTimeMax = 10;
 
     private float moveIntervalTimer = 0;
     private bool canMove = true;
-    private Vector3 oldStepPos;
-    private Vector3 newStepPos;
 
-
-    private bool isVeilCharge = false;
-    private float veilTimer = 0;
-    private float veilPowerCount = 0;
-
-    private List<MoveVector> moveRecord;
-    private List<float> stepTimers;
-    private List<bool> isMoveStep;
+    [HideInInspector]
+    public Vector3 oldStepPos;
+    [HideInInspector]
+    public Vector3 newStepPos;
+    [HideInInspector]
+    public List<MoveVector> moveRecord;
+    [HideInInspector]
+    public List<float> stepTimers;
+    [HideInInspector]
+    public List<bool> isMoveStep;
 
     private bool isEnemyCol;
     private bool isSafe;
 
-    private string canStepCode = "1289ACdEIZ"; //B、F、G、Hは足場の状態が変わるので関数内部で判定
+    private string canStepCode = "1289ACdEhIYZ"; //B、F、G、Hは足場の状態が変わるので関数内部で判定
+
+
 
     [SerializeField]
     private Sprite[] timerNumbers;
@@ -94,6 +79,7 @@ public class Player : MonoBehaviour {
     }
 
     public void Start() {
+        skill = GetComponent<PlayerSkill>();
         filter = Stage.instance.lastMomentFilter.GetComponent<Image>();
         oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
@@ -105,14 +91,14 @@ public class Player : MonoBehaviour {
         Move();
         SettingStepInterval();
         UpdateTimer();
-        UseSkill();
+
 
 
     }
 
     private void FixedUpdate() {
         if (isEnemyCol == true && isSafe == false) {
-            ResetStage();
+            skill.ResetStage();
         }
         isEnemyCol = false;
         isSafe = false;
@@ -138,7 +124,7 @@ public class Player : MonoBehaviour {
             if (InputManager.GetKeyDown(Keys.LEFT)) {
                 moveRecord.Add(MoveVector.LEFT);
                 transform.localEulerAngles = Vector3.up * -90;
-                stepCount++;
+                isMoved = true;
                 if (CanStep(transform.position + Vector3.left)) {
                     newStepPos = transform.position + Vector3.left;
                     isMoveStep.Add(true);
@@ -150,7 +136,7 @@ public class Player : MonoBehaviour {
             if (InputManager.GetKeyDown(Keys.UP)) {
                 moveRecord.Add(MoveVector.UP);
                 transform.localEulerAngles = Vector3.up * 0;
-                stepCount++;
+                isMoved = true;
                 if (CanStep(transform.position + Vector3.forward)) {
                     newStepPos = transform.position + Vector3.forward;
                     isMoveStep.Add(true);
@@ -162,7 +148,7 @@ public class Player : MonoBehaviour {
             if (InputManager.GetKeyDown(Keys.RIGHT)) {
                 moveRecord.Add(MoveVector.RIGHT);
                 transform.localEulerAngles = Vector3.up * 90;
-                stepCount++;
+                isMoved = true;
                 if (CanStep(transform.position + Vector3.right)) {
                     newStepPos = transform.position + Vector3.right;
                     isMoveStep.Add(true);
@@ -174,7 +160,7 @@ public class Player : MonoBehaviour {
             if (InputManager.GetKeyDown(Keys.DOWN)) {
                 moveRecord.Add(MoveVector.DOWN);
                 transform.localEulerAngles = Vector3.up * 180;
-                stepCount++;
+                isMoved = true;
                 if (CanStep(transform.position + Vector3.back)) {
                     newStepPos = transform.position + Vector3.back;
                     isMoveStep.Add(true);
@@ -207,109 +193,9 @@ public class Player : MonoBehaviour {
 
     }
 
-    void UseSkill() {
-        bool[] isSkillButton = new bool[(int)Skill.MAX];
-        Action[] action = new Action[(int)Skill.MAX]; //関数を入れる用
-
-        //判定を入れる
-        isSkillButton[(int)Skill.LOOP] = InputManager.GetKeyDown(Keys.Y) && skillTimer[(int)Skill.LOOP] >= skillIntervalMax[(int)Skill.LOOP] || stepCount > stepMax;
-        isSkillButton[(int)Skill.RESET] = InputManager.GetKeyDown(Keys.X) && skillTimer[(int)Skill.RESET] >= skillIntervalMax[(int)Skill.RESET];
-        isSkillButton[(int)Skill.RUNE] = InputManager.GetKeyDown(Keys.B);
-        isSkillButton[(int)Skill.VEIL] = InputManager.GetKeyDown(Keys.A) && skillTimer[(int)Skill.VEIL] >= skillIntervalMax[(int)Skill.VEIL];
-
-        //関数を入れる
-        action[(int)Skill.LOOP] = Loop;
-        action[(int)Skill.RESET] = ResetStage;
-        action[(int)Skill.RUNE] = Rune;
-        action[(int)Skill.VEIL] = Veil;
 
 
-        //スキルを使うか判定して使ったらTimeを0にする
-        for (int i = 0; i < (int)Skill.MAX; ++i) {
-            if (isSkillButton[i] == true) {
-                action[i]();
-            }
-        }
-        VeilCharge();
-    }
 
-    void Loop() {
-        //--移動方向と入力待ち時間をGhostManagerに記録する---//
-        stepTimers.Add(stepTimer + 5);
-        List<float> temp = stepTimers;
-        List<MoveVector> temp2 = moveRecord;
-
-        GhostManager.instance.stepIntervals.Add(temp);
-        GhostManager.instance.moveRecords.Add(temp2);
-
-        for (int i = 0; i < stepTimers.Count; ++i) {
-            stepTimers = new List<float>();
-            moveRecord = new List<MoveVector>();
-        }
-
-        GhostManager.instance.AddGhost();
-        GhostManager.instance.isMoveSteps.Add(isMoveStep);
-        stepCount = 0;
-        oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-        newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-        transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-        GhostManager.instance.ResetStage();
-
-        isMoveStep = new List<bool>();
-        remainingTime = remainingTimeMax;
-
-        skillTimer[(int)Skill.LOOP] = 0;
-    }
-    void ResetStage() {
-        //--移動方向と入力待ち時間をGhostManagerに記録する---//
-        stepTimers.Add(stepTimer + 5);
-        List<float> temp = stepTimers;
-        List<MoveVector> temp2 = moveRecord;
-
-        GhostManager.instance.stepIntervals.Add(temp);
-        GhostManager.instance.moveRecords.Add(temp2);
-
-        for (int i = 0; i < stepTimers.Count; ++i) {
-            stepTimers = new List<float>();
-            moveRecord = new List<MoveVector>();
-        }
-
-        GhostManager.instance.AddGhost();
-        GhostManager.instance.isMoveSteps.Add(isMoveStep);
-        stepCount = 0;
-        oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-        newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-        transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-        GhostManager.instance.ResetStage();
-
-        isMoveStep = new List<bool>();
-        remainingTime = remainingTimeMax;
-        skillTimer[(int)Skill.RESET] = 0;
-    }
-    void Rune() {
-        Instantiate(rune, this.transform.position, transform.rotation);
-        skillTimer[(int)Skill.RUNE] = 0;
-    }
-    void Veil() {
-        isVeilCharge = true;
-    }
-    void VeilCharge() {
-        if (isVeilCharge == true) {
-            //0.5秒毎に威力を上げる
-            veilTimer += Time.deltaTime;
-            if (veilTimer >= 0.5f) {
-                veilPowerCount++;
-                veilTimer = 0;
-            }
-
-            if (InputManager.GetKeyUp(Keys.A)) {
-                Instantiate(veil, this.transform.position, transform.rotation).GetComponent<Veil>().shotPower = veilPowerCount;
-                skillTimer[(int)Skill.VEIL] = 0;
-                veilPowerCount = 0;
-                isVeilCharge = false;
-            }
-        }
-    }
 
     bool CanStep(Vector3 pos) {
         var obj = Stage.instance.GetStageObject(pos);
@@ -332,7 +218,7 @@ public class Player : MonoBehaviour {
     }
 
     void UpdateTimer() {
-        if (stepCount > 0) {
+        if (isMoved == true) {
             remainingTime -= Time.deltaTime;
         }
         var intPart = Mathf.Floor(remainingTime); //整数部分
@@ -380,10 +266,6 @@ public class Player : MonoBehaviour {
             filter.color = new Color(1, 1, 1, 0);
         }
 
-        //スキルのインターバルをカウント
-        for (int i = 0; i < (int)Skill.MAX; ++i) {
-            skillTimer[i] += Time.deltaTime;
-        }
     }
 
     void GoalCheck() {
@@ -392,14 +274,14 @@ public class Player : MonoBehaviour {
         }
     }
 
-	public void CheckPoint(float time, int _loopMax) {
-		remainingTime = 0;
-		remainingTimeMax = time;
-		loopMax = _loopMax;
-		loopCount = 0;
+    public void CheckPoint(float time, int _loopMax) {
+        remainingTime = time;
+        remainingTimeMax = time;
+        skill.skillMax[(int)Skill.LOOP] = _loopMax;
+        skill.skillNum[(int)Skill.LOOP] = skill.skillMax[(int)Skill.LOOP];
 
 
-	}
+    }
 
     //ダメージを受けると秒数が減る
     public void Damage(float value) {
@@ -419,5 +301,16 @@ public class Player : MonoBehaviour {
     //落ち時の演出
     public void Fall() {
         Stage.instance.nowMode = Stage.Mode.DEAD;
+    }
+
+    public void SetPosition(Vector3 pos) {
+        this.transform.position = pos;
+        newStepPos = pos;
+        oldStepPos = pos;
+    }
+    public void AddPosition(Vector3 pos) {
+        this.transform.position += pos;
+        newStepPos += pos;
+        oldStepPos += pos;
     }
 }
