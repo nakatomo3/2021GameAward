@@ -76,8 +76,6 @@ public class PlayerSkill : MonoBehaviour {
         for (int i = 0; i < (int)SkillGauge.MAX; ++i) {
             uiDefaultColor[i] = loopUI[i].color;
         }
-
-
     }
 
     // Update is called once per frame
@@ -205,7 +203,7 @@ public class PlayerSkill : MonoBehaviour {
             Player.instance.isMoved = false;
             Player.instance.oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
             Player.instance.newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-            transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+            transform.position = Player.instance.startPosition;
             GhostManager.instance.ResetStage();
 
             Player.instance.isMoveStep = new List<bool>();
@@ -227,8 +225,8 @@ public class PlayerSkill : MonoBehaviour {
             Player.instance.isMoved = false;
             Player.instance.oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
             Player.instance.newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-            transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-
+            transform.position = Player.instance.startPosition;
+            transform.localEulerAngles = Vector3.zero;
 
             Player.instance.remainingTime = Player.instance.remainingTimeMax;
             skillReChargeTimer[(int)Skill.RESET] = 0;

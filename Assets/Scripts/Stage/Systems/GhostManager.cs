@@ -63,7 +63,7 @@ public class GhostManager : MonoBehaviour {
     //全てのゴーストをリセット
     public void ResetStage() {
         for (int i = 0; i < ghostCount; i++) {
-            ghosts[i].transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+            ghosts[i].transform.position = Player.instance.startPosition;
             stepTimers[i] = 0;
             nowSteps[i] = 0;
         }
@@ -72,7 +72,7 @@ public class GhostManager : MonoBehaviour {
 
     //ゴーストの位置をリセット
     private void ResetGhost(int i) {
-        ghosts[i].transform.position = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+        ghosts[i].transform.position = Player.instance.startPosition;
         ghosts[i].transform.rotation = Quaternion.identity;
         nowSteps[i] = 0;
         stepTimers[i] = 0;
