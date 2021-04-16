@@ -44,9 +44,10 @@ public class Piston : MonoBehaviour {
 
     private float returnTimer;
     private float returnInterval = 1.0f;
-    public bool isPush = false;
-    public Vector3 targetPosition;
+    private Vector3 targetPosition;
     private Vector3 addForce;
+    [SerializeField]
+    private bool isPush = false;
 
     // Start is called before the first frame update
     void Start() {
@@ -92,7 +93,7 @@ public class Piston : MonoBehaviour {
 
             if (Player.instance.transform.position == targetPosition && isPush == false) {
                 Player.instance.newStepPos += addForce; // プレイヤーを押し出す
-                if(Stage.instance.GetStageObject(transform.position + addForce * 2) == null) { // 押し出した先が奈落なら死
+                if (Stage.instance.GetStageObject(transform.position + addForce * 2) == null) { // 押し出した先が奈落なら死
                     Player.instance.Fall();
                 }
             }
