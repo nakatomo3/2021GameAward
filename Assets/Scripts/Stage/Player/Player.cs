@@ -47,6 +47,8 @@ public class Player : MonoBehaviour {
     public List<float> stepTimers;
     [HideInInspector]
     public List<bool> isMoveStep;
+    [HideInInspector]
+    public Vector3 startPosition;
 
     private bool isEnemyCol;
     private bool isSafe;
@@ -71,7 +73,7 @@ public class Player : MonoBehaviour {
         moveRecord = new List<MoveVector>();
         stepTimers = new List<float>();
         isMoveStep = new List<bool>();
-
+        startPosition = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         if (instance != null) {
             Destroy(instance);
         }
@@ -279,7 +281,7 @@ public class Player : MonoBehaviour {
         remainingTimeMax = time;
         skill.skillMax[(int)Skill.LOOP] = _loopMax;
         skill.skillNum[(int)Skill.LOOP] = skill.skillMax[(int)Skill.LOOP];
-
+        startPosition = this.transform.position;
 
     }
 

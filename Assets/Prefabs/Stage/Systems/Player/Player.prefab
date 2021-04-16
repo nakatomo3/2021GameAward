@@ -2249,7 +2249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skill: {fileID: 0}
-  moveIntervalMax: 0.2
+  moveIntervalMax: 0.1
   isMoved: 0
   stepTimer: 0
   remainingTime: 20

@@ -53,11 +53,9 @@ public class Ghost : MonoBehaviour {
                     } else if (obj.name[0] == '3') {
                         return false;
                     }
-
-                   
                 }
                 //スタート地点も見えない
-                if (temp.x == 0 && temp.z == 0) {
+                if (temp.x == Mathf.Round(Player.instance.startPosition.x) && temp.z == Mathf.Round(Player.instance.startPosition.z)) {
                     return false;
                 }
             }
