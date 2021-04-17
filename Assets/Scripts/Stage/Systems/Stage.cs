@@ -82,7 +82,6 @@ public class Stage : MonoBehaviour {
 	public List<Vector3> checkPoints { get; private set; } = new List<Vector3>();
 	public List<int> maxTimes { get; private set; } = new List<int>();
 	public List<int> maxLoop { get; private set; } = new List<int>();
-	public int checkPointCount { get; private set; } = 0;
 
 	private int visualMode = 0;
 
@@ -102,6 +101,10 @@ public class Stage : MonoBehaviour {
 	[Disable]
 	public Mode nowMode = Mode.START;
 
+	BezierCurve bezie;
+	float bezieTime;
+	int bezieIndex = 1; //今目指している点
+
 	#endregion
 
 	private void Awake() {
@@ -109,6 +112,7 @@ public class Stage : MonoBehaviour {
 
 #if UNITY_EDITOR
 		stageEditor = Instantiate(stageEditor, transform);
+		stageEditor.SetActive(false);
 #else
 		isEditorMode = false;
 #endif
@@ -145,17 +149,54 @@ public class Stage : MonoBehaviour {
 		Instantiate(objectList[1]);
 		Instantiate(start);
 
+		//チェックポイントをソートしてカメラ順にする
+		checkPoints.Sort((a, b) => SortCehckpoint(a, b));
+		checkPoints.Add(goalPosition);
+		Vector3 centerPos = Vector3.zero;
+		Vector3 endPos = Vector3.zero;
 
+		foreach(var pos in checkPoints) {
+			Debug.Log(pos);
+		}
 
+		if (checkPoints.Count == 1) { //startとゴールのみ
+			centerPos = goalPosition / 2;
+			endPos = goalPosition;
+		} else if (checkPoints.Count >= 2) { //中間一個以上
+			centerPos = checkPoints[0];
+			endPos = checkPoints[1];
+		}
+		bezie = new BezierCurve(Vector3.zero, centerPos, endPos);
 	}
 
 	void Update() {
 		SystemSupporter.PlaySupport();
 
 		switch (nowMode) {
-			case Mode.START:// どうせスタート時の演出ある
+			case Mode.START: // スタート時の演出
 				player.SetActive(false);
-				nowMode = Mode.GAME;
+				camera.transform.position = new Vector3(bezie.GetPoint(bezieTime).x, 10, bezie.GetPoint(bezieTime).z - 2);
+				if (bezieIndex < checkPoints.Count) {
+					if (bezieIndex == checkPoints.Count - 1) {
+						if (bezieTime >= 1.0f) {
+							nowMode = Mode.GAME;
+						} else if (bezieTime >= 0.85f) {
+							bezieTime += Time.deltaTime * 0.1f; //減速
+						} else {
+							bezieTime += Time.deltaTime * 0.3f;
+						}
+					} else {
+						if (bezieTime >= 0.5f) {
+							bezieTime = 0.0f;
+							bezieIndex++;
+							bezie.SetPoint(camera.transform.position + Vector3.forward * 2, checkPoints[bezieIndex - 1], checkPoints[bezieIndex]);
+						}
+						bezieTime += Time.deltaTime * 0.3f;
+					}
+				}
+				if (goalPosition == Vector3.one * -1) {
+					nowMode = Mode.GAME;
+				}
 				break;
 			case Mode.GAME:
 				if (InputManager.GetKeyDown(Keys.START) && SystemSupporter.IsUnityEditor() == true) {
@@ -164,7 +205,9 @@ public class Stage : MonoBehaviour {
 				}
 
 				player.SetActive(!isEditorMode);
-				stageEditor.SetActive(isEditorMode);
+				if (SystemSupporter.IsUnityEditor()) {
+					stageEditor.SetActive(isEditorMode);
+				}
 				break;
 			case Mode.DEAD:
 				player.SetActive(false);
@@ -211,7 +254,7 @@ public class Stage : MonoBehaviour {
 			var posY = int.Parse(line.Split(':')[1].Split(',')[1]);
 			line = reader.ReadLine(); //Loop回数
 			var checkPointString = line.Split(':')[1].Split(',');
-			for(int i = 0; i < checkPointString.Length; i++) {
+			for (int i = 0; i < checkPointString.Length; i++) {
 				maxLoop.Add(int.Parse(checkPointString[i]));
 			}
 			line = reader.ReadLine(); //時間
@@ -248,7 +291,10 @@ public class Stage : MonoBehaviour {
 					if (_code != '0') {
 						Instantiate(objectList[objectIndex.FindIndex(n => _code == n)], new Vector3(posX + i, 0, posY - lineCount), Quaternion.identity, stageParent.transform);
 					}
-					if(_code == '9') { //ゴール
+					if (_code == 'Y') {
+						checkPoints.Add(new Vector3(posX + i, 0, posY - lineCount));
+					}
+					if (_code == '9') { //ゴール
 						goalPosition = new Vector3(posX + i, 0, posY - lineCount);
 					}
 				}
@@ -379,9 +425,9 @@ public class Stage : MonoBehaviour {
 		sb.AppendLine("design:" + 0.ToString()); //ステージデザイン
 		sb.AppendLine("pos:" + maxLeft + "," + maxDown);
 		var loops = "";
-		for(int i = 0; i < maxLoop.Count; i++) {
+		for (int i = 0; i < maxLoop.Count; i++) {
 			loops += maxLoop[i];
-			if(i != maxLoop.Count - 1) {
+			if (i != maxLoop.Count - 1) {
 				loops += ",";
 			}
 		}
@@ -492,5 +538,15 @@ public class Stage : MonoBehaviour {
 	public static char GetObjectCode(string name) {
 		//命名規則は「コード_名前」なのでコード単独の抽出可能
 		return name.Split('_')[0][0];
+	}
+
+	private int SortCehckpoint(Vector3 a, Vector3 b) {
+		var aChannel = GetStageObject(a).GetComponent<CheckPoint>().channel;
+		var bChannel = GetStageObject(b).GetComponent<CheckPoint>().channel;
+
+		Debug.Log(GetStageObject(a).GetComponent<CheckPoint>());
+		Debug.Log(bChannel);
+
+		return (int)(bChannel - aChannel);
 	}
 }
