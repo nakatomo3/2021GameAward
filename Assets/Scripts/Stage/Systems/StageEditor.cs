@@ -172,7 +172,7 @@ public class StageEditor : MonoBehaviour {
 		editingArea.transform.position = (transform.position + startPos) * 0.5f;
 
 		//オブジェクト置く消す
-		if (InputManager.GetKey(Keys.A)) {
+		if (InputManager.GetKey(Keys.B)) {
 			if (isAreaMode == true) {
 				Vector3 leftUp;
 				if (transform.position.x > startPos.x) {
@@ -198,7 +198,7 @@ public class StageEditor : MonoBehaviour {
 			}
 		}
 
-		if (InputManager.GetKey(Keys.B)) {
+		if (InputManager.GetKey(Keys.A)) {
 			void DestroyObj(Vector3 pos) {
 				var obj = Stage.instance.GetStageObject(pos);
 				if (obj != null) {
@@ -234,7 +234,7 @@ public class StageEditor : MonoBehaviour {
 
 		}
 
-		if (InputManager.GetKeyDown(Keys.Y) && isAreaMode == false) {
+		if (InputManager.GetKeyDown(Keys.X) && isAreaMode == false) {
 			var obj = Stage.instance.GetStageObject(transform.position);
 			if (obj == null) {
 				return;
@@ -297,7 +297,7 @@ public class StageEditor : MonoBehaviour {
 	}
 
 	private void DetailMode() {
-		if (InputManager.GetKeyUp(Keys.Y)) {
+		if (InputManager.GetKeyUp(Keys.X)) {
 			isDetailMode = false;
 		}
 
@@ -420,7 +420,7 @@ public class StageEditor : MonoBehaviour {
 	}
 
 	private void CameraControl() {
-		if (InputManager.GetKeyDown(Keys.X)) {
+		if (InputManager.GetKeyDown(Keys.Y)) {
 			cameraMode++;
 			cameraMode = (cameraMode + cameraMax) % cameraMax;
 		}
