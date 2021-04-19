@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
-public class Piston : MonoBehaviour {
+public class Piston : DetailBase {
 
     [SerializeField]
     private Transform piston;
@@ -22,7 +23,7 @@ public class Piston : MonoBehaviour {
         }
     }
     private float _delay;
-    public float deley { // 遅延
+    public float delay { // 遅延
         get { return _delay; }
         set {
             _delay = Mathf.Round(value * 10) / 10;
@@ -40,7 +41,12 @@ public class Piston : MonoBehaviour {
         Right,
         Left
     }
-    public Direction direction;
+    private int directionMax = 4; // 方向最大値
+    private Direction _direction;
+    public Direction direction {
+        get { return _direction; }
+        set { _direction = (Direction)(((int)value + directionMax) % directionMax); }
+    }
 
     private float returnTimer;
     private float returnInterval = 1.0f;
@@ -52,7 +58,7 @@ public class Piston : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         isPush = false;
-        pistonTimer = -deley;
+        pistonTimer = -delay;
         if (pistonInterval == 0) {
             pistonInterval = 5.0f;
         }
@@ -104,6 +110,46 @@ public class Piston : MonoBehaviour {
                 pistonTimer = 0;
                 returnTimer = 0;
                 isPush = false;
+            }
+        }
+    }
+
+    public override string ToFileString() {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("F_Piston");
+        sb.AppendLine("pos:" + ConvertPos());
+        sb.AppendLine("interval:" + pistonInterval);
+        sb.AppendLine("delay:" + delay);
+        sb.AppendLine("direction:" + (int)direction);
+        return sb.ToString();
+    }
+
+    public override string ToEditorString() {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("インターバル：　" + pistonInterval);
+        sb.AppendLine("遅延：　" + delay);
+        sb.AppendLine("向き：　" + direction);
+        return sb.ToString();
+    }
+
+    public override void SetData(string information) {
+        var options = information.Split('\n');
+        for (int i = 0; i < options.Length; i++) {
+            var option = options[i];
+            if (option.Contains(":")) {
+                var key = option.Split(':')[0];
+                var value = option.Split(':')[1];
+                switch (key) {
+                    case "interval":
+                        pistonInterval = float.Parse(value);
+                        break;
+                    case "delay":
+                        delay = float.Parse(value);
+                        break;
+                    case "direction":
+                        direction = (Direction)int.Parse(value);
+                        break;
+                }
             }
         }
     }

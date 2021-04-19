@@ -393,7 +393,36 @@ public class StageEditor : MonoBehaviour {
 						break;
 				}
 				break;
-			case 'Y':
+            case 'F':
+                optionMax = 3;
+                switch (optionCount) {
+                    case 0: //インターバル
+                        if (isRightInput) {
+                            ((Piston)editingScript).pistonInterval += 0.1f;
+                        }
+                        if (isLeftInput) {
+                            ((Piston)editingScript).pistonInterval -= 0.1f;
+                        }
+                        break;
+                    case 1: //遅延
+                        if (isRightInput) {
+                            ((Piston)editingScript).delay += 0.1f;
+                        }
+                        if (isLeftInput) {
+                            ((Piston)editingScript).delay -= 0.1f;
+                        }
+                        break;
+                    case 2: //方向
+                        if (isRightInput) {
+                            ((Piston)editingScript).direction += 1;
+                        }
+                        if (isLeftInput) {
+                            ((Piston)editingScript).direction -= 1;
+                        }
+                        break;
+                }
+                break;
+            case 'Y':
 				optionMax = 3;
 				switch (optionCount) {
 					case 0: //channel
@@ -459,7 +488,10 @@ public class StageEditor : MonoBehaviour {
 				case 'E':
 					detailObjectName.text = "パルスフィールド";
 					break;
-				case 'Y':
+                case 'F':
+                    detailObjectName.text = "ピストン";
+                    break;
+                case 'Y':
 					detailObjectName.text = "チェックポイント";
 					break;
 			}
