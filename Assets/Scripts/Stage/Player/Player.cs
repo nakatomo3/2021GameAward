@@ -188,7 +188,7 @@ public class Player : MonoBehaviour {
         stepTimer += Time.deltaTime;
 
         //移動キーを押したら入力待ち時間を記録する
-        if (isMoveKey == true　&& canMove==true) {
+        if (isMoveKey == true && canMove == true) {
             stepTimers.Add(stepTimer);
             stepTimer = 0;
         }
@@ -200,6 +200,7 @@ public class Player : MonoBehaviour {
 
 
     bool CanStep(Vector3 pos) {
+        bool canStep = true;
         var obj = Stage.instance.GetStageObject(pos);
         if (obj == null) {
             if (pos != Vector3.zero) {
@@ -209,14 +210,62 @@ public class Player : MonoBehaviour {
         }
         var code = Stage.GetObjectCode(obj.name);
         if (canStepCode.Contains(code.ToString())) {
-            return true;
+            canStep = true;
         }
         if (code == 'B') { //シャッター
             var door = obj.GetComponent<Door>();
             var channel = door.channel;
-            return (SwitchManager.instance.channel[channel] ^ door.isReverse);
+            canStep = (SwitchManager.instance.channel[channel] ^ door.isReverse);
+
+        } else if (code == 'F') {//ピストン
+            canStep = false;
+        } else {
+
+            //ピストンが射出されている状態の判定
+            Vector3[] pistonPos = new Vector3[4];
+            pistonPos[0] = this.transform.position + Vector3.right + Vector3.forward;//右前
+            pistonPos[1] = this.transform.position + Vector3.right + Vector3.back;//右下
+            pistonPos[2] = this.transform.position + Vector3.left + Vector3.back;//左後ろ
+            pistonPos[3] = this.transform.position + Vector3.left + Vector3.forward;//左前
+            Debug.Log("kjdbflsjdfb;b");
+            for (int i = 0; i < 4; ++i) {
+                GameObject g = Stage.instance.GetStageObject(pistonPos[i]);
+                if (g != null) {
+                    if (g.name[0] == 'F') {
+                        Piston piston = g.GetComponent<Piston>();
+
+                        if (piston != null && piston.isPush == true) {
+                            Vector3 addPos = Vector3.zero;
+
+                            switch (piston.direction) {
+                                case Piston.Direction.Front:
+                                    addPos = Vector3.forward;
+                                    break;
+
+                                case Piston.Direction.Back:
+                                    addPos = Vector3.back;
+                                    break;
+
+                                case Piston.Direction.Left:
+                                    addPos = Vector3.left;
+                                    break;
+
+                                case Piston.Direction.Right:
+                                    addPos = Vector3.right;
+                                    break;
+                            }
+
+                            //射出されているとこは行けない
+                            if (pos == pistonPos[i] + addPos) {
+                                canStep = false;
+                            }
+                        }
+                    }
+                }
+            }
         }
-        return false;
+
+        return canStep;
     }
 
     void UpdateTimer() {
