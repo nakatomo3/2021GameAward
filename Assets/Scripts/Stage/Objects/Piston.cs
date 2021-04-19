@@ -47,10 +47,11 @@ public class Piston : MonoBehaviour {
     private Vector3 targetPosition;
     private Vector3 addForce;
     [SerializeField]
-    private bool isPush = false;
+    public bool isPush { get; private set; }
 
     // Start is called before the first frame update
     void Start() {
+        isPush = false;
         pistonTimer = -deley;
         if (pistonInterval == 0) {
             pistonInterval = 5.0f;
