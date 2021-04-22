@@ -188,14 +188,14 @@ public class PlayerSkill : MonoBehaviour {
             //--ˆÚ“®•ûŒü‚Æ“ü—Í‘Ò‚¿ŽžŠÔ‚ðGhostManager‚É‹L˜^‚·‚é---//
             Player.instance.stepTimers.Add(Player.instance.stepTimer + 5);
             List<float> temp = Player.instance.stepTimers;
-            List<MoveVector> temp2 = Player.instance.moveRecord;
+            List<ActionRecord> temp2 = Player.instance.actionRecord;
 
             GhostManager.instance.stepIntervals.Add(temp);
             GhostManager.instance.moveRecords.Add(temp2);
 
             for (int i = 0; i < Player.instance.stepTimers.Count; ++i) {
                 Player.instance.stepTimers = new List<float>();
-                Player.instance.moveRecord = new List<MoveVector>();
+                Player.instance.actionRecord = new List<ActionRecord>();
             }
 
             GhostManager.instance.AddGhost();
@@ -233,7 +233,7 @@ public class PlayerSkill : MonoBehaviour {
             isSkillCharge[(int)Skill.RESET] = false;
 
             GhostManager.instance.DeleteGhost();
-            Player.instance.moveRecord.Clear();
+            Player.instance.actionRecord.Clear();
             Player.instance.stepTimers.Clear();
             Player.instance.isMoveStep.Clear();
 
