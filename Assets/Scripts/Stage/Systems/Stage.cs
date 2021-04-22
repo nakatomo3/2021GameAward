@@ -174,6 +174,7 @@ public class Stage : MonoBehaviour {
 
 		switch (nowMode) {
 			case Mode.START: // スタート時の演出
+				nowMode = Mode.GAME;
 				player.SetActive(false);
 				camera.transform.position = new Vector3(bezie.GetPoint(bezieTime).x, 10, bezie.GetPoint(bezieTime).z - 2);
 				if (bezieIndex < checkPoints.Count) {
