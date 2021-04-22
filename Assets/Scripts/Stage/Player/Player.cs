@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public enum Action {
+public enum ActionRecord {
     UP,
     DOWN,
     LEFT,
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour {
     [HideInInspector]
     public Vector3 newStepPos;
     [HideInInspector]
-    public List<Action> actionRecord;
+    public List<ActionRecord> actionRecord;
     [HideInInspector]
     public List<float> stepTimers;
     [HideInInspector]
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour {
     private Image filter;
 
     private void Awake() {
-        actionRecord = new List<Action>();
+        actionRecord = new List<ActionRecord>();
         stepTimers = new List<float>();
         isMoveStep = new List<bool>();
         startPosition = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour {
 
         if (canMove == true) {
             if (InputManager.GetKey(Keys.LEFT)) {
-                actionRecord.Add(Action.LEFT);
+                actionRecord.Add(ActionRecord.LEFT);
                 transform.localEulerAngles = Vector3.up * -90;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.left)) {
@@ -138,7 +138,7 @@ public class Player : MonoBehaviour {
                 moveIntervalTimer = 0;
             }
             if (InputManager.GetKey(Keys.UP)) {
-                actionRecord.Add(Action.UP);
+                actionRecord.Add(ActionRecord.UP);
                 transform.localEulerAngles = Vector3.up * 0;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.forward)) {
@@ -150,7 +150,7 @@ public class Player : MonoBehaviour {
                 moveIntervalTimer = 0;
             }
             if (InputManager.GetKey(Keys.RIGHT)) {
-                actionRecord.Add(Action.RIGHT);
+                actionRecord.Add(ActionRecord.RIGHT);
                 transform.localEulerAngles = Vector3.up * 90;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.right)) {
@@ -162,7 +162,7 @@ public class Player : MonoBehaviour {
                 moveIntervalTimer = 0;
             }
             if (InputManager.GetKey(Keys.DOWN)) {
-                actionRecord.Add(Action.DOWN);
+                actionRecord.Add(ActionRecord.DOWN);
                 transform.localEulerAngles = Vector3.up * 180;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.back)) {
