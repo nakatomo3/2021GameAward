@@ -8,7 +8,7 @@ public class GhostManager : MonoBehaviour {
     public static GhostManager instance;
 
     [HideInInspector]
-    public List<List<MoveVector>> moveRecords;//[ゴースト番号][移動方向]
+    public List<List<Action>> moveRecords;//[ゴースト番号][移動方向]
 
     public List<List<float>> stepIntervals;   //[ゴースト番号][入力待機時間]
     private List<float> stepTimers;           //ゴーストごとの入力待機時間のカウント
@@ -23,7 +23,7 @@ public class GhostManager : MonoBehaviour {
 
     void Start() {
         instance = this;
-        moveRecords = new List<List<MoveVector>>();
+        moveRecords = new List<List<Action>>();
         stepIntervals = new List<List<float>>();
         stepTimers = new List<float>();
         nowSteps = new List<int>();
@@ -96,25 +96,25 @@ public class GhostManager : MonoBehaviour {
     //moveRecordsをもとに次の場所に移動する
     public void MoveNextStep(int i) {
         switch (moveRecords[i][nowSteps[i]]) {
-            case MoveVector.UP:
+            case Action.UP:
                 if (isMoveSteps[i][nowSteps[i]] == true) {
                     ghosts[i].transform.position += Vector3.forward;
                 }
                 ghosts[i].transform.localEulerAngles = Vector3.up * 0;
                 break;
-            case MoveVector.DOWN:
+            case Action.DOWN:
                 if (isMoveSteps[i][nowSteps[i]] == true) {
                     ghosts[i].transform.position += Vector3.back;
                 }
                 ghosts[i].transform.localEulerAngles = Vector3.up * 180;
                 break;
-            case MoveVector.LEFT:
+            case Action.LEFT:
                 if (isMoveSteps[i][nowSteps[i]] == true) {
                     ghosts[i].transform.position += Vector3.left;
                 }
                 ghosts[i].transform.localEulerAngles = Vector3.up * -90;
                 break;
-            case MoveVector.RIGHT:
+            case Action.RIGHT:
                 if (isMoveSteps[i][nowSteps[i]] == true) {
                     ghosts[i].transform.position += Vector3.right;
                 }
