@@ -378,6 +378,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  turnMax: 20
   nowMode: 0
 --- !u!4 &356832297
 Transform:

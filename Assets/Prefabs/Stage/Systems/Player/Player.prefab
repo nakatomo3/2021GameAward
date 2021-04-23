@@ -2248,17 +2248,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ec3e891494ceb43ad3e28200b90ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skill: {fileID: 0}
   moveIntervalMax: 0.1
   isMoved: 0
+  canAction: 1
   stepTimer: 0
   remainingTime: 20
   remainingTimeMax: 10
+  turnIntervalMax: 0.5
   oldStepPos: {x: 0, y: 0, z: 0}
   newStepPos: {x: 0, y: 0, z: 0}
-  moveRecord: 
+  actionRecord: 
   stepTimers: []
   isMoveStep: 
+  startPosition: {x: 0, y: 0, z: 0}
   timerNumbers:
   - {fileID: -7754988575891523622, guid: e6c69f6b36a59eb458cafc7b095f4876, type: 3}
   - {fileID: 1966862073063238781, guid: e6c69f6b36a59eb458cafc7b095f4876, type: 3}
@@ -2280,7 +2282,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8781337088072814748}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b553baf9f9f0c94408be13c4e19ab973, type: 3}
   m_Name: 

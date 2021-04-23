@@ -54,7 +54,12 @@ public class SystemSupporter {
 		InputManager.AddKey(Keys.UP, KeyCode.W);
 		InputManager.AddKey(Keys.DOWN, KeyCode.S);
 
-	}
+        InputManager.AddAxis(Keys.RIGHT, "CrossButtonRight");
+        InputManager.AddAxis(Keys.LEFT, "CrossButtonLeft");
+        InputManager.AddAxis(Keys.UP, "CrossButtonUp");
+        InputManager.AddAxis(Keys.DOWN, "CrossButtonDown");
+
+    }
 
 	public static bool IsUnityEditor() {
 		#if UNITY_EDITOR
