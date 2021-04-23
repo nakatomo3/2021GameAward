@@ -22,21 +22,27 @@ public class Player : MonoBehaviour {
 
     public static Player instance;
 
-    [HideInInspector]
-    public PlayerSkill skill;
+
 
     [SerializeField]
     private float moveIntervalMax;
 
     [HideInInspector]
-    public bool isMoved = false;
+    public bool isMoved = false; //動き始めたか
 
+
+    [HideInInspector]
+    public bool canAction = true;
 
     public float stepTimer = 0;
     public float remainingTime = 20; //プレイヤーの残り時間
     public float remainingTimeMax = 10;
 
     private float moveIntervalTimer = 0;
+
+    [SerializeField]
+    private float turnIntervalMax;
+    private float turnIntervalTimer = 0;
     private bool canMove = true;
 
     [HideInInspector]
@@ -83,7 +89,6 @@ public class Player : MonoBehaviour {
     }
 
     public void Start() {
-        skill = GetComponent<PlayerSkill>();
         filter = Stage.instance.lastMomentFilter.GetComponent<Image>();
         oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
@@ -91,25 +96,21 @@ public class Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
-        Move();
+        Action();
         SettingStepInterval();
-        UpdateTimer();
+        UpdateTurn();
 
 
-
+        Debug.Log(canMove);
     }
 
     private void FixedUpdate() {
-        if (isEnemyCol == true && isSafe == false) {
-            skill.ResetStage();
-        }
         isEnemyCol = false;
         isSafe = false;
 
     }
 
-    void Move() {
+    void Action() {
 
         if (moveIntervalTimer > moveIntervalMax) {
             transform.position = newStepPos;
@@ -124,18 +125,20 @@ public class Player : MonoBehaviour {
         }
 
 
-        if (canMove == true) {
+        if (canAction == true) {
             if (InputManager.GetKey(Keys.LEFT)) {
                 actionRecord.Add(ActionRecord.LEFT);
                 transform.localEulerAngles = Vector3.up * -90;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.left)) {
                     newStepPos = transform.position + Vector3.left;
-                    isMoveStep.Add(true);
+                    UseTurn();
                 } else {
                     isMoveStep.Add(false);
                 }
                 moveIntervalTimer = 0;
+
+
             }
             if (InputManager.GetKey(Keys.UP)) {
                 actionRecord.Add(ActionRecord.UP);
@@ -143,11 +146,13 @@ public class Player : MonoBehaviour {
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.forward)) {
                     newStepPos = transform.position + Vector3.forward;
-                    isMoveStep.Add(true);
+                    UseTurn();
                 } else {
                     isMoveStep.Add(false);
                 }
                 moveIntervalTimer = 0;
+
+
             }
             if (InputManager.GetKey(Keys.RIGHT)) {
                 actionRecord.Add(ActionRecord.RIGHT);
@@ -155,11 +160,13 @@ public class Player : MonoBehaviour {
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.right)) {
                     newStepPos = transform.position + Vector3.right;
-                    isMoveStep.Add(true);
+                    UseTurn();
                 } else {
                     isMoveStep.Add(false);
                 }
                 moveIntervalTimer = 0;
+
+
             }
             if (InputManager.GetKey(Keys.DOWN)) {
                 actionRecord.Add(ActionRecord.DOWN);
@@ -167,16 +174,27 @@ public class Player : MonoBehaviour {
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.back)) {
                     newStepPos = transform.position + Vector3.back;
-                    isMoveStep.Add(true);
+                    UseTurn();
                 } else {
                     isMoveStep.Add(false);
                 }
                 moveIntervalTimer = 0;
+
             }
         }
 
 
         GoalCheck();
+    }
+
+    //プレイヤーのAction()内で行動した時に呼ぶ
+    void UseTurn() {
+        isMoveStep.Add(true);
+        turnIntervalTimer = 0;
+        canAction = false;
+        Stage.instance.Action();
+        Stage.instance.AddTurn(-1);
+
     }
 
     //入力の待ち時間を記録する
@@ -268,23 +286,32 @@ public class Player : MonoBehaviour {
         return canStep;
     }
 
-    void UpdateTimer() {
-        if (isMoved == true) {
-            remainingTime -= Time.deltaTime;
+    void UpdateTurn() {
+        turnIntervalTimer += Time.deltaTime;
+        if (turnIntervalTimer >= 0.5f) {
+            canAction = true;
         }
-        var intPart = Mathf.Floor(remainingTime); //整数部分
-                                                  //小数部分を一応残しておく
-                                                  //var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
-        if (remainingTime >= 10) {
-            var ten = Mathf.FloorToInt(remainingTime / 10);
-            var one = Mathf.FloorToInt(remainingTime - ten * 10);
+
+
+
+
+
+        if (isMoved == true) {
+            // remainingTime -= Time.deltaTime;
+        }
+        var intPart = Mathf.Floor(Stage.instance.GetTurn()); //整数部分
+                                                             //小数部分を一応残しておく
+                                                             //var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
+        if (Stage.instance.GetTurn() >= 10) {
+            var ten = Mathf.FloorToInt(Stage.instance.GetTurn() / 10);
+            var one = Mathf.FloorToInt(Stage.instance.GetTurn() - ten * 10);
             tenDigit.sprite = timerNumbers[ten];
             oneDigit.sprite = timerNumbers[one];
             tenDigit.enabled = true;
             oneDigit.enabled = true;
             oneOnly.enabled = false;
-        } else if (remainingTime > 0) {
-            var one = Mathf.FloorToInt(remainingTime);
+        } else if (Stage.instance.GetTurn() > 0) {
+            var one = Mathf.FloorToInt(Stage.instance.GetTurn());
             oneOnly.sprite = timerNumbers[one];
             tenDigit.enabled = false;
             oneDigit.enabled = false;
@@ -322,14 +349,14 @@ public class Player : MonoBehaviour {
     void GoalCheck() {
         if (transform.position == Stage.instance.goalPosition) {
             Stage.instance.nowMode = Stage.Mode.CLEAR;
+            GhostManager.instance.ResetStage();
+            GhostManager.instance.AddGhost(startPosition);
         }
     }
 
     public void CheckPoint(float time, int _loopMax) {
         remainingTime = time;
         remainingTimeMax = time;
-        skill.skillMax[(int)Skill.LOOP] = _loopMax;
-        skill.skillNum[(int)Skill.LOOP] = skill.skillMax[(int)Skill.LOOP];
         startPosition = this.transform.position;
 
     }

@@ -70,11 +70,14 @@ public class Stage : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject[] particles;
-	#endregion
+
+    [SerializeField]
+    private int turnMax;
+    #endregion
 
 
-	#region データ部
-	public GameObject stageParent { get; private set; }
+    #region データ部
+    public GameObject stageParent { get; private set; }
 	public List<List<char>> stageData { get; private set; }
 	public Vector3 startPosition { get; private set; }
 	public Vector3 goalPosition { get; private set; } = Vector3.one * -1;
@@ -84,6 +87,7 @@ public class Stage : MonoBehaviour {
 	public List<int> maxLoop { get; private set; } = new List<int>();
 
 	private int visualMode = 0;
+    private int nowTurn;
 
 	private List<string> comments = new List<string>();
 
@@ -118,6 +122,8 @@ public class Stage : MonoBehaviour {
 #endif
 		stageParent = new GameObject("StageParent");
 		stageParent.transform.parent = transform;
+
+        nowTurn = turnMax;
 	}
 
 	void Start() {
@@ -550,4 +556,19 @@ public class Stage : MonoBehaviour {
 
 		return (int)(bChannel - aChannel);
 	}
+
+    public void Action() {
+
+    }
+    public void SetTurn(int n) {
+        nowTurn = n;
+    }
+    public void AddTurn(int n) {
+        nowTurn += n;
+    }
+
+
+    public int GetTurn() {
+        return nowTurn;
+    }
 }
