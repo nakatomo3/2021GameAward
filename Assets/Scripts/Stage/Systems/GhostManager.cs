@@ -102,6 +102,12 @@ public class GhostManager : MonoBehaviour {
 				}
 				ghosts[i].transform.localEulerAngles = Vector3.up * 90;
 				break;
+			case ActionRecord.ATTACK:
+				//攻撃モーション
+				break;
+			case ActionRecord.DAMAGE:
+				//ダメージモーション
+				break;
 		}
 	}
 

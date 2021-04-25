@@ -347,10 +347,10 @@ public class StageEditor : MonoBehaviour {
 		optionCursor.anchoredPosition = new Vector2(-125, 105 + optionCount * -30);
 
 		switch (editingChar) {
-			case 'A':
+			case 'A': //Switch
 				optionMax = 1;
 				break;
-			case 'B':
+			case 'B': //Door
 				optionMax = 3;
 				switch (optionCount) {
 					case 0: //チャンネル編集
@@ -372,7 +372,7 @@ public class StageEditor : MonoBehaviour {
 						break;
 				}
 				break;
-			case 'E':
+			case 'E': //palseBlock
 				optionMax = 2;
 				switch (optionCount) {
 					case 0: //インターバル
@@ -393,7 +393,7 @@ public class StageEditor : MonoBehaviour {
 						break;
 				}
 				break;
-            case 'F':
+            case 'F': //ピストン
                 optionMax = 3;
                 switch (optionCount) {
                     case 0: //インターバル
@@ -421,28 +421,40 @@ public class StageEditor : MonoBehaviour {
                         }
                         break;
                 }
-                break;
-            case 'Y':
+				break;
+			case 'I': //Start
 				optionMax = 3;
 				switch (optionCount) {
-					case 0: //channel
-						break;
-					case 1: //time
+					case 0:
 						if (isRightInput) {
-							((CheckPoint)editingScript).time += 0.1f;
+							((StartBlock)editingScript).phaseCount++;
 						}
 						if (isLeftInput) {
-							((CheckPoint)editingScript).time -= 0.1f;
+							((StartBlock)editingScript).phaseCount--;
+						}
+						break;
+					case 1:
+						if (isRightInput) {
+							((StartBlock)editingScript).turnMax++;
+						}
+						if (isLeftInput) {
+							((StartBlock)editingScript).turnMax--;
 						}
 						break;
 					case 2:
-						if (isRightInput) {
-							((CheckPoint)editingScript).loopMax++;
-						}
-						if (isLeftInput) {
-							((CheckPoint)editingScript).loopMax--;
+						if(isRightInput || isLeftInput) {
+							((StartBlock)editingScript).isTutorial = !((StartBlock)editingScript).isTutorial;
 						}
 						break;
+				}
+				break;
+			case 'J': //Goal
+				optionMax = 1;
+				if (isRightInput) {
+					((Goal)editingScript).phaseCount++;
+				}
+				if (isRightInput) {
+					((Goal)editingScript).phaseCount--;
 				}
 				break;
 		}
@@ -491,8 +503,11 @@ public class StageEditor : MonoBehaviour {
                 case 'F':
                     detailObjectName.text = "ピストン";
                     break;
-                case 'Y':
-					detailObjectName.text = "チェックポイント";
+				case 'I':
+					detailObjectName.text = "スタート";
+					break;
+				case 'J':
+					detailObjectName.text = "ゴール";
 					break;
 			}
 		} else {
