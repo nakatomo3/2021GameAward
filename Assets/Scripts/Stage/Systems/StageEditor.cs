@@ -373,22 +373,30 @@ public class StageEditor : MonoBehaviour {
 				}
 				break;
 			case 'E': //palseBlock
-				optionMax = 2;
+				optionMax = 3;
 				switch (optionCount) {
-					case 0: //インターバル
+					case 0: //インターバルオン
 						if (isRightInput) {
-							((PulseField)editingScript).modeInterval += 0.1f;
+							((PulseField)editingScript).modeIntervalOn += 1;
 						}
 						if (isLeftInput) {
-							((PulseField)editingScript).modeInterval -= 0.1f;
+							((PulseField)editingScript).modeIntervalOn -= 1;
 						}
 						break;
-					case 1: //遅延
+                    case 1: //インターバルオフ
+                        if (isRightInput) {
+                            ((PulseField)editingScript).modeIntervalOff += 1;
+                        }
+                        if (isLeftInput) {
+                            ((PulseField)editingScript).modeIntervalOff -= 1;
+                        }
+                        break;
+                    case 2: //遅延
 						if (isRightInput) {
-							((PulseField)editingScript).delay += 0.1f;
+							((PulseField)editingScript).delay += 1;
 						}
 						if (isLeftInput) {
-							((PulseField)editingScript).delay -= 0.1f;
+							((PulseField)editingScript).delay -= 1;
 						}
 						break;
 				}

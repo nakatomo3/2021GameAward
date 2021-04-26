@@ -8,128 +8,151 @@ public class PulseField : DetailBase {
     [SerializeField]
     private Renderer render;
 
-    private float pulseTimer;
-	private float _modeInterval;
-    public float modeInterval { // モード切替間隔
-		get { return _modeInterval; }
-		set {
-			_modeInterval = Mathf.Round(value * 10) / 10;
-			if(value < 0.1f) {
-				_modeInterval = 0.1f;
-			}
-			if(value > 10) {
-				_modeInterval = 10;
-			}
-		}
-	}
-	private float _delay;
-    public float delay { // 遅延
-		get { return _delay; }
-		set {
-			_delay = Mathf.Round(value * 10) / 10;
-			if (value < 0.0f) {
-				_delay = 0.0f;
-			}
-			if (value > 10) {
-				_delay = 10;
-			}
-		}
-	}
+    private int pulseTimer;
+    private int _modeIntervalOn;
+    public int modeIntervalOn { // モードオン間隔
+        get { return _modeIntervalOn; }
+        set {
+            _modeIntervalOn = value + 10 % 10;
+            if (value < 1) {
+                _modeIntervalOn = 1;
+            }
+            if (value > 99) {
+                _modeIntervalOn = 99;
+            }
+        }
+    }
+    private int _modeIntervalOff;
+    public int modeIntervalOff { // モードオフ間隔
+        get { return _modeIntervalOff; }
+        set {
+            _modeIntervalOff = value + 10 % 10;
+            if (value < 1) {
+                _modeIntervalOff = 1;
+            }
+            if (value > 99) {
+                _modeIntervalOff = 99;
+            }
+        }
+    }
+    private int _delay;
+    public int delay { // 遅延
+        get { return _delay; }
+        set {
+            _delay = value + 10 % 10;
+            if (value < 0) {
+                _delay = 0;
+            }
+            if (value > 99) {
+                _delay = 99;
+            }
+        }
+    }
     private bool isPulse = false;
 
     private bool isDamage = true;
-    private float timer = 0.0f;
-    private float damageInterval = 1.0f;
 
     // Start is called before the first frame update
     void Start() {
         render = GetComponentInChildren<Renderer>();
         pulseTimer = -delay;
-		if(modeInterval == 0) {
-			modeInterval = 2.0f;
-		}
+        if (modeIntervalOn == 0) {
+            modeIntervalOn = 2;
+        }
+        if (modeIntervalOff == 0) {
+            modeIntervalOff = 2;
+        }
     }
 
     // Update is called once per frame
     void Update() {
-        pulseTimer += Time.deltaTime;
-
-        if (pulseTimer >= modeInterval) {
-            pulseTimer = 0;
-            isPulse = !isPulse; // モードを切り替える
+        if (InputManager.GetKeyDown(Keys.LEFT)) {
+            Action();
         }
-
-        if (isPulse == true) { // パルスONの時はダメージブロックと同等の処理
-            Color color = render.material.color;
-            color.a = 1.0f;
-            render.material.color = color;
-            if (transform.position == Player.instance.transform.position) {
-                if (isDamage == false) {
-                    timer += Time.deltaTime;
-                    if (timer >= damageInterval) { // インターバルカウント
-                        timer = 0.0f;
-                        isDamage = true;
-                        color = render.material.color;
-                        color.g = 1.0f;
-                        render.material.color = color;
-                    }
-                } else {
-                    Player.instance.Damage(1); // ダメージ処理
-                    isDamage = false;
-                    color = render.material.color;
-                    color.g = 0.0f;
-                    render.material.color = color;
-                }
-            } else { // プレイヤーが離れたらリセット
-                timer = 0.0f;
-                isDamage = true;
-                color = render.material.color;
-                color.g = 1.0f;
-                render.material.color = color;
-            }
-        } else {
-            Color color = render.material.color;
-            color.a = 0.2f;
-            render.material.color = color;
+        if (InputManager.GetKeyDown(Keys.RIGHT)) {
+            Action();
+        }
+        if (InputManager.GetKeyDown(Keys.UP)) {
+            Action();
+        }
+        if (InputManager.GetKeyDown(Keys.DOWN)) {
+            Action();
         }
     }
-	
-	public override string ToFileString() {
-		StringBuilder sb = new StringBuilder();
-		sb.AppendLine("E_PulseField");
-		sb.AppendLine("pos:" + ConvertPos());
-		sb.AppendLine("interval:" + modeInterval);
-		sb.AppendLine("delay:" + delay);
-		return sb.ToString();
-	}
 
-	public override string ToEditorString() {
-		StringBuilder sb = new StringBuilder();
-		sb.AppendLine("インターバル：　" + modeInterval);
-		sb.AppendLine("遅延：　" + delay);
-		return sb.ToString();
-	}
+    public override void Action() { // ターンごとに呼ばれる
+        pulseTimer++;
+        Debug.Log("OK!");
+        if (isPulse == true) { // パルスオン
+            if (pulseTimer >= modeIntervalOn) {
+                pulseTimer = 0;
+                isPulse = !isPulse;
+                Color color = render.material.color;
+                color.a = 0.2f;
+                render.material.color = color;
+                if (transform.position == Player.instance.transform.position) {
+                    if (isDamage == false) {
+                        Player.instance.Damage(1); // ダメージ処理
+                        isDamage = false;
+                        color = render.material.color;
+                        color.g = 0.0f;
+                        render.material.color = color;
+                    }
+                } else { // プレイヤーが離れたらリセット
+                    isDamage = true;
+                    color = render.material.color;
+                    color.g = 1.0f;
+                    render.material.color = color;
+                }
+            }
+        } else { // パルスオフ
+            if (pulseTimer >= modeIntervalOff) {
+                Color color = render.material.color;
+                color.a = 1.0f;
+                render.material.color = color;
+                pulseTimer = 0;
+                isPulse = !isPulse;
+            }
+        }
+    }
 
-	public override void SetData(string information) {
-		var options = information.Split('\n');
-		for (int i = 0; i < options.Length; i++) {
-			var option = options[i];
-			if (option.Contains(":")) {
-				var key = option.Split(':')[0];
-				var value = option.Split(':')[1];
-				switch (key) {
-					case "interval":
-						modeInterval = float.Parse(value);
-						break;
-					case "delay":
-						delay = float.Parse(value);
-						break;
-				}
-			}
-		}
-	}
+    public override string ToFileString() {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("E_PulseField");
+        sb.AppendLine("pos:" + ConvertPos());
+        sb.AppendLine("intervalOn:" + modeIntervalOn);
+        sb.AppendLine("intervalOff:" + modeIntervalOff);
+        sb.AppendLine("delay:" + delay);
+        return sb.ToString();
+    }
 
-    public override void Action() {
-        
+    public override string ToEditorString() {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("インターバルオン：" + modeIntervalOn);
+        sb.AppendLine("インターバルオフ：" + modeIntervalOff);
+        sb.AppendLine("遅延：　" + delay);
+        return sb.ToString();
+    }
+
+    public override void SetData(string information) {
+        var options = information.Split('\n');
+        for (int i = 0; i < options.Length; i++) {
+            var option = options[i];
+            if (option.Contains(":")) {
+                var key = option.Split(':')[0];
+                var value = option.Split(':')[1];
+                switch (key) {
+                    case "intervalOn":
+                        modeIntervalOn = int.Parse(value);
+                        break;
+                    case "intervalOff":
+                        modeIntervalOff = int.Parse(value);
+                        break;
+                    case "delay":
+                        delay = int.Parse(value);
+                        break;
+                }
+            }
+        }
     }
 }
