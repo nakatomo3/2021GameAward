@@ -402,25 +402,33 @@ public class StageEditor : MonoBehaviour {
 				}
 				break;
             case 'F': //ピストン
-                optionMax = 3;
+                optionMax = 4;
                 switch (optionCount) {
-                    case 0: //インターバル
-                    //    if (isRightInput) {
-                    //        ((Piston)editingScript).pistonInterval += 0.1f;
-                    //    }
-                    //    if (isLeftInput) {
-                    //        ((Piston)editingScript).pistonInterval -= 0.1f;
-                    //    }
-                    //    break;
-                    //case 1: //遅延
-                    //    if (isRightInput) {
-                    //        ((Piston)editingScript).delay += 0.1f;
-                    //    }
-                    //    if (isLeftInput) {
-                    //        ((Piston)editingScript).delay -= 0.1f;
-                    //    }
+                    case 0: //インターバルオン
+                        if (isRightInput) {
+                            ((Piston)editingScript).pistonIntervalOn += 1;
+                        }
+                        if (isLeftInput) {
+                            ((Piston)editingScript).pistonIntervalOn -= 1;
+                        }
                         break;
-                    case 2: //方向
+                    case 1: //インターバルオフ
+                        if (isRightInput) {
+                            ((Piston)editingScript).pistonIntervalOff += 1;
+                        }
+                        if (isLeftInput) {
+                            ((Piston)editingScript).pistonIntervalOff -= 1;
+                        }
+                        break;
+                    case 2: //遅延
+                        if (isRightInput) {
+                            ((Piston)editingScript).delay += 1;
+                        }
+                        if (isLeftInput) {
+                            ((Piston)editingScript).delay -= 1;
+                        }
+                        break;
+                    case 3: //方向
                         if (isRightInput) {
                             ((Piston)editingScript).direction += 1;
                         }

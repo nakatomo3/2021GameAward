@@ -45,10 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1609f1de71123f94bbb42fc47f41928a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  piston: {fileID: 1393386941056449030}
-  direction: 2
-  isPush: 0
-  targetPosition: {x: 0, y: 0, z: 0}
+  piston: {fileID: 2472903657623022651}
 --- !u!1 &7114434546748251444
 GameObject:
   m_ObjectHideFlags: 0
