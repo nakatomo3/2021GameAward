@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DetailBase : MonoBehaviour {
+public abstract class DetailBase : GimmicBase {
 
 	/// <summary>
 	/// オブジェクト情報をファイル書き込み用のstringに変換
