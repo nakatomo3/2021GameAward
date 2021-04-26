@@ -27,7 +27,10 @@ public class StartBlock : DetailBase {
 	}
 	public bool isTutorial = false;
 
-	public override string ToEditorString() {
+    public override void Action() {
+        
+    }
+    public override string ToEditorString() {
 		StringBuilder sb = new StringBuilder();
 		sb.AppendLine("フェーズ:" + phaseCount);
 		sb.AppendLine("ターン制限:" + turnMax);

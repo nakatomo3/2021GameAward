@@ -68,4 +68,8 @@ public class Switch : ChannelBase {
         }
         return;
     }
+
+    public override void Action() {
+        
+    }
 }

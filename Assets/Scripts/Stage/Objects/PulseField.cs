@@ -128,4 +128,8 @@ public class PulseField : DetailBase {
 			}
 		}
 	}
+
+    public override void Action() {
+        
+    }
 }

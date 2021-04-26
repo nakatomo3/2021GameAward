@@ -79,4 +79,8 @@ public class CheckPoint : ChannelBase {
 			}
 		}
 	}
+
+    public override void Action() {
+        
+    }
 }

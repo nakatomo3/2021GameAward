@@ -75,4 +75,8 @@ public class Door : ChannelBase {
 			}
 		}
 	}
+
+    public override void Action() {
+        
+    }
 }

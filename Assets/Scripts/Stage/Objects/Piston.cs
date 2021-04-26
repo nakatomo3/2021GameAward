@@ -8,27 +8,27 @@ public class Piston : DetailBase {
     [SerializeField]
     private Transform piston;
 
-    private float pistonTimer;
-    private float _pistonInterval;
-    public float pistonInterval { // ƒsƒXƒgƒ“ŠÔŠu
+    private int pistonTimer;
+    private int _pistonInterval;
+    public int pistonInterval { // ƒsƒXƒgƒ“ŠÔŠu
         get { return _pistonInterval; }
         set {
-            _pistonInterval = Mathf.Round(value * 10) / 10;
-            if (value < 0.1f) {
-                _pistonInterval = 0.1f;
+            _pistonInterval = value + 10 % 10;
+            if (value < 1) {
+                _pistonInterval = 1;
             }
             if (value > 10) {
                 _pistonInterval = 10;
             }
         }
     }
-    private float _delay;
-    public float delay { // ’x‰„
+    private int _delay;
+    public int delay { // ’x‰„
         get { return _delay; }
         set {
-            _delay = Mathf.Round(value * 10) / 10;
-            if (value < 0.0f) {
-                _delay = 0.0f;
+            _delay = value + 10 % 10;
+            if (value < 0) {
+                _delay = 0;
             }
             if (value > 10) {
                 _delay = 10;
@@ -60,12 +60,12 @@ public class Piston : DetailBase {
         isPush = false;
         pistonTimer = -delay;
         if (pistonInterval == 0) {
-            pistonInterval = 5.0f;
+            pistonInterval = 5;
         }
     }
 
     // Update is called once per frame
-    private void FixedUpdate() {
+    private void Update() {
         if (isPush == true) {
             piston.transform.localPosition = new Vector3(1.0f, 0, 0);
         } else {
@@ -94,7 +94,7 @@ public class Piston : DetailBase {
                 transform.eulerAngles = new Vector3(0, 180, 0);
                 break;
         }
-        pistonTimer += Time.deltaTime;
+        //pistonTimer += Time.deltaTime;
 
         if (pistonTimer >= pistonInterval) {
 
@@ -111,6 +111,22 @@ public class Piston : DetailBase {
                 returnTimer = 0;
                 isPush = false;
             }
+        }
+    }
+    private void PistonON() {
+        piston.transform.localPosition = new Vector3(1.0f, 0, 0);
+    }
+    private void PistonOFF() {
+        piston.transform.localPosition = new Vector3(0.1f, 0, 0);
+    }
+
+    public override void Action() {
+        pistonTimer++;
+        if(isPush == true) {
+            PistonON();
+
+        } else {
+            PistonOFF();
         }
     }
 
@@ -141,10 +157,10 @@ public class Piston : DetailBase {
                 var value = option.Split(':')[1];
                 switch (key) {
                     case "interval":
-                        pistonInterval = float.Parse(value);
+                        pistonInterval = int.Parse(value);
                         break;
                     case "delay":
-                        delay = float.Parse(value);
+                        delay = int.Parse(value);
                         break;
                     case "direction":
                         direction = (Direction)int.Parse(value);

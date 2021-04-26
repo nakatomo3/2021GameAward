@@ -397,20 +397,20 @@ public class StageEditor : MonoBehaviour {
                 optionMax = 3;
                 switch (optionCount) {
                     case 0: //インターバル
-                        if (isRightInput) {
-                            ((Piston)editingScript).pistonInterval += 0.1f;
-                        }
-                        if (isLeftInput) {
-                            ((Piston)editingScript).pistonInterval -= 0.1f;
-                        }
-                        break;
-                    case 1: //遅延
-                        if (isRightInput) {
-                            ((Piston)editingScript).delay += 0.1f;
-                        }
-                        if (isLeftInput) {
-                            ((Piston)editingScript).delay -= 0.1f;
-                        }
+                    //    if (isRightInput) {
+                    //        ((Piston)editingScript).pistonInterval += 0.1f;
+                    //    }
+                    //    if (isLeftInput) {
+                    //        ((Piston)editingScript).pistonInterval -= 0.1f;
+                    //    }
+                    //    break;
+                    //case 1: //遅延
+                    //    if (isRightInput) {
+                    //        ((Piston)editingScript).delay += 0.1f;
+                    //    }
+                    //    if (isLeftInput) {
+                    //        ((Piston)editingScript).delay -= 0.1f;
+                    //    }
                         break;
                     case 2: //方向
                         if (isRightInput) {
