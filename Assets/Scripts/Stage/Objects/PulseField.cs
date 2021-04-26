@@ -82,7 +82,6 @@ public class PulseField : DetailBase {
 
     public override void Action() { // ターンごとに呼ばれる
         pulseTimer++;
-        Debug.Log("OK!");
         if (isPulse == true) { // パルスオン
             if (pulseTimer >= modeIntervalOn) {
                 pulseTimer = 0;
