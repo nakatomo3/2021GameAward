@@ -2248,6 +2248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ec3e891494ceb43ad3e28200b90ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mPhase: 0
   moveIntervalMax: 0.1
   isMoved: 0
   canAction: 1
@@ -2259,7 +2260,6 @@ MonoBehaviour:
   newStepPos: {x: 0, y: 0, z: 0}
   actionRecord: 
   stepTimers: []
-  isMoveStep: 
   startPosition: {x: 0, y: 0, z: 0}
   timerNumbers:
   - {fileID: -7754988575891523622, guid: e6c69f6b36a59eb458cafc7b095f4876, type: 3}
