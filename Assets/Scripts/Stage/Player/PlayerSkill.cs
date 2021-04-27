@@ -198,14 +198,12 @@ public class PlayerSkill : MonoBehaviour {
 			}
 
 			//GhostManager.instance.AddGhost();
-			GhostManager.instance.isMoveSteps.Add(Player.instance.isMoveStep);
 			Player.instance.isMoved = false;
 			Player.instance.oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
 			Player.instance.newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
 			transform.position = Player.instance.startPosition;
 			GhostManager.instance.ResetStage();
 
-			Player.instance.isMoveStep = new List<bool>();
 			Player.instance.remainingTime = Player.instance.remainingTimeMax;
 
 			skillReChargeTimer[(int)Skill.LOOP] = 0;
@@ -234,7 +232,6 @@ public class PlayerSkill : MonoBehaviour {
 			GhostManager.instance.DeleteGhost();
 			Player.instance.actionRecord.Clear();
 			Player.instance.stepTimers.Clear();
-			Player.instance.isMoveStep.Clear();
 
 
 			for (int i = 0; i < (int)Skill.MAX; ++i) {
