@@ -23,6 +23,8 @@ public class Player : MonoBehaviour {
 
     public static Player instance;
 
+    public int mPhase = -1;//m‚Í‘º£æ¶‚Ìm
+
     [SerializeField]
     private float moveIntervalMax;
 
@@ -368,9 +370,22 @@ public class Player : MonoBehaviour {
         if (obj!=null && obj.name[0] == 'J') {
             //Stage.instance.nowMode = Stage.Mode.CLEAR;
             GhostManager.instance.ResetStage();
-            GhostManager.instance.AddGhost(startPosition);
 
+           
+           GhostManager.instance.AddGhost(Stage.instance.startBlockList[mPhase].transform.position);
+
+
+
+            mPhase++;
+            if(mPhase>= Stage.instance.startBlockList.Count) {
+                Stage.instance.nowMode = Stage.Mode.CLEAR;
+                return;
+            }
             Enemy.imaikiteru = true;
+
+
+
+
 
             //--ˆÚ“®•ûŒü‚Æ“ü—Í‘Ò‚¿ŽžŠÔ‚ðGhostManager‚É‹L˜^‚·‚é---//
             stepTimers.Add(stepTimer + 5);
@@ -387,9 +402,9 @@ public class Player : MonoBehaviour {
 
             //GhostManager.instance.AddGhost();
             isMoved = false;
-            oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-            newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
-            transform.position = startPosition;
+            oldStepPos = Stage.instance.startBlockList[mPhase].transform.position;
+            newStepPos = Stage.instance.startBlockList[mPhase].transform.position;
+            transform.position = Stage.instance.startBlockList[mPhase].transform.position;
             GhostManager.instance.ResetStage();
 
         }
