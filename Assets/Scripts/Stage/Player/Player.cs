@@ -10,7 +10,8 @@ public enum ActionRecord {
     LEFT,
     RIGHT,
     ATTACK,
-    DAMAGE
+    DAMAGE,
+    NONE,
 }
 
 
@@ -21,8 +22,6 @@ public enum ActionRecord {
 public class Player : MonoBehaviour {
 
     public static Player instance;
-
-
 
     [SerializeField]
     private float moveIntervalMax;
@@ -53,15 +52,14 @@ public class Player : MonoBehaviour {
     public List<ActionRecord> actionRecord;
     [HideInInspector]
     public List<float> stepTimers;
-    [HideInInspector]
-    public List<bool> isMoveStep;
+  
     [HideInInspector]
     public Vector3 startPosition;
 
     private bool isEnemyCol;
     private bool isSafe;
 
-    private string canStepCode = "1289ACdEhIYZ"; //B、F、G、Hは足場の状態が変わるので関数内部で判定
+    private string canStepCode = "1289ACdEhIJYZ"; //B、F、G、Hは足場の状態が変わるので関数内部で判定
 
 
 
@@ -80,7 +78,6 @@ public class Player : MonoBehaviour {
     private void Awake() {
         actionRecord = new List<ActionRecord>();
         stepTimers = new List<float>();
-        isMoveStep = new List<bool>();
         startPosition = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         if (instance != null) {
             Destroy(instance);
@@ -99,9 +96,6 @@ public class Player : MonoBehaviour {
         Action();
         SettingStepInterval();
         UpdateTurn();
-
-
-        Debug.Log(canMove);
     }
 
     private void FixedUpdate() {
@@ -127,56 +121,66 @@ public class Player : MonoBehaviour {
 
         if (canAction == true) {
             if (InputManager.GetKey(Keys.LEFT)) {
-                actionRecord.Add(ActionRecord.LEFT);
                 transform.localEulerAngles = Vector3.up * -90;
                 isMoved = true;
+                
+
                 if (CanStep(transform.position + Vector3.left)) {
+                    //移動するわ
+                    actionRecord.Add(ActionRecord.LEFT);
                     newStepPos = transform.position + Vector3.left;
                     UseTurn();
                 } else {
-                    isMoveStep.Add(false);
+                    actionRecord.Add(ActionRecord.NONE);
+                    UseTurn();
                 }
                 moveIntervalTimer = 0;
 
 
             }
             if (InputManager.GetKey(Keys.UP)) {
-                actionRecord.Add(ActionRecord.UP);
+                
                 transform.localEulerAngles = Vector3.up * 0;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.forward)) {
+                    actionRecord.Add(ActionRecord.UP);
                     newStepPos = transform.position + Vector3.forward;
                     UseTurn();
                 } else {
-                    isMoveStep.Add(false);
+                    actionRecord.Add(ActionRecord.NONE);
+                    UseTurn();
                 }
                 moveIntervalTimer = 0;
 
 
             }
             if (InputManager.GetKey(Keys.RIGHT)) {
-                actionRecord.Add(ActionRecord.RIGHT);
+                
                 transform.localEulerAngles = Vector3.up * 90;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.right)) {
+                    actionRecord.Add(ActionRecord.RIGHT);
                     newStepPos = transform.position + Vector3.right;
                     UseTurn();
                 } else {
-                    isMoveStep.Add(false);
+                    actionRecord.Add(ActionRecord.NONE);
+                    UseTurn();
                 }
                 moveIntervalTimer = 0;
 
 
             }
             if (InputManager.GetKey(Keys.DOWN)) {
-                actionRecord.Add(ActionRecord.DOWN);
+             
                 transform.localEulerAngles = Vector3.up * 180;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.back)) {
+                    actionRecord.Add(ActionRecord.DOWN);
                     newStepPos = transform.position + Vector3.back;
                     UseTurn();
                 } else {
-                    isMoveStep.Add(false);
+                    actionRecord.Add(ActionRecord.NONE);
+                    UseTurn();
                 }
                 moveIntervalTimer = 0;
 
@@ -187,9 +191,18 @@ public class Player : MonoBehaviour {
         GoalCheck();
     }
 
+    bool CanAttack(Vector3 pos) {
+       /* if (座標が敵の場所だったら)*/ {
+           // return true;
+        }
+        return false;
+    }
+    void Attack() {
+        actionRecord.Add(ActionRecord.ATTACK);
+    }
+
     //プレイヤーのAction()内で行動した時に呼ぶ
     void UseTurn() {
-        isMoveStep.Add(true);
         turnIntervalTimer = 0;
         canAction = false;
         Stage.instance.Action();
@@ -241,12 +254,18 @@ public class Player : MonoBehaviour {
             canStep = false;
         } else {
             //ピストンが射出されている状態の判定
-            Vector3[] pistonPos = new Vector3[4];
+            Vector3[] pistonPos = new Vector3[8];
             pistonPos[0] = this.transform.position + Vector3.right + Vector3.forward;//右前
             pistonPos[1] = this.transform.position + Vector3.right + Vector3.back;//右下
             pistonPos[2] = this.transform.position + Vector3.left + Vector3.back;//左後ろ
             pistonPos[3] = this.transform.position + Vector3.left + Vector3.forward;//左前
-            for (int i = 0; i < 4; ++i) {
+
+            pistonPos[4] = this.transform.position + Vector3.forward * 2;//前
+            pistonPos[5] = this.transform.position + Vector3.back * 2;//後ろ
+            pistonPos[6] = this.transform.position + Vector3.right * 2;//右
+            pistonPos[7] = this.transform.position + Vector3.left * 2;//左
+
+            for (int i = 0; i < 8; ++i) {
                 GameObject g = Stage.instance.GetStageObject(pistonPos[i]);
                 if (g != null) {
                     if (g.name[0] == 'F') {
@@ -291,9 +310,6 @@ public class Player : MonoBehaviour {
         if (turnIntervalTimer >= 0.5f) {
             canAction = true;
         }
-
-
-
 
 
         if (isMoved == true) {
@@ -347,10 +363,35 @@ public class Player : MonoBehaviour {
     }
 
     void GoalCheck() {
-        if (transform.position == Stage.instance.goalPosition) {
-            Stage.instance.nowMode = Stage.Mode.CLEAR;
+        // if (transform.position == Stage.instance.goalPosition) {
+        GameObject obj = Stage.instance.GetStageObject(this.transform.position);
+        if (obj!=null && obj.name[0] == 'J') {
+            //Stage.instance.nowMode = Stage.Mode.CLEAR;
             GhostManager.instance.ResetStage();
             GhostManager.instance.AddGhost(startPosition);
+
+            Enemy.imaikiteru = true;
+
+            //--移動方向と入力待ち時間をGhostManagerに記録する---//
+            stepTimers.Add(stepTimer + 5);
+            List<float> temp = stepTimers;
+            List<ActionRecord> temp2 = actionRecord;
+
+            //GhostManager.instance.stepIntervals.Add(temp);
+            GhostManager.instance.moveRecords.Add(temp2);
+
+            for (int i = 0; i < stepTimers.Count; ++i) {
+                stepTimers = new List<float>();
+                actionRecord = new List<ActionRecord>();
+            }
+
+            //GhostManager.instance.AddGhost();
+            isMoved = false;
+            oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+            newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+            transform.position = startPosition;
+            GhostManager.instance.ResetStage();
+
         }
     }
 
