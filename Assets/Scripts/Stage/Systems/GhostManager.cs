@@ -43,14 +43,14 @@ public class GhostManager : MonoBehaviour {
     //全てのゴーストをリセット
     public void ResetStage() {
         for (int i = 0; i < ghostCount; i++) {
-            ghosts[i].transform.position = Player.instance.startPosition;
+            ghosts[i].transform.position = startPositions[i];
             nowSteps[i] = 0;
         }
     }
 
     //ゴーストの位置をリセット
     private void ResetGhost(int i) {
-        ghosts[i].transform.position = Player.instance.startPosition;
+        ghosts[i].transform.position = startPositions[i];
         ghosts[i].transform.rotation = Quaternion.identity;
         nowSteps[i] = 0;
     }
