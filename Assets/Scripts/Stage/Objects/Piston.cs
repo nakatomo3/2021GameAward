@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
+using UnityEngine.UI;
 
 public class Piston : DetailBase {
 
@@ -65,6 +66,10 @@ public class Piston : DetailBase {
     [SerializeField]
     public bool isPush { get; private set; }
 
+    [SerializeField]
+    private Text pistonCount;
+    private int pCount;
+
     // Start is called before the first frame update
     void Start() {
         isPush = false;
@@ -75,15 +80,19 @@ public class Piston : DetailBase {
         if (pistonIntervalOff == 0) {
             pistonIntervalOff = 5;
         }
+        pCount = pistonIntervalOff;
     }
 
     // Update is called once per frame
     private void Update() {
         if (isPush == true) {
             piston.transform.localPosition = new Vector3(1.0f, 0, 0);
+            pCount = pistonIntervalOn - pistonTimer;
         } else {
             piston.transform.localPosition = new Vector3(0.1f, 0, 0);
+            pCount = pistonIntervalOff - pistonTimer;
         }
+        pistonCount.text = "" + pCount;
 
         switch (direction) {
             case Direction.Front:
