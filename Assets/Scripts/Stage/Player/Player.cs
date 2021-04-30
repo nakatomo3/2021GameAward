@@ -23,7 +23,7 @@ public class Player : MonoBehaviour {
 
     public static Player instance;
 
-    public int mPhase = -1;//m‚Í‘º£æ¶‚Ìm
+    public int phase = 0;
 
     [SerializeField]
     private float moveIntervalMax;
@@ -372,16 +372,16 @@ public class Player : MonoBehaviour {
             GhostManager.instance.ResetStage();
 
            
-           GhostManager.instance.AddGhost(Stage.instance.startBlockList[mPhase].transform.position);
+           GhostManager.instance.AddGhost(Stage.instance.startBlockList[phase].transform.position);
 
 
 
-            mPhase++;
-            if(mPhase>= Stage.instance.startBlockList.Count) {
+            phase++;
+            if(phase >= Stage.instance.startBlockList.Count) {
                 Stage.instance.nowMode = Stage.Mode.CLEAR;
                 return;
             }
-            Enemy.imaikiteru = true;
+            Enemy.isAlive = true;
 
 
 
@@ -402,9 +402,9 @@ public class Player : MonoBehaviour {
 
             //GhostManager.instance.AddGhost();
             isMoved = false;
-            oldStepPos = Stage.instance.startBlockList[mPhase].transform.position;
-            newStepPos = Stage.instance.startBlockList[mPhase].transform.position;
-            transform.position = Stage.instance.startBlockList[mPhase].transform.position;
+            oldStepPos = Stage.instance.startBlockList[phase].transform.position;
+            newStepPos = Stage.instance.startBlockList[phase].transform.position;
+            transform.position = Stage.instance.startBlockList[phase].transform.position;
             GhostManager.instance.ResetStage();
 
         }
