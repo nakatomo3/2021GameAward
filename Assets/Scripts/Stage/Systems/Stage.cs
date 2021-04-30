@@ -92,7 +92,7 @@ public class Stage : MonoBehaviour {
 	public List<Vector3> checkPoints { get; private set; } = new List<Vector3>();
 	public List<int> maxTimes { get; private set; } = new List<int>();
 	public List<int> maxLoop { get; private set; } = new List<int>();
-	public List<GameObject> startBlockList { get; private set; } = new List<GameObject>();
+	public List<GameObject> startBlockList { get; private set; } = new List<GameObject>(7);
 
 	private int visualMode = 0;
 	private int nowTurn;
@@ -159,9 +159,6 @@ public class Stage : MonoBehaviour {
 			Debug.LogError("ステージの読み込みで不具合が発生したため終了しました");
 			SystemSupporter.ExitGame();
 		}
-
-		Instantiate(objectList[1]);
-		Instantiate(start);
 
 		pauseWindow = Instantiate(pauseWindow);
 
@@ -337,6 +334,21 @@ public class Stage : MonoBehaviour {
 				if (line == "") {
 					if (detailBase != null) {
 						detailBase.SetData(information);
+						if(code == 'I') {
+							var phase = ((StartBlock)detailBase).phaseCount;
+							if(phase == 0) {
+								Debug.LogError("スタートのフェーズが0でした。1以上に修正してください\n座標：" + detailBase.gameObject.transform.position);
+							}
+							var tmp = phase;
+							int count = 1;
+							while (tmp > 0) {
+								if ((tmp & 1) > 0) {
+									startBlockList[count - 1] = detailBase.gameObject;
+								}
+								tmp >>= 1;
+								count++;
+							}
+						}
 					}
 					continue;
 				}

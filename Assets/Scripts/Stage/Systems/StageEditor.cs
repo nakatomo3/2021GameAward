@@ -52,7 +52,7 @@ public class StageEditor : MonoBehaviour {
 	public static int editorPhase {
 		get { return _editorPhase; }
 		set {
-			_editorPhase = (value + 7) % 7;
+			_editorPhase = (value + 8) % 8;
 		}
 	}
 
@@ -112,6 +112,9 @@ public class StageEditor : MonoBehaviour {
 			editorPhase++;
 		}
 		phaseText.text = (editorPhase + 1).ToString();
+		if(editorPhase == 7) {
+			phaseText.text = "‘S•”";
+		}
 
 		CameraControl();
 		InformationUpdate();

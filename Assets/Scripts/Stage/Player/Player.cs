@@ -364,36 +364,37 @@ public class Player : MonoBehaviour {
     }
 
     void GoalCheck() {
-        // if (transform.position == Stage.instance.goalPosition) {
         GameObject obj = Stage.instance.GetStageObject(this.transform.position);
         if (obj != null && obj.name[0] == 'J') {
-            //Stage.instance.nowMode = Stage.Mode.CLEAR;
             GhostManager.instance.ResetStage();
 
-            int PHASE = phase - 1;
+			var goalPhase = obj.GetComponent<Goal>().phaseCount;
+			var isThisGoal = (goalPhase & (int)Mathf.Pow(2, phase)) > 0;
+			if (isThisGoal == false) {
+				return;
+			}
+
+			int beforePhase = phase - 1;
             phase++;
-            if (PHASE >= Stage.instance.startBlockList.Count) {
+            if (beforePhase >= Stage.instance.startBlockList.Count) {
                 Stage.instance.nowMode = Stage.Mode.CLEAR;
                 return;
             }
 
-            if (PHASE == -1) {
+            if (beforePhase == -1) {
                 GhostManager.instance.AddGhost(Stage.instance.startPosition);
             } else {
-                GhostManager.instance.AddGhost(Stage.instance.startBlockList[PHASE].transform.position);
+                GhostManager.instance.AddGhost(Stage.instance.startBlockList[beforePhase].transform.position);
             }
             Enemy.isAlive = true;
 
 
 
-
-
-            //--移動方向と入力待ち時間をGhostManagerに記録する---//
+            //--移動方向とアクションをGhostManagerに記録する---//
             stepTimers.Add(stepTimer + 5);
             List<float> temp = stepTimers;
             List<ActionRecord> temp2 = actionRecord;
 
-            //GhostManager.instance.stepIntervals.Add(temp);
             GhostManager.instance.moveRecords.Add(temp2);
 
             for (int i = 0; i < stepTimers.Count; ++i) {
@@ -401,15 +402,14 @@ public class Player : MonoBehaviour {
                 actionRecord = new List<ActionRecord>();
             }
 
-            //GhostManager.instance.AddGhost();
             isMoved = false;
 
-            if (PHASE + 1 >= Stage.instance.startBlockList.Count) {
+            if (beforePhase + 1 >= Stage.instance.startBlockList.Count) {
                 return;
             }
-            oldStepPos = Stage.instance.startBlockList[PHASE + 1].transform.position;
-            newStepPos = Stage.instance.startBlockList[PHASE + 1].transform.position;
-            transform.position = Stage.instance.startBlockList[PHASE + 1].transform.position;
+            oldStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
+            newStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
+            transform.position = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             GhostManager.instance.ResetStage();
 
         }

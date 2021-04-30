@@ -38,7 +38,7 @@ public class StartBlock : DetailBase {
 	private void Update() {
 		startObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0);
 		if (Stage.instance.isEditorMode == true) {
-			startObject.SetActive((phaseCount & (int)Mathf.Pow(2,StageEditor.editorPhase)) > 0);
+			startObject.SetActive((phaseCount & (int)Mathf.Pow(2,StageEditor.editorPhase)) > 0 || StageEditor.editorPhase == 7);
 		}
 	}
 

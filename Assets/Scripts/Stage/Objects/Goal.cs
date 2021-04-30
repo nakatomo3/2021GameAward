@@ -23,7 +23,7 @@ public class Goal : DetailBase {
 	void Update() {
 		goalObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0);
 		if (Stage.instance.isEditorMode == true) {
-			goalObject.SetActive((phaseCount & (int)Mathf.Pow(2, StageEditor.editorPhase)) > 0);
+			goalObject.SetActive((phaseCount & (int)Mathf.Pow(2, StageEditor.editorPhase)) > 0 || StageEditor.editorPhase == 7);
 		}
 	}
 
