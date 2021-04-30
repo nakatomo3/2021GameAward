@@ -210,7 +210,7 @@ public class StageEditor : MonoBehaviour {
 				}
 				for (int i = 0; i < Mathf.Abs(startPos.x - transform.position.x) + 1; i++) {
 					for (int j = 0; j < Mathf.Abs(startPos.z - transform.position.z) + 1; j++) {
-						if (transform.position != Vector3.zero) {
+						if (new Vector3(i, 0, -j) != Vector3.zero) {
 							Stage.instance.GenerateObject(leftUp + new Vector3(i, 0, -j), Stage.instance.objectList[objIndex]);
 						}
 					}
