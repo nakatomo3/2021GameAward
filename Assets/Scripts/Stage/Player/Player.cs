@@ -26,7 +26,8 @@ public class Player : MonoBehaviour {
     public int phase = 0;
 
     [SerializeField]
-    private float moveIntervalMax;
+    [HideInInspector]
+    public float moveIntervalMax;
 
     [HideInInspector]
     public bool isMoved = false; //動き始めたか
@@ -36,8 +37,7 @@ public class Player : MonoBehaviour {
     public bool canAction = true;
 
     public float stepTimer = 0;
-    public float remainingTime = 20; //プレイヤーの残り時間
-    public float remainingTimeMax = 10;
+
 
     private float moveIntervalTimer = 0;
 
@@ -52,8 +52,6 @@ public class Player : MonoBehaviour {
     public Vector3 newStepPos;
     [HideInInspector]
     public List<ActionRecord> actionRecord;
-    [HideInInspector]
-    public List<float> stepTimers;
 
     [HideInInspector]
     public Vector3 startPosition;
@@ -79,7 +77,6 @@ public class Player : MonoBehaviour {
 
     private void Awake() {
         actionRecord = new List<ActionRecord>();
-        stepTimers = new List<float>();
         startPosition = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         if (instance != null) {
             Destroy(instance);
@@ -223,7 +220,6 @@ public class Player : MonoBehaviour {
 
         //移動キーを押したら入力待ち時間を記録する
         if (isMoveKey == true && canMove == true) {
-            stepTimers.Add(stepTimer);
             stepTimer = 0;
         }
 
@@ -294,7 +290,7 @@ public class Player : MonoBehaviour {
                             }
 
                             //射出されているとこは行けない
-                            if (pos == pistonPos[i] + addPos) {
+                            if (pos == pistonPos[i] - addPos) {
                                 canStep = false;
                             }
                         }
@@ -337,36 +333,13 @@ public class Player : MonoBehaviour {
             oneOnly.sprite = timerNumbers[0];
         }
 
-        if (remainingTime < 0) {
-            TimeUp();
-        }
-
-        if (remainingTime < 2.8f) {
-            //今の状態が透過度を下げる状態か否か
-            //現在の時間が2.9秒からどれだけ離れているか、それを0.5fで割った値の整数部分が偶数→透過度を下げる
-            var isDown = Mathf.FloorToInt((2.8f - remainingTime) / 0.25f) % 2 == 0;
-            var alpha = (2.8f - remainingTime) / 0.25f - Mathf.Floor((2.8f - remainingTime) / 0.25f);
-            if (isDown == false) {
-                alpha = 1 - alpha;
-            }
-            filter.color = new Color(1, 1, 1, alpha);
-        } else if (remainingTime < 7) {
-            var isDown = Mathf.FloorToInt((7 - remainingTime) / 0.35f) % 2 == 0;
-            var alpha = (7 - remainingTime) / 0.35f - Mathf.Floor((7 - remainingTime) / 0.35f);
-            if (isDown == false) {
-                alpha = 1 - alpha;
-            }
-            filter.color = new Color(1, 1, 1, alpha / 2);
-        } else {
-            filter.color = new Color(1, 1, 1, 0);
-        }
-
     }
 
     void GoalCheck() {
         GameObject obj = Stage.instance.GetStageObject(this.transform.position);
         if (obj != null && obj.name[0] == 'J') {
             GhostManager.instance.ResetStage();
+            Stage.instance.SetTurn(Stage.instance.turnMax);
 
 			var goalPhase = obj.GetComponent<Goal>().phaseCount;
 			var isThisGoal = (goalPhase & (int)Mathf.Pow(2, phase)) > 0;
@@ -391,23 +364,20 @@ public class Player : MonoBehaviour {
 
 
             //--移動方向とアクションをGhostManagerに記録する---//
-            stepTimers.Add(stepTimer + 5);
-            List<float> temp = stepTimers;
             List<ActionRecord> temp2 = actionRecord;
 
             GhostManager.instance.moveRecords.Add(temp2);
 
-            for (int i = 0; i < stepTimers.Count; ++i) {
-                stepTimers = new List<float>();
+            for (int i = 0; i < actionRecord.Count; ++i) {
                 actionRecord = new List<ActionRecord>();
             }
 
             isMoved = false;
 
-            if (beforePhase + 1 >= Stage.instance.startBlockList.Count) {
+            if (beforePhase + 2 >= Stage.instance.startBlockList.Count) {
                 return;
             }
-            oldStepPos = Stage.instance.startBlockList[beforePhase + 1].transform.position;
+            oldStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             newStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             transform.position = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             GhostManager.instance.ResetStage();
@@ -416,15 +386,12 @@ public class Player : MonoBehaviour {
     }
 
     public void CheckPoint(float time, int _loopMax) {
-        remainingTime = time;
-        remainingTimeMax = time;
         startPosition = this.transform.position;
 
     }
 
     //ダメージを受けると秒数が減る
     public void Damage(float value) {
-        remainingTime -= value;
     }
 
     //タイムアップ演出

@@ -12,7 +12,10 @@ public class GhostManager : MonoBehaviour {
 
     private List<Vector3> startPositions;
 
+    private List<Vector3> newPos;
+    private List<Vector3> oldPos;
 
+    private float moveStepRate = 0;//移動の線形補完で使う
 
     private int ghostCount = 0;
     public GameObject ghost;
@@ -23,14 +26,29 @@ public class GhostManager : MonoBehaviour {
         moveRecords = new List<List<ActionRecord>>();
         nowSteps = new List<int>();
         startPositions = new List<Vector3>();
+
+        newPos = new List<Vector3>();
+        oldPos = new List<Vector3>();
     }
 
 
     void Update() {
-        //Move();
+        moveStepRate += Time.deltaTime;
+        if (moveStepRate >= Player.instance.moveIntervalMax) {
+            moveStepRate = Player.instance.moveIntervalMax;
+
+            for (int i = 0; i < ghosts.Count; ++i) {
+                oldPos[i] = newPos[i];
+            }
+        }
+        for (int i = 0; i < ghosts.Count; ++i) {
+            ghosts[i].transform.position = Vector3.Lerp(oldPos[i], newPos[i], moveStepRate / Player.instance.moveIntervalMax);
+        }
     }
 
     public void Action() {
+    
+
         for (int i = 0; i < ghosts.Count; i++) {
             //最大ステップになったら移動しない
             if (nowSteps[i] < moveRecords[i].Count) {
@@ -44,6 +62,8 @@ public class GhostManager : MonoBehaviour {
     public void ResetStage() {
         for (int i = 0; i < ghostCount; i++) {
             ghosts[i].transform.position = startPositions[i];
+            newPos[i]= startPositions[i];
+            oldPos[i] = startPositions[i];
             nowSteps[i] = 0;
         }
     }
@@ -53,6 +73,9 @@ public class GhostManager : MonoBehaviour {
         ghosts[i].transform.position = startPositions[i];
         ghosts[i].transform.rotation = Quaternion.identity;
         nowSteps[i] = 0;
+
+        newPos[i] = startPositions[i];
+        oldPos[i] = startPositions[i];
     }
 
     public void DeleteGhost() {
@@ -70,24 +93,25 @@ public class GhostManager : MonoBehaviour {
 
     //moveRecordsをもとに次の場所に移動する
     public void MoveNextStep(int i) {
+        moveStepRate = 0;
         switch (moveRecords[i][nowSteps[i]]) {
             case ActionRecord.UP:
-                ghosts[i].transform.position += Vector3.forward;
+               newPos[i] = ghosts[i].transform.position + Vector3.forward;
                 ghosts[i].transform.localEulerAngles = Vector3.up * 0;
                 break;
 
             case ActionRecord.DOWN:
-                ghosts[i].transform.position += Vector3.back;
+                newPos[i] = ghosts[i].transform.position + Vector3.back;
                 ghosts[i].transform.localEulerAngles = Vector3.up * 180;
                 break;
 
             case ActionRecord.LEFT:
-                ghosts[i].transform.position += Vector3.left;
+                newPos[i] = ghosts[i].transform.position + Vector3.left;
                 ghosts[i].transform.localEulerAngles = Vector3.up * -90;
                 break;
 
             case ActionRecord.RIGHT:
-                ghosts[i].transform.position += Vector3.right;
+                newPos[i] = ghosts[i].transform.position + Vector3.right;
                 ghosts[i].transform.localEulerAngles = Vector3.up * 90;
                 break;
 
@@ -107,5 +131,7 @@ public class GhostManager : MonoBehaviour {
         ghostCount++;
         nowSteps.Add(0);
         startPositions.Add(startPos);
+        oldPos.Add(startPos);
+        newPos.Add(startPos);
     }
 }
