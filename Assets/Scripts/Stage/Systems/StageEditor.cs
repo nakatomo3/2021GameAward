@@ -112,7 +112,7 @@ public class StageEditor : MonoBehaviour {
 			editorPhase++;
 		}
 		phaseText.text = (editorPhase + 1).ToString();
-		if(editorPhase == 7) {
+		if (editorPhase == 7) {
 			phaseText.text = "全部";
 		}
 
@@ -210,11 +210,15 @@ public class StageEditor : MonoBehaviour {
 				}
 				for (int i = 0; i < Mathf.Abs(startPos.x - transform.position.x) + 1; i++) {
 					for (int j = 0; j < Mathf.Abs(startPos.z - transform.position.z) + 1; j++) {
-						Stage.instance.GenerateObject(leftUp + new Vector3(i, 0, -j), Stage.instance.objectList[objIndex]);
+						if (transform.position != Vector3.zero) {
+							Stage.instance.GenerateObject(leftUp + new Vector3(i, 0, -j), Stage.instance.objectList[objIndex]);
+						}
 					}
 				}
 			} else {
-				Stage.instance.GenerateObject(transform.position, Stage.instance.objectList[objIndex]);
+				if (transform.position != Vector3.zero) {
+					Stage.instance.GenerateObject(transform.position, Stage.instance.objectList[objIndex]);
+				}
 			}
 		}
 
@@ -243,11 +247,15 @@ public class StageEditor : MonoBehaviour {
 				}
 				for (int i = 0; i < Mathf.Abs(startPos.x - transform.position.x) + 1; i++) {
 					for (int j = 0; j < Mathf.Abs(startPos.z - transform.position.z) + 1; j++) {
-						DestroyObj(leftUp + new Vector3(i, 0, -j));
+						if (new Vector3(i, 0, -j) != Vector3.zero) {
+							DestroyObj(leftUp + new Vector3(i, 0, -j));
+						}
 					}
 				}
 			} else {
-				DestroyObj(transform.position);
+				if (transform.position != Vector3.zero) {
+					DestroyObj(transform.position);
+				}
 			}
 
 
@@ -353,7 +361,7 @@ public class StageEditor : MonoBehaviour {
 			optionCount = 0;
 		}
 
-		
+
 
 		//チャンネル設定を一括で出来るように
 		if (editingScript is ChannelBase && optionCount == 0) {
@@ -403,15 +411,15 @@ public class StageEditor : MonoBehaviour {
 							((PulseField)editingScript).modeIntervalOn -= 1;
 						}
 						break;
-                    case 1: //インターバルオフ
-                        if (isRightInput) {
-                            ((PulseField)editingScript).modeIntervalOff += 1;
-                        }
-                        if (isLeftInput) {
-                            ((PulseField)editingScript).modeIntervalOff -= 1;
-                        }
-                        break;
-                    case 2: //遅延
+					case 1: //インターバルオフ
+						if (isRightInput) {
+							((PulseField)editingScript).modeIntervalOff += 1;
+						}
+						if (isLeftInput) {
+							((PulseField)editingScript).modeIntervalOff -= 1;
+						}
+						break;
+					case 2: //遅延
 						if (isRightInput) {
 							((PulseField)editingScript).delay += 1;
 						}
@@ -421,42 +429,42 @@ public class StageEditor : MonoBehaviour {
 						break;
 				}
 				break;
-            case 'F': //ピストン
-                optionMax = 4;
-                switch (optionCount) {
-                    case 0: //インターバルオン
-                        if (isRightInput) {
-                            ((Piston)editingScript).pistonIntervalOn += 1;
-                        }
-                        if (isLeftInput) {
-                            ((Piston)editingScript).pistonIntervalOn -= 1;
-                        }
-                        break;
-                    case 1: //インターバルオフ
-                        if (isRightInput) {
-                            ((Piston)editingScript).pistonIntervalOff += 1;
-                        }
-                        if (isLeftInput) {
-                            ((Piston)editingScript).pistonIntervalOff -= 1;
-                        }
-                        break;
-                    case 2: //遅延
-                        if (isRightInput) {
-                            ((Piston)editingScript).delay += 1;
-                        }
-                        if (isLeftInput) {
-                            ((Piston)editingScript).delay -= 1;
-                        }
-                        break;
-                    case 3: //方向
-                        if (isRightInput) {
-                            ((Piston)editingScript).direction += 1;
-                        }
-                        if (isLeftInput) {
-                            ((Piston)editingScript).direction -= 1;
-                        }
-                        break;
-                }
+			case 'F': //ピストン
+				optionMax = 4;
+				switch (optionCount) {
+					case 0: //インターバルオン
+						if (isRightInput) {
+							((Piston)editingScript).pistonIntervalOn += 1;
+						}
+						if (isLeftInput) {
+							((Piston)editingScript).pistonIntervalOn -= 1;
+						}
+						break;
+					case 1: //インターバルオフ
+						if (isRightInput) {
+							((Piston)editingScript).pistonIntervalOff += 1;
+						}
+						if (isLeftInput) {
+							((Piston)editingScript).pistonIntervalOff -= 1;
+						}
+						break;
+					case 2: //遅延
+						if (isRightInput) {
+							((Piston)editingScript).delay += 1;
+						}
+						if (isLeftInput) {
+							((Piston)editingScript).delay -= 1;
+						}
+						break;
+					case 3: //方向
+						if (isRightInput) {
+							((Piston)editingScript).direction += 1;
+						}
+						if (isLeftInput) {
+							((Piston)editingScript).direction -= 1;
+						}
+						break;
+				}
 				break;
 			case 'I': //Start
 				optionMax = 3;
@@ -478,7 +486,7 @@ public class StageEditor : MonoBehaviour {
 						}
 						break;
 					case 2:
-						if(isRightInput || isLeftInput) {
+						if (isRightInput || isLeftInput) {
 							((StartBlock)editingScript).isTutorial = !((StartBlock)editingScript).isTutorial;
 						}
 						break;
@@ -531,9 +539,9 @@ public class StageEditor : MonoBehaviour {
 				case 'E':
 					detailObjectName.text = "パルスフィールド";
 					break;
-                case 'F':
-                    detailObjectName.text = "ピストン";
-                    break;
+				case 'F':
+					detailObjectName.text = "ピストン";
+					break;
 				case 'I':
 					detailObjectName.text = "スタート";
 					break;
