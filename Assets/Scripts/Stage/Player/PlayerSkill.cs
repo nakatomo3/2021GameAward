@@ -184,16 +184,13 @@ public class PlayerSkill : MonoBehaviour {
 		if (skillChargeTimer[(int)Skill.LOOP] >= skillChargeMax[(int)Skill.LOOP]) {
 			skillNum[(int)Skill.LOOP]--;
 
-			//--ˆÚ“®•ûŒü‚Æ“ü—Í‘Ò‚¿ŽžŠÔ‚ðGhostManager‚É‹L˜^‚·‚é---//
-			Player.instance.stepTimers.Add(Player.instance.stepTimer + 5);
-			List<float> temp = Player.instance.stepTimers;
+			
 			List<ActionRecord> temp2 = Player.instance.actionRecord;
 
 			//GhostManager.instance.stepIntervals.Add(temp);
 			GhostManager.instance.moveRecords.Add(temp2);
 
-			for (int i = 0; i < Player.instance.stepTimers.Count; ++i) {
-				Player.instance.stepTimers = new List<float>();
+			for (int i = 0; i < Player.instance.actionRecord.Count; ++i) {
 				Player.instance.actionRecord = new List<ActionRecord>();
 			}
 
@@ -204,7 +201,6 @@ public class PlayerSkill : MonoBehaviour {
 			transform.position = Player.instance.startPosition;
 			GhostManager.instance.ResetStage();
 
-			Player.instance.remainingTime = Player.instance.remainingTimeMax;
 
 			skillReChargeTimer[(int)Skill.LOOP] = 0;
 			skillChargeTimer[(int)Skill.LOOP] = 0;
@@ -225,13 +221,11 @@ public class PlayerSkill : MonoBehaviour {
 			transform.position = Player.instance.startPosition;
 			transform.localEulerAngles = Vector3.zero;
 
-			Player.instance.remainingTime = Player.instance.remainingTimeMax;
 			skillReChargeTimer[(int)Skill.RESET] = 0;
 			isSkillCharge[(int)Skill.RESET] = false;
 
 			GhostManager.instance.DeleteGhost();
 			Player.instance.actionRecord.Clear();
-			Player.instance.stepTimers.Clear();
 
 
 			for (int i = 0; i < (int)Skill.MAX; ++i) {

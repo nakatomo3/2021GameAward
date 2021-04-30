@@ -76,7 +76,7 @@ public class Stage : MonoBehaviour {
 
 	[HideInInspector]
 	[SerializeField]
-	private int turnMax;
+	public int turnMax;
 
 	[SerializeField]
 	private GameObject pauseWindow;
