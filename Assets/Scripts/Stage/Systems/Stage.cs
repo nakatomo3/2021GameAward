@@ -132,6 +132,12 @@ public class Stage : MonoBehaviour {
 		stageParent.transform.parent = transform;
 
 		nowTurn = turnMax;
+
+		startBlockList = new List<GameObject>();
+		for(int i = 0; i < 8; i++) {
+			startBlockList.Add(null);
+		}
+		startBlockList.Capacity = 8;
 	}
 
 	void Start() {
@@ -343,6 +349,9 @@ public class Stage : MonoBehaviour {
 							int count = 1;
 							while (tmp > 0) {
 								if ((tmp & 1) > 0) {
+									Debug.Log(count);
+									Debug.Log(startBlockList.Count);
+									Debug.Log(detailBase);
 									startBlockList[count - 1] = detailBase.gameObject;
 								}
 								tmp >>= 1;
@@ -363,7 +372,7 @@ public class Stage : MonoBehaviour {
 
 						//スタートブロックを取得
 						if (code == 'I') {
-							startBlockList.Add(obj);
+							//startBlockList.Add(obj);
 						}
 						continue;
 					}

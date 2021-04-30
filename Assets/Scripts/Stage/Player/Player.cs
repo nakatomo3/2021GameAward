@@ -407,7 +407,7 @@ public class Player : MonoBehaviour {
             if (beforePhase + 1 >= Stage.instance.startBlockList.Count) {
                 return;
             }
-            oldStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
+            oldStepPos = Stage.instance.startBlockList[beforePhase + 1].transform.position;
             newStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             transform.position = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             GhostManager.instance.ResetStage();
