@@ -349,9 +349,6 @@ public class Stage : MonoBehaviour {
 							int count = 1;
 							while (tmp > 0) {
 								if ((tmp & 1) > 0) {
-									Debug.Log(count);
-									Debug.Log(startBlockList.Count);
-									Debug.Log(detailBase);
 									startBlockList[count - 1] = detailBase.gameObject;
 								}
 								tmp >>= 1;
