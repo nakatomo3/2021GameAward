@@ -430,6 +430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEditorMode: 0
+  isOptionMode: 0
   stagePath: Stage
   objectIndex: 310032003300340041004200640045004600680049004a00
   objectList:
@@ -460,6 +461,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   turnMax: 20
+  pauseWindow: {fileID: 8492830367375691790, guid: aab5a798f53020b4fbdf0f9d28fabfed, type: 3}
   nowMode: 0
 --- !u!4 &356832297
 Transform:

@@ -23,7 +23,7 @@ public class Player : MonoBehaviour {
 
     public static Player instance;
 
-    public int mPhase = -1;//m‚Í‘º£æ¶‚Ìm
+    public int mPhase;//m‚Í‘º£æ¶‚Ìm
 
     [SerializeField]
     private float moveIntervalMax;
