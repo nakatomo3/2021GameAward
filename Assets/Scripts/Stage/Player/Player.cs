@@ -17,7 +17,7 @@ public enum ActionRecord {
 
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[ƒNƒ‰ƒXB‚±‚Ì‰º‚ÉPlayerMove‚âPlayerStatus‚È‚Ç•ÊƒNƒ‰ƒX‚ğì‚é—\’è
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¯ãƒ©ã‚¹ã€‚ã“ã®ä¸‹ã«PlayerMoveã‚„PlayerStatusãªã©åˆ¥ã‚¯ãƒ©ã‚¹ã‚’ä½œã‚‹äºˆå®š
 /// </summary>
 public class Player : MonoBehaviour {
 
@@ -29,14 +29,14 @@ public class Player : MonoBehaviour {
     private float moveIntervalMax;
 
     [HideInInspector]
-    public bool isMoved = false; //“®‚«n‚ß‚½‚©
+    public bool isMoved = false; //å‹•ãå§‹ã‚ãŸã‹
 
 
     [HideInInspector]
     public bool canAction = true;
 
     public float stepTimer = 0;
-    public float remainingTime = 20; //ƒvƒŒƒCƒ„[‚Ìc‚èŠÔ
+    public float remainingTime = 20; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ®‹ã‚Šæ™‚é–“
     public float remainingTimeMax = 10;
 
     private float moveIntervalTimer = 0;
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour {
     private bool isEnemyCol;
     private bool isSafe;
 
-    private string canStepCode = "1289ACdEhIJYZ"; //BAFAGAH‚Í‘«ê‚Ìó‘Ô‚ª•Ï‚í‚é‚Ì‚ÅŠÖ”“à•”‚Å”»’è
+    private string canStepCode = "1289ACdEhIJYZ"; //Bã€Fã€Gã€Hã¯è¶³å ´ã®çŠ¶æ…‹ãŒå¤‰ã‚ã‚‹ã®ã§é–¢æ•°å†…éƒ¨ã§åˆ¤å®š
 
 
 
@@ -113,7 +113,7 @@ public class Player : MonoBehaviour {
             oldStepPos = newStepPos;
             canMove = true;
         } else {
-            //Ÿ‚ÌˆÚ“®æ‚ÉüŒ`•âŠ®‚ÅˆÚ“®‚·‚é
+            //æ¬¡ã®ç§»å‹•å…ˆã«ç·šå½¢è£œå®Œã§ç§»å‹•ã™ã‚‹
             canMove = false;
             moveIntervalTimer += Time.deltaTime;
             transform.position = Vector3.Lerp(oldStepPos, newStepPos, moveIntervalTimer / moveIntervalMax);
@@ -128,7 +128,7 @@ public class Player : MonoBehaviour {
                 
 
                 if (CanStep(transform.position + Vector3.left)) {
-                    //ˆÚ“®‚·‚é‚í
+                    //ç§»å‹•ã™ã‚‹ã‚
                     actionRecord.Add(ActionRecord.LEFT);
                     newStepPos = transform.position + Vector3.left;
                     UseTurn();
@@ -194,7 +194,7 @@ public class Player : MonoBehaviour {
     }
 
     bool CanAttack(Vector3 pos) {
-       /* if (À•W‚ª“G‚ÌêŠ‚¾‚Á‚½‚ç)*/ {
+       /* if (åº§æ¨™ãŒæ•µã®å ´æ‰€ã ã£ãŸã‚‰)*/ {
            // return true;
         }
         return false;
@@ -203,7 +203,7 @@ public class Player : MonoBehaviour {
         actionRecord.Add(ActionRecord.ATTACK);
     }
 
-    //ƒvƒŒƒCƒ„[‚ÌAction()“à‚Ås“®‚µ‚½‚ÉŒÄ‚Ô
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®Action()å†…ã§è¡Œå‹•ã—ãŸæ™‚ã«å‘¼ã¶
     void UseTurn() {
         turnIntervalTimer = 0;
         canAction = false;
@@ -212,7 +212,7 @@ public class Player : MonoBehaviour {
 
     }
 
-    //“ü—Í‚Ì‘Ò‚¿ŠÔ‚ğ‹L˜^‚·‚é
+    //å…¥åŠ›ã®å¾…ã¡æ™‚é–“ã‚’è¨˜éŒ²ã™ã‚‹
     void SettingStepInterval() {
         bool isMoveKey =
             InputManager.GetKey(Keys.LEFT) ||
@@ -222,7 +222,7 @@ public class Player : MonoBehaviour {
 
         stepTimer += Time.deltaTime;
 
-        //ˆÚ“®ƒL[‚ğ‰Ÿ‚µ‚½‚ç“ü—Í‘Ò‚¿ŠÔ‚ğ‹L˜^‚·‚é
+        //ç§»å‹•ã‚­ãƒ¼ã‚’æŠ¼ã—ãŸã‚‰å…¥åŠ›å¾…ã¡æ™‚é–“ã‚’è¨˜éŒ²ã™ã‚‹
         if (isMoveKey == true && canMove == true) {
             stepTimers.Add(stepTimer);
             stepTimer = 0;
@@ -241,31 +241,31 @@ public class Player : MonoBehaviour {
             if (pos != Vector3.zero) {
                 Player.instance.Fall();
             }
-            return true; //“Ş—‚Å‚ài‚ß‚é‚¯‚Ç—‚¿‚é
+            return true; //å¥ˆè½ã§ã‚‚é€²ã‚ã‚‹ã‘ã©è½ã¡ã‚‹
         }
         var code = Stage.GetObjectCode(obj.name);
         if (canStepCode.Contains(code.ToString())) {
             canStep = true;
         }
-        if (code == 'B') { //ƒVƒƒƒbƒ^[
+        if (code == 'B') { //ã‚·ãƒ£ãƒƒã‚¿ãƒ¼
             var door = obj.GetComponent<Door>();
             var channel = door.channel;
             canStep = (SwitchManager.instance.channel[channel] ^ door.isReverse);
 
-        } else if (code == 'F') {//ƒsƒXƒgƒ“
+        } else if (code == 'F') {//ãƒ”ã‚¹ãƒˆãƒ³
             canStep = false;
         } else {
-            //ƒsƒXƒgƒ“‚ªËo‚³‚ê‚Ä‚¢‚éó‘Ô‚Ì”»’è
+            //ãƒ”ã‚¹ãƒˆãƒ³ãŒå°„å‡ºã•ã‚Œã¦ã„ã‚‹çŠ¶æ…‹ã®åˆ¤å®š
             Vector3[] pistonPos = new Vector3[8];
-            pistonPos[0] = this.transform.position + Vector3.right + Vector3.forward;//‰E‘O
-            pistonPos[1] = this.transform.position + Vector3.right + Vector3.back;//‰E‰º
-            pistonPos[2] = this.transform.position + Vector3.left + Vector3.back;//¶Œã‚ë
-            pistonPos[3] = this.transform.position + Vector3.left + Vector3.forward;//¶‘O
+            pistonPos[0] = this.transform.position + Vector3.right + Vector3.forward;//å³å‰
+            pistonPos[1] = this.transform.position + Vector3.right + Vector3.back;//å³ä¸‹
+            pistonPos[2] = this.transform.position + Vector3.left + Vector3.back;//å·¦å¾Œã‚
+            pistonPos[3] = this.transform.position + Vector3.left + Vector3.forward;//å·¦å‰
 
-            pistonPos[4] = this.transform.position + Vector3.forward * 2;//‘O
-            pistonPos[5] = this.transform.position + Vector3.back * 2;//Œã‚ë
-            pistonPos[6] = this.transform.position + Vector3.right * 2;//‰E
-            pistonPos[7] = this.transform.position + Vector3.left * 2;//¶
+            pistonPos[4] = this.transform.position + Vector3.forward * 2;//å‰
+            pistonPos[5] = this.transform.position + Vector3.back * 2;//å¾Œã‚
+            pistonPos[6] = this.transform.position + Vector3.right * 2;//å³
+            pistonPos[7] = this.transform.position + Vector3.left * 2;//å·¦
 
             for (int i = 0; i < 8; ++i) {
                 GameObject g = Stage.instance.GetStageObject(pistonPos[i]);
@@ -294,7 +294,7 @@ public class Player : MonoBehaviour {
                                     break;
                             }
 
-                            //Ëo‚³‚ê‚Ä‚¢‚é‚Æ‚±‚Ís‚¯‚È‚¢
+                            //å°„å‡ºã•ã‚Œã¦ã„ã‚‹ã¨ã“ã¯è¡Œã‘ãªã„
                             if (pos == pistonPos[i] + addPos) {
                                 canStep = false;
                             }
@@ -317,8 +317,8 @@ public class Player : MonoBehaviour {
         if (isMoved == true) {
             // remainingTime -= Time.deltaTime;
         }
-        var intPart = Mathf.Floor(Stage.instance.GetTurn()); //®”•”•ª
-                                                             //¬”•”•ª‚ğˆê‰c‚µ‚Ä‚¨‚­
+        var intPart = Mathf.Floor(Stage.instance.GetTurn()); //æ•´æ•°éƒ¨åˆ†
+                                                             //å°æ•°éƒ¨åˆ†ã‚’ä¸€å¿œæ®‹ã—ã¦ãŠã
                                                              //var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
         if (Stage.instance.GetTurn() >= 10) {
             var ten = Mathf.FloorToInt(Stage.instance.GetTurn() / 10);
@@ -343,8 +343,8 @@ public class Player : MonoBehaviour {
         }
 
         if (remainingTime < 2.8f) {
-            //¡‚Ìó‘Ô‚ª“§‰ß“x‚ğ‰º‚°‚éó‘Ô‚©”Û‚©
-            //Œ»İ‚ÌŠÔ‚ª2.9•b‚©‚ç‚Ç‚ê‚¾‚¯—£‚ê‚Ä‚¢‚é‚©A‚»‚ê‚ğ0.5f‚ÅŠ„‚Á‚½’l‚Ì®”•”•ª‚ª‹ô”¨“§‰ß“x‚ğ‰º‚°‚é
+            //ä»Šã®çŠ¶æ…‹ãŒé€éåº¦ã‚’ä¸‹ã’ã‚‹çŠ¶æ…‹ã‹å¦ã‹
+            //ç¾åœ¨ã®æ™‚é–“ãŒ2.9ç§’ã‹ã‚‰ã©ã‚Œã ã‘é›¢ã‚Œã¦ã„ã‚‹ã‹ã€ãã‚Œã‚’0.5fã§å‰²ã£ãŸå€¤ã®æ•´æ•°éƒ¨åˆ†ãŒå¶æ•°â†’é€éåº¦ã‚’ä¸‹ã’ã‚‹
             var isDown = Mathf.FloorToInt((2.8f - remainingTime) / 0.25f) % 2 == 0;
             var alpha = (2.8f - remainingTime) / 0.25f - Mathf.Floor((2.8f - remainingTime) / 0.25f);
             if (isDown == false) {
@@ -387,7 +387,7 @@ public class Player : MonoBehaviour {
 
 
 
-            //--ˆÚ“®•ûŒü‚Æ“ü—Í‘Ò‚¿ŠÔ‚ğGhostManager‚É‹L˜^‚·‚é---//
+            //--ç§»å‹•æ–¹å‘ã¨å…¥åŠ›å¾…ã¡æ™‚é–“ã‚’GhostManagerã«è¨˜éŒ²ã™ã‚‹---//
             stepTimers.Add(stepTimer + 5);
             List<float> temp = stepTimers;
             List<ActionRecord> temp2 = actionRecord;
@@ -417,22 +417,22 @@ public class Player : MonoBehaviour {
 
     }
 
-    //ƒ_ƒ[ƒW‚ğó‚¯‚é‚Æ•b”‚ªŒ¸‚é
+    //ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ã‚‹ã¨ç§’æ•°ãŒæ¸›ã‚‹
     public void Damage(float value) {
         remainingTime -= value;
     }
 
-    //ƒ^ƒCƒ€ƒAƒbƒv‰‰o
+    //ã‚¿ã‚¤ãƒ ã‚¢ãƒƒãƒ—æ¼”å‡º
     private void TimeUp() {
         Stage.instance.nowMode = Stage.Mode.DEAD;
     }
 
-    //ƒS[ƒXƒg‚ÅƒQ[ƒ€ƒI[ƒo[‰‰o
+    //ã‚´ãƒ¼ã‚¹ãƒˆã§ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ¼”å‡º
     public void GhostGameOver() {
         Stage.instance.nowMode = Stage.Mode.DEAD;
     }
 
-    //—‚¿‚Ì‰‰o
+    //è½ã¡æ™‚ã®æ¼”å‡º
     public void Fall() {
         Stage.instance.nowMode = Stage.Mode.DEAD;
     }

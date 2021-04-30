@@ -23,6 +23,9 @@ public class Stage : MonoBehaviour {
 	[Tooltip("編集モード")]
 	public bool isEditorMode = false;
 
+	[Tooltip("オプションモード")]
+	public bool isOptionMode = false;
+
 	[Tooltip("Resources/StageDatas以下のパスです")]
 	public string stagePath;
 
@@ -71,13 +74,17 @@ public class Stage : MonoBehaviour {
 	[SerializeField]
 	private GameObject[] particles;
 
-    [SerializeField]
-    private int turnMax;
-    #endregion
+	[HideInInspector]
+	[SerializeField]
+	private int turnMax;
+
+	[SerializeField]
+	private GameObject pauseWindow;
+	#endregion
 
 
-    #region データ部
-    public GameObject stageParent { get; private set; }
+	#region データ部
+	public GameObject stageParent { get; private set; }
 	public List<List<char>> stageData { get; private set; }
 	public Vector3 startPosition { get; private set; }
 	public Vector3 goalPosition { get; private set; } = Vector3.one * -1;
@@ -85,10 +92,10 @@ public class Stage : MonoBehaviour {
 	public List<Vector3> checkPoints { get; private set; } = new List<Vector3>();
 	public List<int> maxTimes { get; private set; } = new List<int>();
 	public List<int> maxLoop { get; private set; } = new List<int>();
-    public List<GameObject> startBlockList { get; private set; } = new List<GameObject>();
+	public List<GameObject> startBlockList { get; private set; } = new List<GameObject>();
 
 	private int visualMode = 0;
-    private int nowTurn;
+	private int nowTurn;
 
 	private List<string> comments = new List<string>();
 
@@ -124,7 +131,7 @@ public class Stage : MonoBehaviour {
 		stageParent = new GameObject("StageParent");
 		stageParent.transform.parent = transform;
 
-        nowTurn = turnMax;
+		nowTurn = turnMax;
 	}
 
 	void Start() {
@@ -156,15 +163,15 @@ public class Stage : MonoBehaviour {
 		Instantiate(objectList[1]);
 		Instantiate(start);
 
+		pauseWindow = Instantiate(pauseWindow);
+
+		//ーーーーーーーーーーー以下、開始時演出の処理ーーーーーーーーーー
+
 		//チェックポイントをソートしてカメラ順にする
 		checkPoints.Sort((a, b) => SortCehckpoint(a, b));
 		checkPoints.Add(goalPosition);
 		Vector3 centerPos = Vector3.zero;
 		Vector3 endPos = Vector3.zero;
-
-		foreach(var pos in checkPoints) {
-			Debug.Log(pos);
-		}
 
 		if (checkPoints.Count == 1) { //startとゴールのみ
 			centerPos = goalPosition / 2;
@@ -206,15 +213,22 @@ public class Stage : MonoBehaviour {
 				}
 				break;
 			case Mode.GAME:
-				if (InputManager.GetKeyDown(Keys.START) && SystemSupporter.IsUnityEditor() == true) {
-					isEditorMode = !isEditorMode;
-					player.transform.position = stageEditor.transform.position;
+				if (InputManager.GetKeyDown(Keys.SELECT)) {
+					if (SystemSupporter.IsUnityEditor() == true) {
+						isEditorMode = !isEditorMode;
+						player.transform.position = stageEditor.transform.position;
+					}
 				}
-
-				player.SetActive(!isEditorMode);
 				if (SystemSupporter.IsUnityEditor()) {
 					stageEditor.SetActive(isEditorMode);
 				}
+
+				if (InputManager.GetKeyDown(Keys.START)) {
+					isOptionMode = !isOptionMode;
+				}
+				pauseWindow.SetActive(isOptionMode);
+
+				player.SetActive(!(isEditorMode || isOptionMode));
 				break;
 			case Mode.DEAD:
 				player.SetActive(false);
@@ -322,7 +336,7 @@ public class Stage : MonoBehaviour {
 				line = reader.ReadLine();
 				if (line == "") {
 					if (detailBase != null) {
-                        detailBase.SetData(information);
+						detailBase.SetData(information);
 					}
 					continue;
 				}
@@ -335,11 +349,11 @@ public class Stage : MonoBehaviour {
 						var obj = GetStageObject(pos);
 						detailBase = obj.GetComponent<DetailBase>();
 
-                        //スタートブロックを取得
-                        if (code == 'I') {
-                            startBlockList.Add(obj);
-                        }
-                        continue;
+						//スタートブロックを取得
+						if (code == 'I') {
+							startBlockList.Add(obj);
+						}
+						continue;
 					}
 					information += line + "\n";
 				}
@@ -562,18 +576,18 @@ public class Stage : MonoBehaviour {
 		return (int)(bChannel - aChannel);
 	}
 
-    public void Action() {
-        GhostManager.instance.Action();
-    }
-    public void SetTurn(int n) {
-        nowTurn = n;
-    }
-    public void AddTurn(int n) {
-        nowTurn += n;
-    }
+	public void Action() {
+		GhostManager.instance.Action();
+	}
+	public void SetTurn(int n) {
+		nowTurn = n;
+	}
+	public void AddTurn(int n) {
+		nowTurn += n;
+	}
 
 
-    public int GetTurn() {
-        return nowTurn;
-    }
+	public int GetTurn() {
+		return nowTurn;
+	}
 }
