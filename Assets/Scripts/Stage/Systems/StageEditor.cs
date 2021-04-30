@@ -19,6 +19,10 @@ public class StageEditor : MonoBehaviour {
 
 	[Disable]
 	[SerializeField]
+	private Text phaseText;
+
+	[Disable]
+	[SerializeField]
 	private Text objInfo;
 
 	[Disable]
@@ -44,6 +48,14 @@ public class StageEditor : MonoBehaviour {
 
 
 	#region ÉfÅ[É^ïî
+	private static int _editorPhase;
+	public static int editorPhase {
+		get { return _editorPhase; }
+		set {
+			_editorPhase = (value + 7) % 7;
+		}
+	}
+
 	private bool isDetailMode = false;
 
 	private float inputTimer = 0;
@@ -95,6 +107,11 @@ public class StageEditor : MonoBehaviour {
 			}
 			objList.SetActive(isObjListMode);
 		}
+
+		if (InputManager.GetKeyDown(Keys.Y)) {
+			editorPhase++;
+		}
+		phaseText.text = (editorPhase + 1).ToString();
 
 		CameraControl();
 		InformationUpdate();
@@ -469,7 +486,7 @@ public class StageEditor : MonoBehaviour {
 				if (isRightInput) {
 					((Goal)editingScript).phaseCount++;
 				}
-				if (isRightInput) {
+				if (isLeftInput) {
 					((Goal)editingScript).phaseCount--;
 				}
 				break;
@@ -477,11 +494,6 @@ public class StageEditor : MonoBehaviour {
 	}
 
 	private void CameraControl() {
-		if (InputManager.GetKeyDown(Keys.Y)) {
-			cameraMode++;
-			cameraMode = (cameraMode + cameraMax) % cameraMax;
-		}
-
 		Stage.instance.camera.transform.position = transform.position + new Vector3(0, cameraBaseRange + cameraMode * cameraStepRange, 0);
 		Stage.instance.camera.transform.localEulerAngles = new Vector3(90, 0, 0);
 	}

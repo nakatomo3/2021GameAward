@@ -18,23 +18,23 @@ time:10,20,30
 #Detail
 J_Goal
 pos:3,5
-phaseCount:0
+phaseCount:7
 
 I_Start
 pos:1,0
-phaseCount:0
+phaseCount:1
 turnMax:1
 isTutorial:False
 
 I_Start
 pos:4,0
-phaseCount:0
+phaseCount:2
 turnMax:1
 isTutorial:False
 
 I_Start
 pos:6,0
-phaseCount:0
+phaseCount:4
 turnMax:1
 isTutorial:False
 

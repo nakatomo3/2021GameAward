@@ -5,13 +5,20 @@ using System.Text;
 
 public class StartBlock : DetailBase {
 
+	#region インスペクタ参照部
+	[Disable]
+	[SerializeField]
+	private GameObject startObject;
+	#endregion
+
+	#region データ部
 	private int _phaseCount;
 	public int phaseCount {
 		get { return _phaseCount; }
 		set {
 			var count = value;
 			count = Mathf.Max(0, count);
-			count = Mathf.Min(9, count);
+			count = Mathf.Min(127, count);
 			_phaseCount = count;
 		}
 	}
@@ -26,13 +33,34 @@ public class StartBlock : DetailBase {
 		}
 	}
 	public bool isTutorial = false;
+	#endregion
 
-    public override void Action() {
-        
-    }
-    public override string ToEditorString() {
+	private void Update() {
+		startObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0);
+		if (Stage.instance.isEditorMode == true) {
+			startObject.SetActive((phaseCount & (int)Mathf.Pow(2,StageEditor.editorPhase)) > 0);
+		}
+	}
+
+	public override void Action() {
+
+	}
+	public override string ToEditorString() {
 		StringBuilder sb = new StringBuilder();
-		sb.AppendLine("フェーズ:" + phaseCount);
+		var tmp = phaseCount;
+		var s = "";
+		int count = 1;
+		while (tmp > 0) {
+			if ((tmp & 1) > 0) {
+				s += count.ToString() + ",";
+			}
+			tmp >>= 1;
+			count++;
+		}
+		if (s == "") {
+			s = "エラー";
+		}
+		sb.AppendLine("フェーズ:" + s);
 		sb.AppendLine("ターン制限:" + turnMax);
 		sb.AppendLine("制限なし:" + isTutorial);
 		return sb.ToString();
@@ -63,7 +91,7 @@ public class StartBlock : DetailBase {
 						turnMax = int.Parse(value);
 						break;
 					case "isTutorial":
-						if(value.ToLower() == "true") {
+						if (value.ToLower() == "true") {
 							isTutorial = true;
 						}
 						break;

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7256783851628133028}
   - component: {fileID: 4035046814982908779}
   m_Layer: 6
-  m_Name: Start
+  m_Name: I_Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa54694ef99de74db0c3a9ded140547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startObject: {fileID: 7871572858194130879}
   isTutorial: 0
 --- !u!1 &7871572858194130879
 GameObject:
@@ -57,7 +58,6 @@ GameObject:
   - component: {fileID: 5129443778980315809}
   - component: {fileID: 2576108231411519105}
   - component: {fileID: 1738964531101295144}
-  - component: {fileID: 3697211945071622146}
   m_Layer: 6
   m_Name: Start
   m_TagString: Untagged
@@ -128,19 +128,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3697211945071622146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7871572858194130879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfa54694ef99de74db0c3a9ded140547, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTutorial: 0
 --- !u!1001 &4894363366586849525
 PrefabInstance:
   m_ObjectHideFlags: 0
