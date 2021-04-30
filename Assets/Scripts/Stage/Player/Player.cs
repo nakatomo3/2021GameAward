@@ -54,7 +54,7 @@ public class Player : MonoBehaviour {
     public List<ActionRecord> actionRecord;
     [HideInInspector]
     public List<float> stepTimers;
-  
+
     [HideInInspector]
     public Vector3 startPosition;
 
@@ -125,7 +125,7 @@ public class Player : MonoBehaviour {
             if (InputManager.GetKey(Keys.LEFT)) {
                 transform.localEulerAngles = Vector3.up * -90;
                 isMoved = true;
-                
+
 
                 if (CanStep(transform.position + Vector3.left)) {
                     //移動するわ
@@ -141,7 +141,7 @@ public class Player : MonoBehaviour {
 
             }
             if (InputManager.GetKey(Keys.UP)) {
-                
+
                 transform.localEulerAngles = Vector3.up * 0;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.forward)) {
@@ -157,7 +157,7 @@ public class Player : MonoBehaviour {
 
             }
             if (InputManager.GetKey(Keys.RIGHT)) {
-                
+
                 transform.localEulerAngles = Vector3.up * 90;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.right)) {
@@ -169,11 +169,9 @@ public class Player : MonoBehaviour {
                     UseTurn();
                 }
                 moveIntervalTimer = 0;
-
-
             }
             if (InputManager.GetKey(Keys.DOWN)) {
-             
+
                 transform.localEulerAngles = Vector3.up * 180;
                 isMoved = true;
                 if (CanStep(transform.position + Vector3.back)) {
@@ -194,8 +192,9 @@ public class Player : MonoBehaviour {
     }
 
     bool CanAttack(Vector3 pos) {
-       /* if (座標が敵の場所だったら)*/ {
-           // return true;
+        /* if (座標が敵の場所だったら)*/
+        {
+            // return true;
         }
         return false;
     }
@@ -367,19 +366,21 @@ public class Player : MonoBehaviour {
     void GoalCheck() {
         // if (transform.position == Stage.instance.goalPosition) {
         GameObject obj = Stage.instance.GetStageObject(this.transform.position);
-        if (obj!=null && obj.name[0] == 'J') {
+        if (obj != null && obj.name[0] == 'J') {
             //Stage.instance.nowMode = Stage.Mode.CLEAR;
             GhostManager.instance.ResetStage();
 
-           
-           GhostManager.instance.AddGhost(Stage.instance.startBlockList[phase].transform.position);
-
-
-
+            int PHASE = phase - 1;
             phase++;
-            if(phase >= Stage.instance.startBlockList.Count) {
+            if (PHASE >= Stage.instance.startBlockList.Count) {
                 Stage.instance.nowMode = Stage.Mode.CLEAR;
                 return;
+            }
+
+            if (PHASE == -1) {
+                GhostManager.instance.AddGhost(Stage.instance.startPosition);
+            } else {
+                GhostManager.instance.AddGhost(Stage.instance.startBlockList[PHASE].transform.position);
             }
             Enemy.isAlive = true;
 
@@ -402,9 +403,13 @@ public class Player : MonoBehaviour {
 
             //GhostManager.instance.AddGhost();
             isMoved = false;
-            oldStepPos = Stage.instance.startBlockList[phase].transform.position;
-            newStepPos = Stage.instance.startBlockList[phase].transform.position;
-            transform.position = Stage.instance.startBlockList[phase].transform.position;
+
+            if (PHASE + 1 >= Stage.instance.startBlockList.Count) {
+                return;
+            }
+            oldStepPos = Stage.instance.startBlockList[PHASE + 1].transform.position;
+            newStepPos = Stage.instance.startBlockList[PHASE + 1].transform.position;
+            transform.position = Stage.instance.startBlockList[PHASE + 1].transform.position;
             GhostManager.instance.ResetStage();
 
         }

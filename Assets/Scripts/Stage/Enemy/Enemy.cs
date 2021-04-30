@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour {
             isAlive = false;
         }
 
-        for(int i=0; i<GhostManager.instance.ghosts.Count; ++i) {
+        for (int i = 0; i < GhostManager.instance.ghosts.Count; ++i) {
             if (GhostManager.instance.ghosts[i].transform.position == this.transform.position) {
                 isAlive = false;
             }
@@ -27,5 +27,5 @@ public class Enemy : MonoBehaviour {
         this.transform.GetChild(0).gameObject.SetActive(isAlive);
     }
 
- 
+
 }
