@@ -2,8 +2,6 @@
 size:26,9
 design:0
 pos:-2,4
-loop:1,2,3
-time:10,20,30
 
 #Comment
 

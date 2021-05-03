@@ -276,16 +276,6 @@ public class Stage : MonoBehaviour {
 			line = reader.ReadLine();
 			var posX = int.Parse(line.Split(':')[1].Split(',')[0]);
 			var posY = int.Parse(line.Split(':')[1].Split(',')[1]);
-			line = reader.ReadLine(); //Loop回数
-			var checkPointString = line.Split(':')[1].Split(',');
-			for (int i = 0; i < checkPointString.Length; i++) {
-				maxLoop.Add(int.Parse(checkPointString[i]));
-			}
-			line = reader.ReadLine(); //時間
-			checkPointString = line.Split(':')[1].Split(',');
-			for (int i = 0; i < checkPointString.Length; i++) {
-				maxTimes.Add(int.Parse(checkPointString[i]));
-			}
 
 			//objectHeaderに当たるまでコメント読み込み
 			bool isComment = false;
@@ -468,22 +458,6 @@ public class Stage : MonoBehaviour {
 		sb.AppendLine("size:" + sizeX.ToString() + "," + sizeY.ToString());
 		sb.AppendLine("design:" + 0.ToString()); //ステージデザイン
 		sb.AppendLine("pos:" + maxLeft + "," + maxDown);
-		var loops = "";
-		for (int i = 0; i < maxLoop.Count; i++) {
-			loops += maxLoop[i];
-			if (i != maxLoop.Count - 1) {
-				loops += ",";
-			}
-		}
-		sb.AppendLine("loop:" + loops);
-		var times = "";
-		for (int i = 0; i < maxTimes.Count; i++) {
-			times += maxTimes[i];
-			if (i != maxTimes.Count - 1) {
-				times += ",";
-			}
-		}
-		sb.Append("time:" + times);
 		sb.AppendLine();
 		sb.AppendLine();
 
