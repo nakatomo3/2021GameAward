@@ -456,7 +456,7 @@ public class Stage : MonoBehaviour {
 		//ステージヘッダーに書き込み
 		sb.AppendLine(stageHeader);
 		sb.AppendLine("size:" + sizeX.ToString() + "," + sizeY.ToString());
-		sb.AppendLine("design:" + 0.ToString()); //ステージデザイン
+		sb.AppendLine("design:" + visualMode.ToString()); //ステージデザイン
 		sb.AppendLine("pos:" + maxLeft + "," + maxDown);
 		sb.AppendLine();
 		sb.AppendLine();
