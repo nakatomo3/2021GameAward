@@ -95,7 +95,7 @@ public class Stage : MonoBehaviour {
 	public List<GameObject> startBlockList { get; private set; } = new List<GameObject>(7);
 
 	public int visualMode { get; private set; } = 0;
-	private int nowTurn;
+	
 
 	private List<string> comments = new List<string>();
 
@@ -131,7 +131,6 @@ public class Stage : MonoBehaviour {
 		stageParent = new GameObject("StageParent");
 		stageParent.transform.parent = transform;
 
-		nowTurn = turnMax;
 
 		startBlockList = new List<GameObject>();
 		for(int i = 0; i < 8; i++) {
@@ -572,15 +571,5 @@ public class Stage : MonoBehaviour {
 	public void Action() {
 		GhostManager.instance.Action();
 	}
-	public void SetTurn(int n) {
-		nowTurn = n;
-	}
-	public void AddTurn(int n) {
-		nowTurn += n;
-	}
 
-
-	public int GetTurn() {
-		return nowTurn;
-	}
 }

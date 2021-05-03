@@ -22,7 +22,7 @@ public class Ghost : MonoBehaviour {
 
     protected bool CheckViewPlayer(Vector3 viewDirection, Vector3 playerDistance) {
         //プレイヤーと同じ位置にいる
-        if (this.transform.position == Player.instance.transform.position) {
+        if (this.transform.position == Player.instance.newStepPos) {
             if (this.transform.position != Stage.instance.startPosition) {
                 Player.instance.GhostGameOver();
                 return true;
@@ -41,7 +41,7 @@ public class Ghost : MonoBehaviour {
         bool isIntoView = Mathf.Abs(angle) < viewAngle / 180 * 3.14 && len < viewDist;
         bool isViewForward = viewDirection == direction && len < viewDist;
         if (isIntoView == true || isViewForward == true) {
-            Vector3 playerPos = Player.instance.transform.position;
+            Vector3 playerPos = Player.instance.newStepPos;
             Vector3 thisPos = this.transform.position;
 
 

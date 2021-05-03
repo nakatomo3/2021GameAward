@@ -61,7 +61,7 @@ public class Player : MonoBehaviour {
 
     private string canStepCode = "1289ACdEhIJYZ"; //B、F、G、Hは足場の状態が変わるので関数内部で判定
 
-
+    public int nowTurn;
 
     [SerializeField]
     private Sprite[] timerNumbers;
@@ -88,6 +88,9 @@ public class Player : MonoBehaviour {
         filter = Stage.instance.lastMomentFilter.GetComponent<Image>();
         oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
+
+        GameObject startObj = Stage.instance.GetStageObject(this.transform.position);
+        nowTurn = startObj.GetComponent<StartBlock>().turnMax;
     }
 
     // Update is called once per frame
@@ -95,6 +98,7 @@ public class Player : MonoBehaviour {
         Action();
         SettingStepInterval();
         UpdateTurn();
+
     }
 
     private void FixedUpdate() {
@@ -151,7 +155,6 @@ public class Player : MonoBehaviour {
                 }
                 moveIntervalTimer = 0;
 
-
             }
             if (InputManager.GetKey(Keys.RIGHT)) {
 
@@ -204,8 +207,7 @@ public class Player : MonoBehaviour {
         turnIntervalTimer = 0;
         canAction = false;
         Stage.instance.Action();
-        Stage.instance.AddTurn(-1);
-
+        nowTurn--;
     }
 
     //入力の待ち時間を記録する
@@ -312,19 +314,19 @@ public class Player : MonoBehaviour {
         if (isMoved == true) {
             // remainingTime -= Time.deltaTime;
         }
-        var intPart = Mathf.Floor(Stage.instance.GetTurn()); //整数部分
+        var intPart = Mathf.Floor(nowTurn); //整数部分
                                                              //小数部分を一応残しておく
                                                              //var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
-        if (Stage.instance.GetTurn() >= 10) {
-            var ten = Mathf.FloorToInt(Stage.instance.GetTurn() / 10);
-            var one = Mathf.FloorToInt(Stage.instance.GetTurn() - ten * 10);
+        if (nowTurn >= 10) {
+            var ten = Mathf.FloorToInt(nowTurn / 10);
+            var one = Mathf.FloorToInt(nowTurn - ten * 10);
             tenDigit.sprite = timerNumbers[ten];
             oneDigit.sprite = timerNumbers[one];
             tenDigit.enabled = true;
             oneDigit.enabled = true;
             oneOnly.enabled = false;
-        } else if (Stage.instance.GetTurn() > 0) {
-            var one = Mathf.FloorToInt(Stage.instance.GetTurn());
+        } else if (nowTurn > 0) {
+            var one = Mathf.FloorToInt(nowTurn);
             oneOnly.sprite = timerNumbers[one];
             tenDigit.enabled = false;
             oneDigit.enabled = false;
@@ -339,7 +341,6 @@ public class Player : MonoBehaviour {
         GameObject obj = Stage.instance.GetStageObject(this.transform.position);
         if (obj != null && obj.name[0] == 'J') {
             GhostManager.instance.ResetStage();
-            Stage.instance.SetTurn(Stage.instance.turnMax);
 
 			var goalPhase = obj.GetComponent<Goal>().phaseCount;
 			var isThisGoal = (goalPhase & (int)Mathf.Pow(2, phase)) > 0;
@@ -362,7 +363,9 @@ public class Player : MonoBehaviour {
             }
             Enemy.isAlive = true;
 
-
+            var newStart = Stage.instance.startBlockList[beforePhase + 2];
+            transform.position = newStart.transform.position;
+            nowTurn = newStart.GetComponent<StartBlock>().turnMax;
 
             //--移動方向とアクションをGhostManagerに記録する---//
             List<ActionRecord> temp2 = actionRecord;

@@ -44,7 +44,7 @@ public class GhostManager : MonoBehaviour {
         for (int i = 0; i < ghosts.Count; ++i) {
             ghosts[i].transform.position = Vector3.Lerp(oldPos[i], newPos[i], moveStepRate / Player.instance.moveIntervalMax);
         }
-        
+
     }
 
     public void Action() {
@@ -54,6 +54,11 @@ public class GhostManager : MonoBehaviour {
                 MoveNextStep(i);
                 nowSteps[i]++;
             }
+
+
+            if (Stage.instance.GetStageObject(ghosts[i].transform.position).name[0] == 'J') {
+                ResetGhost(i);
+            }
         }
     }
 
@@ -61,7 +66,7 @@ public class GhostManager : MonoBehaviour {
     public void ResetStage() {
         for (int i = 0; i < ghostCount; i++) {
             ghosts[i].transform.position = startPositions[i];
-            newPos[i]= startPositions[i];
+            newPos[i] = startPositions[i];
             oldPos[i] = startPositions[i];
             nowSteps[i] = 0;
         }
@@ -95,7 +100,7 @@ public class GhostManager : MonoBehaviour {
         moveStepRate = 0;
         switch (moveRecords[i][nowSteps[i]]) {
             case ActionRecord.UP:
-               newPos[i] = ghosts[i].transform.position + Vector3.forward;
+                newPos[i] = ghosts[i].transform.position + Vector3.forward;
                 ghosts[i].transform.localEulerAngles = Vector3.up * 0;
                 break;
 
