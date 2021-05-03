@@ -309,9 +309,6 @@ public class Stage : MonoBehaviour {
 					if (_code == 'Y') {
 						checkPoints.Add(new Vector3(posX + i, 0, posY - lineCount));
 					}
-					if (_code == '9') { //ゴール
-						goalPosition = new Vector3(posX + i, 0, posY - lineCount);
-					}
 				}
 				if (reader.Peek() <= -1) { //Detail終了時
 					Debug.Log("Detailなしで終了しました");
@@ -339,6 +336,9 @@ public class Stage : MonoBehaviour {
 							int count = 1;
 							while (tmp > 0) {
 								if ((tmp & 1) > 0) {
+									if(startBlockList[count - 1] != null) {
+										Debug.LogError("同じフェイズのスタートを検知しました。\n旧座標：" + startBlockList[count - 1].transform.position + "\n新座標：" + detailBase.transform.position);
+									}
 									startBlockList[count - 1] = detailBase.gameObject;
 								}
 								tmp >>= 1;
@@ -382,6 +382,7 @@ public class Stage : MonoBehaviour {
 			Instantiate(objectList[0], new Vector3(-1, 0, -1), Quaternion.identity, stageParent.transform);
 			Instantiate(objectList[0], new Vector3(0, 0, -1), Quaternion.identity, stageParent.transform);
 			Instantiate(objectList[0], new Vector3(1, 0, -1), Quaternion.identity, stageParent.transform);
+			Instantiate(objectList[objectIndex.FindIndex(n => n == 'I')], stageParent.transform);
 		} catch (Exception e) {
 			Debug.LogError(e);
 		}
