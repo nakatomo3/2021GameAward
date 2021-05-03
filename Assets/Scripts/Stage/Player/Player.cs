@@ -357,7 +357,8 @@ public class Player : MonoBehaviour {
             if (beforePhase == -1) {
                 GhostManager.instance.AddGhost(Stage.instance.startPosition);
             } else {
-                GhostManager.instance.AddGhost(Stage.instance.startBlockList[beforePhase].transform.position);
+                GhostManager.instance.AddGhost(Stage.instance.startBlockList[beforePhase+1].transform.position);
+
             }
             Enemy.isAlive = true;
 
