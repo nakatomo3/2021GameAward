@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4200738829909540599}
   - component: {fileID: 8167446581531116539}
   - component: {fileID: 5521374829088462661}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7930678667562352026}
   - component: {fileID: 4073108355422230850}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: d_DamageField
   m_TagString: Untagged
   m_Icon: {fileID: 0}

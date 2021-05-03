@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5781952114599775094}
   - component: {fileID: 5834487899330562008}
   - component: {fileID: 4728231688569171093}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1762639087434079594}
   - component: {fileID: 537341626229881520}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: E_PulseField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 4771495272717907731}
   - component: {fileID: 3028742106397325706}
   - component: {fileID: 7264897436066159836}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 8411393088615568116}
   - component: {fileID: 5093606591846607779}
   - component: {fileID: 7071961583499072981}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}

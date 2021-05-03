@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5427713402026309003}
   - component: {fileID: 5798196137760312605}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: F_Piston
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 13365127693973163}
   - component: {fileID: 6610471930446626214}
   - component: {fileID: 1188563517365381746}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 7401404536629147689}
   - component: {fileID: 1565430414465845329}
   - component: {fileID: 2318460042070874307}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 5310229770456368233}
   - component: {fileID: 4959433675001408197}
   - component: {fileID: 8190572871658238513}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}

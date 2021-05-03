@@ -1,9 +1,8 @@
 #StageData
 size:7,6
-design:0
+design:2
 pos:0,5
-loop:1,2,3
-time:10,20,30
+
 
 #Comment
 
@@ -12,13 +11,25 @@ time:10,20,30
 1111111
 1111111
 1111111
-1111111
+AAA1111
 II11I1I
 
 #Detail
 J_Goal
 pos:3,5
 phaseCount:15
+
+A_Switch
+pos:0,1
+channel:0
+
+A_Switch
+pos:1,1
+channel:0
+
+A_Switch
+pos:2,1
+channel:0
 
 I_Start
 pos:0,0

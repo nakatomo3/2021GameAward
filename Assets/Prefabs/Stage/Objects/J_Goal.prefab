@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 705572110283291165}
   - component: {fileID: 8141077028912658568}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: J_Goal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 9027579797327401190}
   - component: {fileID: 8531964987612515896}
   - component: {fileID: 936528853975367454}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
