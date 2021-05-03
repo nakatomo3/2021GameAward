@@ -44,11 +44,10 @@ public class GhostManager : MonoBehaviour {
         for (int i = 0; i < ghosts.Count; ++i) {
             ghosts[i].transform.position = Vector3.Lerp(oldPos[i], newPos[i], moveStepRate / Player.instance.moveIntervalMax);
         }
+        
     }
 
     public void Action() {
-    
-
         for (int i = 0; i < ghosts.Count; i++) {
             //最大ステップになったら移動しない
             if (nowSteps[i] < moveRecords[i].Count) {
@@ -127,11 +126,14 @@ public class GhostManager : MonoBehaviour {
 
 
     public void AddGhost(Vector3 startPos) {
-        ghosts.Add(Instantiate(ghost, new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y), Quaternion.identity));
+        ghosts.Add(Instantiate(ghost, startPos, Quaternion.identity));
         ghostCount++;
         nowSteps.Add(0);
         startPositions.Add(startPos);
         oldPos.Add(startPos);
         newPos.Add(startPos);
+
+        oldPos[startPositions.Count - 1] = startPos;
+        newPos[startPositions.Count - 1] = startPos;
     }
 }
