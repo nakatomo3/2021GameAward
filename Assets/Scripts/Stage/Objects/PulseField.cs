@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
+using UnityEngine.UI;
 
 public class PulseField : DetailBase {
 
@@ -48,9 +49,12 @@ public class PulseField : DetailBase {
             }
         }
     }
-    private bool isPulse = false;
-
+    private bool isPulse = true;
     private bool isDamage = true;
+
+    [SerializeField]
+    private Text pulseCount;
+    private int pCount;
 
     // Start is called before the first frame update
     void Start() {
@@ -62,10 +66,18 @@ public class PulseField : DetailBase {
         if (modeIntervalOff == 0) {
             modeIntervalOff = 2;
         }
+        pCount = modeIntervalOff;
     }
 
     // Update is called once per frame
     void Update() {
+        if (isPulse == true) {
+            pCount = modeIntervalOn - pulseTimer;
+        } else {
+            pCount = modeIntervalOff - pulseTimer;
+        }
+        pulseCount.text = "" + pCount;
+
         if (InputManager.GetKeyDown(Keys.LEFT)) {
             Action();
         }
