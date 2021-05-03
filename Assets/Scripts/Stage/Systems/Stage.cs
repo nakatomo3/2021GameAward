@@ -94,7 +94,7 @@ public class Stage : MonoBehaviour {
 	public List<int> maxLoop { get; private set; } = new List<int>();
 	public List<GameObject> startBlockList { get; private set; } = new List<GameObject>(7);
 
-	private int visualMode = 0;
+	public int visualMode { get; private set; } = 0;
 	private int nowTurn;
 
 	private List<string> comments = new List<string>();
