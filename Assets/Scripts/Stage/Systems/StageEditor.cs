@@ -400,31 +400,31 @@ public class StageEditor : MonoBehaviour {
 						break;
 				}
 				break;
-			case 'E': //palseBlock
+			case 'E': //pulseBlock
 				optionMax = 3;
 				switch (optionCount) {
 					case 0: //インターバルオン
 						if (isRightInput) {
-							((PulseField)editingScript).modeIntervalOn += 1;
+							((PulseField)editingScript).modeIntervalOn ++;
 						}
 						if (isLeftInput) {
-							((PulseField)editingScript).modeIntervalOn -= 1;
+							((PulseField)editingScript).modeIntervalOn --;
 						}
 						break;
 					case 1: //インターバルオフ
 						if (isRightInput) {
-							((PulseField)editingScript).modeIntervalOff += 1;
+							((PulseField)editingScript).modeIntervalOff ++;
 						}
 						if (isLeftInput) {
-							((PulseField)editingScript).modeIntervalOff -= 1;
+							((PulseField)editingScript).modeIntervalOff --;
 						}
 						break;
 					case 2: //遅延
 						if (isRightInput) {
-							((PulseField)editingScript).delay += 1;
+							((PulseField)editingScript).delay ++;
 						}
 						if (isLeftInput) {
-							((PulseField)editingScript).delay -= 1;
+							((PulseField)editingScript).delay --;
 						}
 						break;
 				}
@@ -434,34 +434,34 @@ public class StageEditor : MonoBehaviour {
 				switch (optionCount) {
 					case 0: //インターバルオン
 						if (isRightInput) {
-							((Piston)editingScript).pistonIntervalOn += 1;
+							((Piston)editingScript).pistonIntervalOn ++;
 						}
 						if (isLeftInput) {
-							((Piston)editingScript).pistonIntervalOn -= 1;
+							((Piston)editingScript).pistonIntervalOn --;
 						}
 						break;
 					case 1: //インターバルオフ
 						if (isRightInput) {
-							((Piston)editingScript).pistonIntervalOff += 1;
+							((Piston)editingScript).pistonIntervalOff ++;
 						}
 						if (isLeftInput) {
-							((Piston)editingScript).pistonIntervalOff -= 1;
+							((Piston)editingScript).pistonIntervalOff --;
 						}
 						break;
 					case 2: //遅延
 						if (isRightInput) {
-							((Piston)editingScript).delay += 1;
+							((Piston)editingScript).delay ++;
 						}
 						if (isLeftInput) {
-							((Piston)editingScript).delay -= 1;
+							((Piston)editingScript).delay --;
 						}
 						break;
 					case 3: //方向
 						if (isRightInput) {
-							((Piston)editingScript).direction += 1;
+							((Piston)editingScript).direction ++;
 						}
 						if (isLeftInput) {
-							((Piston)editingScript).direction -= 1;
+							((Piston)editingScript).direction --;
 						}
 						break;
 				}
@@ -501,7 +501,44 @@ public class StageEditor : MonoBehaviour {
 					((Goal)editingScript).phaseCount--;
 				}
 				break;
-		}
+            case 'K': //Krawler
+                optionMax = 4;
+                switch (optionCount) {
+                    case 0: //X座標移動範囲
+                        if (isRightInput) {
+                            ((Krawler)editingScript).moveRangeX ++;
+                        }
+                        if (isLeftInput) {
+                            ((Krawler)editingScript).moveRangeX --;
+                        }
+                        break;
+                    case 1: //Z座標移動範囲
+                        if (isRightInput) {
+                            ((Krawler)editingScript).moveRangeZ ++;
+                        }
+                        if (isLeftInput) {
+                            ((Krawler)editingScript).moveRangeZ --;
+                        }
+                        break;
+                    case 2: //インターバル
+                        if (isRightInput) {
+                            ((Krawler)editingScript).interval ++;
+                        }
+                        if (isLeftInput) {
+                            ((Krawler)editingScript).interval --;
+                        }
+                        break;
+                    case 3: //ダメージ量
+                        if (isRightInput) {
+                            ((Krawler)editingScript).damage ++;
+                        }
+                        if (isLeftInput) {
+                            ((Krawler)editingScript).damage --;
+                        }
+                        break;
+                }
+                break;
+        }
 	}
 
 	private void CameraControl() {
@@ -548,7 +585,10 @@ public class StageEditor : MonoBehaviour {
 				case 'J':
 					detailObjectName.text = "ゴール";
 					break;
-			}
+                case 'K':
+                    detailObjectName.text = "クローラ";
+                    break;
+            }
 		} else {
 			detailWindow.SetActive(false);
 		}

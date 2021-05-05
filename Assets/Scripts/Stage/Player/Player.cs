@@ -59,7 +59,7 @@ public class Player : MonoBehaviour {
     private bool isEnemyCol;
     private bool isSafe;
 
-    private string canStepCode = "1289ACdEhIJYZ"; //B、F、G、Hは足場の状態が変わるので関数内部で判定
+    private string canStepCode = "1289ACdEhIJKYZ"; //B、F、G、Hは足場の状態が変わるので関数内部で判定
 
     public int nowTurn;
 

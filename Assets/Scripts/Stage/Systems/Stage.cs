@@ -570,6 +570,7 @@ public class Stage : MonoBehaviour {
 
 	public void Action() {
 		GhostManager.instance.Action();
+        Krawler.instance.Action();
 	}
 
 }
