@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
+using System;
 
 public class Krawler : DetailBase {
 
@@ -16,26 +17,18 @@ public class Krawler : DetailBase {
     public int moveRangeX { // X座標移動範囲
         get { return _moveRangeX; }
         set {
-            _moveRangeX = value + (10 % 10);
-            if (value < 0) {
-                _moveRangeX = 0;
-            }
-            if (value > 10) {
-                _moveRangeX = 10;
-            }
+            _moveRangeX = value;
+            _moveRangeX = Mathf.Max(-10, _moveRangeX);
+            _moveRangeX = Mathf.Min(10, _moveRangeX);
         }
     }
     private int _moveRangeZ;
     public int moveRangeZ { // Y座標移動範囲
         get { return _moveRangeZ; }
         set {
-            _moveRangeZ = value + (10 % 10);
-            if (value < 0) {
-                _moveRangeZ = 0;
-            }
-            if (value > 10) {
-                _moveRangeZ = 10;
-            }
+            _moveRangeZ = value;
+            _moveRangeZ = Mathf.Max(-10, _moveRangeZ);
+            _moveRangeZ = Mathf.Min(10, _moveRangeZ);
         }
     }
     private int intervalTimer;
@@ -43,26 +36,18 @@ public class Krawler : DetailBase {
     public int interval { // インターバル
         get { return _interval; }
         set {
-            _interval = value + (10 % 10);
-            if (value < 0) {
-                _interval = 0;
-            }
-            if (value > 10) {
-                _interval = 10;
-            }
+            _interval = value;
+            _interval = Mathf.Max(0, _interval);
+            _interval = Mathf.Min(10, _interval);
         }
     }
     private int _damage;
     public int damage { // ダメージ量
         get { return _damage; }
         set {
-            _damage = value + (10 % 10);
-            if (value < 0) {
-                _damage = 0;
-            }
-            if (value > 10) {
-                _damage = 10;
-            }
+            _damage = value;
+            _damage = Mathf.Max(0, _damage);
+            _damage = Mathf.Min(10, _damage);
         }
     }
     bool isReverseX;
@@ -77,6 +62,13 @@ public class Krawler : DetailBase {
 
         isReverseX = false;
         isReverseZ = false;
+
+        if (moveRangeX < 0) {
+            isReverseX = true;
+        }
+        if (moveRangeZ < 0) {
+            isReverseZ = true;
+        }
     }
 
     // Update is called once per frame
@@ -95,20 +87,20 @@ public class Krawler : DetailBase {
         intervalTimer = 0;
         if (moveRangeX != 0) {
             krawlerTimerX++;
-            if (krawlerTimerX > moveRangeX) {
-                krawlerTimerX = -moveRangeX + 1;
+            if (krawlerTimerX > Math.Abs(moveRangeX)) {
+                krawlerTimerX = -Math.Abs(moveRangeX) + 1;
                 isReverseX = !isReverseX;
             }
             if (isReverseX == true) {
-                krawler.transform.position += Vector3.right;
-            } else {
                 krawler.transform.position += Vector3.left;
+            } else {
+                krawler.transform.position += Vector3.right;
             }
         }
         if (moveRangeZ != 0) {
             krawlerTimerZ++;
-            if (krawlerTimerZ > moveRangeZ) {
-                krawlerTimerZ = -moveRangeZ + 1;
+            if (krawlerTimerZ > Math.Abs(moveRangeZ)) {
+                krawlerTimerZ = -Math.Abs(moveRangeZ) + 1;
                 isReverseZ = !isReverseZ;
             }
             if (isReverseZ == true) {
