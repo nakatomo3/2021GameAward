@@ -427,6 +427,14 @@ public class StageEditor : MonoBehaviour {
 							((PulseField)editingScript).delay -= 1;
 						}
 						break;
+                    //case 3: //反転
+                    //    if (isRightInput) {
+                    //        ((PulseField)editingScript).isPulse = true;
+                    //    }
+                    //    if (isLeftInput) {
+                    //        ((PulseField)editingScript).isPulse = false;
+                    //    }
+                    //    break;
 				}
 				break;
 			case 'F': //ピストン
@@ -501,7 +509,44 @@ public class StageEditor : MonoBehaviour {
 					((Goal)editingScript).phaseCount--;
 				}
 				break;
-		}
+            case 'K': //Krawler
+                optionMax = 4;
+                switch (optionCount) {
+                    case 0: //X座標移動範囲
+                        if (isRightInput) {
+                            ((Krawler)editingScript).moveRangeX += 1;
+                        }
+                        if (isLeftInput) {
+                            ((Krawler)editingScript).moveRangeX -= 1;
+                        }
+                        break;
+                    case 1: //Y座標移動範囲
+                        if (isRightInput) {
+                            ((Krawler)editingScript).moveRangeY += 1;
+                        }
+                        if (isLeftInput) {
+                            ((Krawler)editingScript).moveRangeY -= 1;
+                        }
+                        break;
+                    case 2: //インターバル
+                        if (isRightInput) {
+                            ((Krawler)editingScript).interval += 1;
+                        }
+                        if (isLeftInput) {
+                            ((Krawler)editingScript).interval -= 1;
+                        }
+                        break;
+                    case 3: //ダメージ量
+                        if (isRightInput) {
+                            ((Krawler)editingScript).damage += 1;
+                        }
+                        if (isLeftInput) {
+                            ((Krawler)editingScript).damage -= 1;
+                        }
+                        break;
+                }
+                break;
+        }
 	}
 
 	private void CameraControl() {
@@ -548,7 +593,10 @@ public class StageEditor : MonoBehaviour {
 				case 'J':
 					detailObjectName.text = "ゴール";
 					break;
-			}
+                case 'K':
+                    detailObjectName.text = "クローラ";
+                    break;
+            }
 		} else {
 			detailWindow.SetActive(false);
 		}
