@@ -42,6 +42,15 @@ public class PauseManager : MonoBehaviour {
 	[SerializeField]
 	private Text message;
 
+	[SerializeField]
+	private Text cancelText;
+
+	[SerializeField]
+	private GameObject buttonY;
+
+	[SerializeField]
+	private Image circleY;
+
 	[Header("--------------------")]
 	[Space(20)]
 
@@ -146,6 +155,8 @@ public class PauseManager : MonoBehaviour {
 
 	private float cursorTimer = 0;
 
+	private float dataEraseTimer;
+
 	#endregion
 
 	private void OnEnable() {
@@ -170,6 +181,7 @@ public class PauseManager : MonoBehaviour {
 		mainWindow.SetActive(false);
 		checkWindow.SetActive(false);
 		optionWindow.SetActive(false);
+		buttonY.SetActive(false);
 
 		message.text = "";
 
@@ -182,6 +194,7 @@ public class PauseManager : MonoBehaviour {
 					SubmitWindow(() => SceneManager.LoadScene("Title"), () => isMain = true);
 					break;
 				case PauseMode.OPTION:
+					EraseCheck();
 					switch (optionMode) {
 						case OptionMode.MAIN:
 							optionWindow.SetActive(true);
@@ -199,7 +212,11 @@ public class PauseManager : MonoBehaviour {
 							break;
 						case OptionMode.DELETE_CHECK:
 							message.text = messageTexts[3];
-							SubmitWindow(() => PlayerPrefs.DeleteAll(), () => optionMode = OptionMode.MAIN);
+							void Func() {
+								PlayerPrefs.DeleteAll();
+								SceneManager.LoadScene("Title");
+							}
+							SubmitWindow(Func, () => optionMode = OptionMode.MAIN);
 							break;
 					}
 
@@ -239,6 +256,24 @@ public class PauseManager : MonoBehaviour {
 		}
 	}
 
+	private void EraseCheck() {
+		buttonY.SetActive(true);
+		if (InputManager.GetKey(Keys.Y)) {
+			dataEraseTimer += Time.deltaTime;
+			Debug.Log("Y");
+		} else {
+			dataEraseTimer -= Time.deltaTime * 5;
+		}
+		if (dataEraseTimer < 0) {
+			dataEraseTimer = 0;
+		}
+		if (dataEraseTimer > 3) {
+			optionMode = OptionMode.DELETE_CHECK;
+			dataEraseTimer = 0;
+		}
+		circleY.fillAmount = dataEraseTimer / 3;
+	}
+
 	private void ChangeOption() {
 		if (InputManager.GetKeyDown(Keys.UP)) {
 			optionIndex--;
@@ -260,7 +295,7 @@ public class PauseManager : MonoBehaviour {
 				}
 				break;
 			case 1:
-				if(isRightInput || isLeftInput) {
+				if (isRightInput || isLeftInput) {
 					isFullScreen = !isFullScreen;
 				}
 				break;
