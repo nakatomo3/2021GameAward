@@ -6,7 +6,7 @@ using System.Text;
 public class Door : ChannelBase {
 
 	[SerializeField]
-    private Renderer render;
+    private Transform door;
 
 	//ƒ`ƒƒƒ“ƒlƒ‹
 
@@ -23,19 +23,15 @@ public class Door : ChannelBase {
 
     // Start is called before the first frame update
     void Start() {
-        render = GetComponentInChildren<Renderer>();
+        
     }
 
     // Update is called once per frame
     void Update() {
         if (SwitchManager.instance.channel[channel] == !isReverse) {
-            Color color = render.material.color;
-            color.a = 0.6f;
-            render.material.color = color;
+            door.transform.localPosition = new Vector3(0, -1.0f, 0);
         } else {
-            Color color = render.material.color;
-            color.a = 1.0f;
-            render.material.color = color;
+            door.transform.localPosition = new Vector3(0, -0.2f, 0);
         }
     }
 
