@@ -400,41 +400,33 @@ public class StageEditor : MonoBehaviour {
 						break;
 				}
 				break;
-			case 'E': //palseBlock
+			case 'E': //pulseBlock
 				optionMax = 3;
 				switch (optionCount) {
 					case 0: //インターバルオン
 						if (isRightInput) {
-							((PulseField)editingScript).modeIntervalOn += 1;
+							((PulseField)editingScript).modeIntervalOn ++;
 						}
 						if (isLeftInput) {
-							((PulseField)editingScript).modeIntervalOn -= 1;
+							((PulseField)editingScript).modeIntervalOn --;
 						}
 						break;
 					case 1: //インターバルオフ
 						if (isRightInput) {
-							((PulseField)editingScript).modeIntervalOff += 1;
+							((PulseField)editingScript).modeIntervalOff ++;
 						}
 						if (isLeftInput) {
-							((PulseField)editingScript).modeIntervalOff -= 1;
+							((PulseField)editingScript).modeIntervalOff --;
 						}
 						break;
 					case 2: //遅延
 						if (isRightInput) {
-							((PulseField)editingScript).delay += 1;
+							((PulseField)editingScript).delay ++;
 						}
 						if (isLeftInput) {
-							((PulseField)editingScript).delay -= 1;
+							((PulseField)editingScript).delay --;
 						}
 						break;
-                    //case 3: //反転
-                    //    if (isRightInput) {
-                    //        ((PulseField)editingScript).isPulse = true;
-                    //    }
-                    //    if (isLeftInput) {
-                    //        ((PulseField)editingScript).isPulse = false;
-                    //    }
-                    //    break;
 				}
 				break;
 			case 'F': //ピストン
@@ -442,34 +434,34 @@ public class StageEditor : MonoBehaviour {
 				switch (optionCount) {
 					case 0: //インターバルオン
 						if (isRightInput) {
-							((Piston)editingScript).pistonIntervalOn += 1;
+							((Piston)editingScript).pistonIntervalOn ++;
 						}
 						if (isLeftInput) {
-							((Piston)editingScript).pistonIntervalOn -= 1;
+							((Piston)editingScript).pistonIntervalOn --;
 						}
 						break;
 					case 1: //インターバルオフ
 						if (isRightInput) {
-							((Piston)editingScript).pistonIntervalOff += 1;
+							((Piston)editingScript).pistonIntervalOff ++;
 						}
 						if (isLeftInput) {
-							((Piston)editingScript).pistonIntervalOff -= 1;
+							((Piston)editingScript).pistonIntervalOff --;
 						}
 						break;
 					case 2: //遅延
 						if (isRightInput) {
-							((Piston)editingScript).delay += 1;
+							((Piston)editingScript).delay ++;
 						}
 						if (isLeftInput) {
-							((Piston)editingScript).delay -= 1;
+							((Piston)editingScript).delay --;
 						}
 						break;
 					case 3: //方向
 						if (isRightInput) {
-							((Piston)editingScript).direction += 1;
+							((Piston)editingScript).direction ++;
 						}
 						if (isLeftInput) {
-							((Piston)editingScript).direction -= 1;
+							((Piston)editingScript).direction --;
 						}
 						break;
 				}
@@ -514,34 +506,34 @@ public class StageEditor : MonoBehaviour {
                 switch (optionCount) {
                     case 0: //X座標移動範囲
                         if (isRightInput) {
-                            ((Krawler)editingScript).moveRangeX += 1;
+                            ((Krawler)editingScript).moveRangeX ++;
                         }
                         if (isLeftInput) {
-                            ((Krawler)editingScript).moveRangeX -= 1;
+                            ((Krawler)editingScript).moveRangeX --;
                         }
                         break;
-                    case 1: //Y座標移動範囲
+                    case 1: //Z座標移動範囲
                         if (isRightInput) {
-                            ((Krawler)editingScript).moveRangeY += 1;
+                            ((Krawler)editingScript).moveRangeZ ++;
                         }
                         if (isLeftInput) {
-                            ((Krawler)editingScript).moveRangeY -= 1;
+                            ((Krawler)editingScript).moveRangeZ --;
                         }
                         break;
                     case 2: //インターバル
                         if (isRightInput) {
-                            ((Krawler)editingScript).interval += 1;
+                            ((Krawler)editingScript).interval ++;
                         }
                         if (isLeftInput) {
-                            ((Krawler)editingScript).interval -= 1;
+                            ((Krawler)editingScript).interval --;
                         }
                         break;
                     case 3: //ダメージ量
                         if (isRightInput) {
-                            ((Krawler)editingScript).damage += 1;
+                            ((Krawler)editingScript).damage ++;
                         }
                         if (isLeftInput) {
-                            ((Krawler)editingScript).damage -= 1;
+                            ((Krawler)editingScript).damage --;
                         }
                         break;
                 }
