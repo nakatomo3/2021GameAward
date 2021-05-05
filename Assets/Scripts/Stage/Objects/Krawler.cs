@@ -50,6 +50,16 @@ public class Krawler : DetailBase {
             _damage = Mathf.Min(10, _damage);
         }
     }
+    private int _phaseCount;
+    public int phaseCount {
+        get { return _phaseCount; }
+        set {
+            var count = value;
+            count = Mathf.Max(0, count);
+            count = Mathf.Min(127, count);
+            _phaseCount = count;
+        }
+    }
     bool isReverseX;
     bool isReverseZ;
 
@@ -118,6 +128,7 @@ public class Krawler : DetailBase {
         sb.AppendLine("moveRangeZ:" + moveRangeZ);
         sb.AppendLine("interval:" + interval);
         sb.AppendLine("damage:" + damage);
+        sb.AppendLine("phaseCount:" + phaseCount);
         return sb.ToString();
     }
 
@@ -127,6 +138,20 @@ public class Krawler : DetailBase {
         sb.AppendLine("Z方向移動範囲：" + moveRangeZ);
         sb.AppendLine("インターバル：" + interval);
         sb.AppendLine("ダメージ量：" + damage);
+        var tmp = phaseCount;
+        var s = "";
+        int count = 1;
+        while (tmp > 0) {
+            if ((tmp & 1) > 0) {
+                s += count.ToString() + ",";
+            }
+            tmp >>= 1;
+            count++;
+        }
+        if (s == "") {
+            s = "エラー";
+        }
+        sb.AppendLine("フェーズ:" + s);
         return sb.ToString();
     }
 
@@ -149,6 +174,9 @@ public class Krawler : DetailBase {
                         break;
                     case "damage":
                         damage = int.Parse(value);
+                        break;
+                    case "phaseCount":
+                        phaseCount = int.Parse(value);
                         break;
                 }
             }

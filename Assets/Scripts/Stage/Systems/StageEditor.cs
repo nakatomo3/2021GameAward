@@ -502,7 +502,7 @@ public class StageEditor : MonoBehaviour {
 				}
 				break;
             case 'K': //Krawler
-                optionMax = 4;
+                optionMax = 5;
                 switch (optionCount) {
                     case 0: //X座標移動範囲
                         if (isRightInput) {
@@ -534,6 +534,14 @@ public class StageEditor : MonoBehaviour {
                         }
                         if (isLeftInput) {
                             ((Krawler)editingScript).damage --;
+                        }
+                        break;
+                    case 4: // フェーズ
+                        if (isRightInput) {
+                            ((Krawler)editingScript).phaseCount++;
+                        }
+                        if (isLeftInput) {
+                            ((Krawler)editingScript).phaseCount--;
                         }
                         break;
                 }
