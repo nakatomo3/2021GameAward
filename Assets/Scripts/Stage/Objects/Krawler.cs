@@ -74,8 +74,7 @@ public class Krawler : DetailBase {
     // Update is called once per frame
     void Update() {
         if (krawler.transform.position != Player.instance.oldStepPos && krawler.transform.position == Player.instance.transform.position) { // 同じ座標にいるとき
-            Player.instance.newStepPos = Player.instance.oldStepPos; // プレイヤーを前の座標に戻す
-            Player.instance.Damage(damage); // ダメージ処理
+			Stage.instance.DestroyEnemy(this);
         }
     }
 

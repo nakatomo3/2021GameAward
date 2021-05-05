@@ -508,16 +508,6 @@ public class Stage : MonoBehaviour {
 		streamWriter.Close();
 	}
 
-	/// <summary>
-	/// オブジェクトを生成します。
-	/// </summary>
-	/// <param name="x">x座標</param>
-	/// <param name="y">y座標</param>
-	/// <param name="obj">対象のオブジェクト(char)</param>
-	void GenerateObjct(float x, float y, char obj) {
-
-	}
-
 	public void GenerateObject(Vector3 pos, GameObject obj) {
 		if (pos == Vector3.zero) {
 			//スタートエリアなのでスキップ
@@ -551,6 +541,10 @@ public class Stage : MonoBehaviour {
 			}
 		}
 		return null;
+	}
+
+	public void DestroyEnemy(Krawler krawler) {
+		//敵を倒した処理
 	}
 
 	public static char GetObjectCode(string name) {
