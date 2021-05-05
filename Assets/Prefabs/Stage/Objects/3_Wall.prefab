@@ -48,7 +48,7 @@ MonoBehaviour:
   materials:
   - {fileID: 2100000, guid: 311eb8d07e3eb734cb6bda644187a875, type: 2}
   - {fileID: 2100000, guid: e4901a27ccae6df419968d21526dc0a1, type: 2}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 4c1c18cb9d9572143b8b43c000434f47, type: 2}
   - {fileID: 0}
 --- !u!1001 &8201044086817395962
 PrefabInstance:
