@@ -5,8 +5,13 @@ using System.Text;
 
 public class Goal : DetailBase {
 
+	[Disable]
 	[SerializeField]
 	private GameObject goalObject;
+
+	[Disable]
+	[SerializeField]
+	private GameObject core;
 
 	private int _phaseCount;
 	public int phaseCount {
@@ -19,12 +24,18 @@ public class Goal : DetailBase {
 		}
 	}
 
+	private float time;
+
 	// Update is called once per frame
 	void Update() {
 		goalObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0);
 		if (Stage.instance.isEditorMode == true) {
 			goalObject.SetActive((phaseCount & (int)Mathf.Pow(2, StageEditor.editorPhase)) > 0 || StageEditor.editorPhase == 7);
 		}
+
+		time += Time.deltaTime;
+		core.transform.localPosition = Vector3.up * (Mathf.Sin(time) * 0.125f + 0.1f);
+		core.transform.localEulerAngles = Vector3.up * time * 180;
 	}
 
 	public override void Action() {
