@@ -8,6 +8,8 @@ public class Piston : DetailBase {
 
     [SerializeField]
     private Transform piston;
+    [SerializeField]
+    private Canvas canvas;
 
     private int pistonTimer;
     private int _pistonIntervalOn;
@@ -86,10 +88,10 @@ public class Piston : DetailBase {
     // Update is called once per frame
     private void Update() {
         if (isPush == true) {
-            piston.transform.localPosition = new Vector3(1.0f, 0, 0);
+            piston.transform.localPosition = new Vector3(0, 0, 0.9f);
             pCount = pistonIntervalOn - pistonTimer;
         } else {
-            piston.transform.localPosition = new Vector3(0.1f, 0, 0);
+            piston.transform.localPosition = new Vector3(0, 0, 0);
             pCount = pistonIntervalOff - pistonTimer;
         }
         pistonCount.text = "" + pCount;
@@ -98,24 +100,25 @@ public class Piston : DetailBase {
             case Direction.Front:
                 targetPosition = transform.position + new Vector3(0, 0, -1);
                 addForce = new Vector3(0, 0, -1);
-                transform.eulerAngles = new Vector3(0, 90, 0);
+                transform.eulerAngles = new Vector3(0, 180, 0);
                 break;
             case Direction.Back:
                 targetPosition = transform.position + new Vector3(0, 0, 1);
                 addForce = new Vector3(0, 0, 1);
-                transform.eulerAngles = new Vector3(0, 270, 0);
+                transform.eulerAngles = new Vector3(0, 0, 0);
                 break;
             case Direction.Right:
                 targetPosition = transform.position + new Vector3(1, 0, 0);
                 addForce = new Vector3(1, 0, 0);
-                transform.eulerAngles = new Vector3(0, 0, 0);
+                transform.eulerAngles = new Vector3(0, 90, 0);
                 break;
             case Direction.Left:
                 targetPosition = transform.position + new Vector3(-1, 0, 0);
                 addForce = new Vector3(-1, 0, 0);
-                transform.eulerAngles = new Vector3(0, 180, 0);
+                transform.eulerAngles = new Vector3(0, -90, 0);
                 break;
         }
+        canvas.transform.eulerAngles = new Vector3(90, 0, 0); // テキストは向き固定
         if (InputManager.GetKeyDown(Keys.LEFT)) {
             Action();
         }
