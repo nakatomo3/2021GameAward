@@ -51,6 +51,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: e006d4b611bb8354c8d80519b0caa359, type: 2}
   - {fileID: 2100000, guid: 49e2ab5740cab6b4b9184e02911119a6, type: 2}
   - {fileID: 0}
+  meshFilter: {fileID: 7892727442625192297}
+  plate: {fileID: 3736213754101489272, guid: 1ed3f2f3b9d6384438c9a615d0d75093, type: 3}
 --- !u!1001 &6750327542597847335
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115,6 +117,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 35bc51ce626231d40bcf3561620789e1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 35bc51ce626231d40bcf3561620789e1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 523fc09b128f46b488f4444275c831d2, type: 2}
@@ -135,6 +141,11 @@ PrefabInstance:
 --- !u!4 &6496233967063789260 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 35bc51ce626231d40bcf3561620789e1, type: 3}
+  m_PrefabInstance: {fileID: 6750327542597847335}
+  m_PrefabAsset: {fileID: 0}
+--- !u!33 &7892727442625192297 stripped
+MeshFilter:
+  m_CorrespondingSourceObject: {fileID: -5754084199372789682, guid: 35bc51ce626231d40bcf3561620789e1, type: 3}
   m_PrefabInstance: {fileID: 6750327542597847335}
   m_PrefabAsset: {fileID: 0}
 --- !u!23 &5362782766498190755 stripped
