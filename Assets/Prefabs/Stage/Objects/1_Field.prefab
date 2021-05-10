@@ -50,7 +50,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 523fc09b128f46b488f4444275c831d2, type: 2}
   - {fileID: 2100000, guid: e006d4b611bb8354c8d80519b0caa359, type: 2}
   - {fileID: 2100000, guid: 49e2ab5740cab6b4b9184e02911119a6, type: 2}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 08a15ade5b40b1142bc2f72b5d86f6bf, type: 2}
   meshFilter: {fileID: 7892727442625192297}
   plate: {fileID: 3736213754101489272, guid: 1ed3f2f3b9d6384438c9a615d0d75093, type: 3}
 --- !u!1001 &6750327542597847335
