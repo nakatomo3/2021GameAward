@@ -17,7 +17,7 @@ public class MessagePack : DetailBase {
 	}
 
 	//入れる
-	public List<Material> images;
+	public List<Sprite> images;
 
 	#endregion
 
@@ -31,11 +31,17 @@ public class MessagePack : DetailBase {
 	private void Start() {
 		if (window == null) {
 			window = GameObject.Find("MessagePackWindow").GetComponent<Image>();
+			window.color = new Color(0, 0, 0, 0);
 		}
 	}
 
 	public override void Action() {
-		//isOnPlayerの更新
+		if (transform.position == Player.instance.transform.position) {
+			isOnPlayer = true;
+			window.sprite = images[index];
+		} else {
+
+		}
 	}
 
 	void Update() {
@@ -43,7 +49,7 @@ public class MessagePack : DetailBase {
 			timer += Time.deltaTime;
 		}
 		window.color = new Color(1, 1, 1, timer / maxTime); //フェードインする
-		if(timer > 0 && isOnPlayer == false) { //離れたらフェードアウト
+		if (timer > 0 && isOnPlayer == false) { //離れたらフェードアウト
 			timer -= Time.deltaTime;
 		}
 	}
