@@ -10,6 +10,9 @@ public class Ghost : MonoBehaviour {
     [SerializeField]
     protected float viewDist;
 
+    [HideInInspector]
+    public int id = -1; //GhostManager.csのList参照用
+
     // Start is called before the first frame update
     void Start() {
 
@@ -22,8 +25,9 @@ public class Ghost : MonoBehaviour {
 
     protected bool CheckViewPlayer(Vector3 viewDirection, Vector3 playerDistance) {
         //プレイヤーと同じ位置にいる
-        if (this.transform.position == Player.instance.newStepPos) {
-            if (this.transform.position != Stage.instance.startPosition) {
+       /* if (Stage.instance.startBlockList[Player.instance.phase].transform.position != transform.position)*/ {
+            if (GhostManager.instance.newPos[id] == Player.instance.newStepPos ||
+                GhostManager.instance.oldPos[id] == Player.instance.newStepPos) {
                 Player.instance.GhostGameOver();
                 return true;
             }
@@ -39,7 +43,7 @@ public class Ghost : MonoBehaviour {
         float angle = Mathf.Acos(dot);
 
         bool isIntoView = Mathf.Abs(angle) < viewAngle / 180 * 3.14 && len < viewDist;
-        bool isViewForward = viewDirection == direction && len < viewDist;
+        bool isViewForward = viewDirection == direction && len <= viewDist;
         if (isIntoView == true || isViewForward == true) {
             Vector3 playerPos = Player.instance.newStepPos;
             Vector3 thisPos = this.transform.position;
@@ -62,10 +66,6 @@ public class Ghost : MonoBehaviour {
                     } else if (obj.name[0] == '3') {
                         return false;
                     }
-                }
-                //スタート地点も見えない
-                if (temp.x == Mathf.Round(Player.instance.startPosition.x) && temp.z == Mathf.Round(Player.instance.startPosition.z)) {
-                    return false;
                 }
             }
 
