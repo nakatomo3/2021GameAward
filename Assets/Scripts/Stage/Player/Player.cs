@@ -83,9 +83,11 @@ public class Player : MonoBehaviour {
 	private enum GameoverMode {
 		GHOST,
 		TIMEUP,
-		FALL,
 	}
 	private GameoverMode gameoverMode;
+
+	private Material timeupIcon;
+	private Material ghostIcon;
 
 	private void Awake() {
 		actionRecord = new List<ActionRecord>();
@@ -251,10 +253,7 @@ public class Player : MonoBehaviour {
 		bool canStep = false;
 		var obj = Stage.instance.GetStageObject(pos);
 		if (obj == null) {
-			if (pos != Vector3.zero) {
-				Player.instance.Fall();
-			}
-			return true; //奈落でも進めるけど落ちる
+			return false; //奈落でも進めるけど落ちる
 		}
 		var code = Stage.GetObjectCode(obj.name);
 		if (canStepCode.Contains(code.ToString())) {
@@ -448,22 +447,18 @@ public class Player : MonoBehaviour {
 
 	//タイムアップ演出
 	private void TimeUp() {
-		isAlive = false;
+		GameOver(timeupIcon);
 		gameoverMode = GameoverMode.TIMEUP;
-		Stage.instance.nowMode = Stage.Mode.DEAD;
 	}
 
 	//ゴーストでゲームオーバー演出
 	public void GhostGameOver() {
-		isAlive = false;
+		GameOver(ghostIcon);
 		gameoverMode = GameoverMode.GHOST;
-		Stage.instance.nowMode = Stage.Mode.DEAD;
 	}
 
-	//落ち時の演出
-	public void Fall() {
+	public void GameOver(Material material) {
 		isAlive = false;
-		gameoverMode = GameoverMode.FALL;
 		Stage.instance.nowMode = Stage.Mode.DEAD;
 	}
 

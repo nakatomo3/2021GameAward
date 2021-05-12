@@ -139,9 +139,6 @@ public class Piston : DetailBase {
             if (pistonTimer >= pistonIntervalOff) {
                 if (Player.instance.transform.position == targetPosition && isPush == false) {
                     Player.instance.newStepPos += addForce; // プレイヤーを押し出す
-                    if (Stage.instance.GetStageObject(transform.position + addForce * 2) == null) { // 押し出した先が奈落なら死
-                        Player.instance.Fall();
-                    }
                 }
                 pistonTimer = 0;
                 isPush = true;
