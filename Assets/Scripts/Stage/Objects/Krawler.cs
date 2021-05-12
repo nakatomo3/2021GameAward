@@ -63,6 +63,8 @@ public class Krawler : DetailBase {
     bool isReverseX;
     bool isReverseZ;
 
+    public bool isDie = false;
+
     // Start is called before the first frame update
     void Start() {
         instance = this;
@@ -83,8 +85,16 @@ public class Krawler : DetailBase {
 
     // Update is called once per frame
     void Update() {
-        if (krawler.transform.position != Player.instance.oldStepPos && krawler.transform.position == Player.instance.transform.position) { // 同じ座標にいるとき
-			Stage.instance.DestroyEnemy(this);
+        //フェーズによって消えたりするやつ(^_-)
+        if (Stage.instance.isEditorMode == true) {
+            transform.GetChild(0).gameObject.SetActive((phaseCount & (int)Mathf.Pow(2, StageEditor.editorPhase)) > 0 || StageEditor.editorPhase == 7);
+        } else {
+            if (isDie == true) {
+                transform.GetChild(0).gameObject.SetActive(false);
+
+            } else if (isDie == false) {
+                transform.GetChild(0).gameObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0);
+            }
         }
     }
 
@@ -118,6 +128,7 @@ public class Krawler : DetailBase {
                 krawler.transform.position += Vector3.forward;
             }
         }
+        Stage.instance.DestroyEnemy();
     }
 
     public override string ToFileString() {

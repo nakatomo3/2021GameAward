@@ -12,8 +12,8 @@ public class GhostManager : MonoBehaviour {
 
     private List<Vector3> startPositions;
 
-    private List<Vector3> newPos;
-    private List<Vector3> oldPos;
+    public List<Vector3> newPos;
+    public List<Vector3> oldPos;
 
     private float moveStepRate = 0;//ˆÚ“®‚ÌüŒ`•âŠ®‚Åg‚¤
 
@@ -140,5 +140,6 @@ public class GhostManager : MonoBehaviour {
 
         oldPos[startPositions.Count - 1] = startPos;
         newPos[startPositions.Count - 1] = startPos;
+        ghosts[ghosts.Count - 1].GetComponent<GhostNormal>().id = ghosts.Count - 1;
     }
 }

@@ -58,6 +58,10 @@ public class Player : MonoBehaviour {
 
     private bool isEnemyCol;
     private bool isSafe;
+    public bool canPhaseClear = false;
+
+    public int enemyCount = 0;
+
 
     private string canStepCode = "1289ACdEhIJKYZ"; //B、F、G、Hは足場の状態が変わるので関数内部で判定
 
@@ -98,13 +102,12 @@ public class Player : MonoBehaviour {
         Action();
         SettingStepInterval();
         UpdateTurn();
-
+        Attack();
     }
 
     private void FixedUpdate() {
         isEnemyCol = false;
         isSafe = false;
-
     }
 
     void Action() {
@@ -191,15 +194,16 @@ public class Player : MonoBehaviour {
         GoalCheck();
     }
 
-    bool CanAttack(Vector3 pos) {
-        /* if (座標が敵の場所だったら)*/
-        {
-            // return true;
+    public void Attack() {
+        if (Stage.instance.DestroyEnemy() == true) {
+            enemyCount++;
         }
-        return false;
-    }
-    void Attack() {
-        actionRecord.Add(ActionRecord.ATTACK);
+
+        if (Stage.instance.enemyList[phase] != null) {
+            if (enemyCount >= Stage.instance.enemyList[phase].Count) {
+                canPhaseClear = true;
+            }
+        }
     }
 
     //プレイヤーのAction()内で行動した時に呼ぶ
@@ -292,7 +296,7 @@ public class Player : MonoBehaviour {
                             }
 
                             //射出されているとこは行けない
-                            if (pos == pistonPos[i] - addPos) {
+                            if (pos.x == pistonPos[i].x + addPos.x && pos.z == pistonPos[i].z + addPos.z) {
                                 canStep = false;
                             }
                         }
@@ -341,17 +345,44 @@ public class Player : MonoBehaviour {
         GameObject obj = Stage.instance.GetStageObject(this.transform.position);
         if (obj != null && obj.name[0] == 'J') {
             GhostManager.instance.ResetStage();
+            
 
-			var goalPhase = obj.GetComponent<Goal>().phaseCount;
+            var goalPhase = obj.GetComponent<Goal>().phaseCount;
 			var isThisGoal = (goalPhase & (int)Mathf.Pow(2, phase)) > 0;
 			if (isThisGoal == false) {
 				return;
 			}
 
 			int beforePhase = phase - 1;
-            phase++;
-            if (beforePhase >= Stage.instance.startBlockList.Count) {
-                Stage.instance.nowMode = Stage.Mode.CLEAR;
+          
+            if (canPhaseClear==true) {
+                if (phase >= Stage.instance.startBlockList.Count) {
+                    Stage.instance.nowMode = Stage.Mode.CLEAR;
+                    return;
+                } else {
+                    phase++;
+                    canPhaseClear = false;
+                    enemyCount = 0;
+
+                }
+
+            } else {
+                //フェーズがクリアできない処理
+                GameObject beforStart = Stage.instance.startBlockList[phase];
+
+              
+
+                transform.position = beforStart.transform.position;
+                nowTurn = beforStart.GetComponent<StartBlock>().turnMax;
+
+                oldStepPos = Stage.instance.startBlockList[phase].transform.position;
+                newStepPos = Stage.instance.startBlockList[phase].transform.position;
+                transform.position = Stage.instance.startBlockList[phase].transform.position;
+
+                Stage.instance.ResetEnemy();
+                canPhaseClear = false;
+                enemyCount = 0;
+
                 return;
             }
 
@@ -363,9 +394,7 @@ public class Player : MonoBehaviour {
             }
             Enemy.isAlive = true;
 
-            var newStart = Stage.instance.startBlockList[beforePhase + 2];
-            transform.position = newStart.transform.position;
-            nowTurn = newStart.GetComponent<StartBlock>().turnMax;
+            
 
             //--移動方向とアクションをGhostManagerに記録する---//
             List<ActionRecord> temp2 = actionRecord;
@@ -378,14 +407,19 @@ public class Player : MonoBehaviour {
 
             isMoved = false;
 
+
+
             if (beforePhase + 2 >= Stage.instance.startBlockList.Count) {
                 return;
             }
+            GameObject newStart = Stage.instance.startBlockList[beforePhase + 2];
+            transform.position = newStart.transform.position;
+            nowTurn = newStart.GetComponent<StartBlock>().turnMax;
+
             oldStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             newStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             transform.position = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             GhostManager.instance.ResetStage();
-
         }
     }
 
