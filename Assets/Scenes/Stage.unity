@@ -384,6 +384,7 @@ MonoBehaviour:
   turnMax: 20
   pauseWindow: {fileID: 8492830367375691790, guid: aab5a798f53020b4fbdf0f9d28fabfed, type: 3}
   nowMode: 0
+  crt: {fileID: 1594316436}
 --- !u!4 &356832297
 Transform:
   m_ObjectHideFlags: 0
@@ -720,8 +721,8 @@ GameObject:
   - component: {fileID: 1594316435}
   - component: {fileID: 1594316434}
   - component: {fileID: 1594316433}
-  - component: {fileID: 1594316436}
   - component: {fileID: 1594316437}
+  - component: {fileID: 1594316436}
   m_Layer: 0
   m_Name: EffectCamera
   m_TagString: MainCamera
@@ -803,10 +804,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1594316432}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98b677f33c6178847b0019d832c40807, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c02b244c343b9b42889b1f4bbf9d2cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: fcf478d25fc68c64fa014a3d4fae2e01, type: 2}
+  material: {fileID: 2100000, guid: c9c91ae774b550d4abad570cc573652e, type: 2}
+  noiseX: 0.08333333
+  rgbNoise: 0
+  sinNoiseScale: 0
+  sinNoiseWidth: 0
+  sinNoiseOffset: 0
+  offset: {x: 0, y: 0}
+  scanLineTail: 2
+  scanLineSpeed: 10
 --- !u!114 &1594316437
 MonoBehaviour:
   m_ObjectHideFlags: 0

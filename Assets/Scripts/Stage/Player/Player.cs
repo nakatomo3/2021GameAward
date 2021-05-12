@@ -25,19 +25,16 @@ public class Player : MonoBehaviour {
 
 	public int phase = 0;
 
-	[SerializeField]
-	[HideInInspector]
 	public float moveIntervalMax;
 
 	[HideInInspector]
 	public bool isMoved = false; //動き始めたか
 
-
 	[HideInInspector]
 	public bool canAction = true;
 
+	[Disable]
 	public float stepTimer = 0;
-
 
 	private float moveIntervalTimer = 0;
 
@@ -70,10 +67,13 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	private Sprite[] timerNumbers;
 
+	[Disable]
 	[SerializeField]
 	private Image oneOnly;
+	[Disable]
 	[SerializeField]
 	private Image tenDigit;
+	[Disable]
 	[SerializeField]
 	private Image oneDigit;
 
@@ -86,8 +86,9 @@ public class Player : MonoBehaviour {
 	}
 	private GameoverMode gameoverMode;
 
-	private Material timeupIcon;
-	private Material ghostIcon;
+	public Material timeupIcon;
+	public Material ghostIcon;
+	public GameObject deathReasonIcon;
 
 	private void Awake() {
 		actionRecord = new List<ActionRecord>();
@@ -245,10 +246,6 @@ public class Player : MonoBehaviour {
 
 	}
 
-
-
-
-
 	bool CanStep(Vector3 pos) {
 		bool canStep = false;
 		var obj = Stage.instance.GetStageObject(pos);
@@ -353,6 +350,7 @@ public class Player : MonoBehaviour {
 			}
 		} else {
 			oneOnly.sprite = timerNumbers[0];
+			TimeUp();
 		}
 
 	}
@@ -460,6 +458,9 @@ public class Player : MonoBehaviour {
 	public void GameOver(Material material) {
 		isAlive = false;
 		Stage.instance.nowMode = Stage.Mode.DEAD;
+		var obj = Instantiate(deathReasonIcon, transform.position + new Vector3(0, 10f, -5) * 0.8f, Quaternion.identity);
+		obj.GetComponent<Renderer>().material = material;
+		//Stage.instance.crt.enabled = true;
 	}
 
 	public void SetPosition(Vector3 pos) {

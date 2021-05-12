@@ -113,9 +113,8 @@ public class Stage : MonoBehaviour {
     [Disable]
     public Mode nowMode = Mode.START;
 
-    BezierCurve bezie;
-    float bezieTime;
-    int bezieIndex = 1; //今目指している点
+	[Disable]
+	public CRT crt;
 
     #endregion
 
@@ -142,7 +141,6 @@ public class Stage : MonoBehaviour {
         for (int i = 0; i < 8; i++) {
             enemyList.Add(new List<GameObject>());
         }
-       // startBlockList.Capacity = 8;
     }
 
     void Start() {
@@ -190,7 +188,6 @@ public class Stage : MonoBehaviour {
             centerPos = checkPoints[0];
             endPos = checkPoints[1];
         }
-        bezie = new BezierCurve(Vector3.zero, centerPos, endPos);
     }
 
     void Update() {
@@ -201,28 +198,6 @@ public class Stage : MonoBehaviour {
             case Mode.START: // スタート時の演出
                 nowMode = Mode.GAME;
                 player.SetActive(false);
-                camera.transform.position = new Vector3(bezie.GetPoint(bezieTime).x, 10, bezie.GetPoint(bezieTime).z - 2);
-                if (bezieIndex < checkPoints.Count) {
-                    if (bezieIndex == checkPoints.Count - 1) {
-                        if (bezieTime >= 1.0f) {
-                            nowMode = Mode.GAME;
-                        } else if (bezieTime >= 0.85f) {
-                            bezieTime += Time.deltaTime * 0.1f; //減速
-                        } else {
-                            bezieTime += Time.deltaTime * 0.3f;
-                        }
-                    } else {
-                        if (bezieTime >= 0.5f) {
-                            bezieTime = 0.0f;
-                            bezieIndex++;
-                            bezie.SetPoint(camera.transform.position + Vector3.forward * 2, checkPoints[bezieIndex - 1], checkPoints[bezieIndex]);
-                        }
-                        bezieTime += Time.deltaTime * 0.3f;
-                    }
-                }
-                if (goalPosition == Vector3.one * -1) {
-                    nowMode = Mode.GAME;
-                }
                 break;
             case Mode.GAME:
                 if (InputManager.GetKeyDown(Keys.SELECT)) {

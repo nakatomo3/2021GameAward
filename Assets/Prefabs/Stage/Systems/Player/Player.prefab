@@ -877,6 +877,9 @@ MonoBehaviour:
   oneOnly: {fileID: 6022077122321507924}
   tenDigit: {fileID: 5628876862927310778}
   oneDigit: {fileID: 1251260976162635688}
+  timeupIcon: {fileID: 2100000, guid: dab2d2544d3c3034a83f8b0c580dcab6, type: 2}
+  ghostIcon: {fileID: 2100000, guid: d5336e531ac183245a652cab28bcdbfe, type: 2}
+  deathReasonIcon: {fileID: 1396457772108504550, guid: bfe9a6f75ea2d43499f3ce68e14ebd41, type: 3}
 --- !u!114 &6949901700582714725
 MonoBehaviour:
   m_ObjectHideFlags: 0
