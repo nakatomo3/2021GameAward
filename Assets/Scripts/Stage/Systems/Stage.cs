@@ -244,7 +244,8 @@ public class Stage : MonoBehaviour {
                 break;
             case Mode.DEAD:
                 player.SetActive(false);
-                deathUI.SetActive(true);
+
+                //deathUI.SetActive(true);
                 break;
             case Mode.CLEAR:
                 player.SetActive(false);

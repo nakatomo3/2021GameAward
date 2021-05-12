@@ -855,11 +855,13 @@ MonoBehaviour:
   isMoved: 0
   canAction: 1
   stepTimer: 0
-  turnIntervalMax: 0.5
+  turnIntervalMax: 0.4
   oldStepPos: {x: 0, y: 0, z: 0}
   newStepPos: {x: 0, y: 0, z: 0}
   actionRecord: 
   startPosition: {x: 0, y: 0, z: 0}
+  canPhaseClear: 0
+  enemyCount: 0
   nowTurn: 0
   timerNumbers:
   - {fileID: -7754988575891523622, guid: e6c69f6b36a59eb458cafc7b095f4876, type: 3}

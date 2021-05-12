@@ -30,7 +30,7 @@ public class PlayerCamera : MonoBehaviour {
 			deltaPosition = Vector3.Lerp(deltaPosition, Vector3.zero, 0.1f);
 		}
 
-		camera.transform.position = gameObject.transform.position + new Vector3(0, 10, -5) + deltaPosition;
+		camera.transform.position = Vector3.Lerp(camera.transform.position, new Vector3(gameObject.transform.position.x, 10, gameObject.transform.position.z + -5) + deltaPosition, 0.1f);
 		camera.transform.localEulerAngles = new Vector3(70, 0, 0);
 	}
 }
