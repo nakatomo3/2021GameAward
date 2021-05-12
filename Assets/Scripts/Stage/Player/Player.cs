@@ -391,10 +391,7 @@ public class Player : MonoBehaviour {
             } else {
                 GhostManager.instance.AddGhost(Stage.instance.startBlockList[beforePhase+1].transform.position);
 
-            }
-            Enemy.isAlive = true;
-
-            
+            }            
 
             //--移動方向とアクションをGhostManagerに記録する---//
             List<ActionRecord> temp2 = actionRecord;
