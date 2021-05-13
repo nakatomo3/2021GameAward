@@ -24,13 +24,17 @@ public class Ghost : MonoBehaviour {
 	}
 
 	protected bool CheckViewPlayer(Vector3 viewDirection, Vector3 playerDistance) {
+		if (Player.instance.isAlive == false) {
+			return false;
+		}
+
 		var obj = Stage.instance.GetStageObject(Player.instance.transform.position);
 		if (obj != null) {
 			var code = obj.name[0];
 			int phase;
 			if (code == 'I') {
 				phase = obj.GetComponent<StartBlock>().phaseCount;
-				if(((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
+				if (((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
 					return false;
 				}
 			}
@@ -45,7 +49,6 @@ public class Ghost : MonoBehaviour {
 		//プレイヤーと同じ位置にいる
 		if (GhostManager.instance.newPos[id] == Player.instance.newStepPos ||
 			GhostManager.instance.oldPos[id] == Player.instance.newStepPos) {
-			Player.instance.GhostGameOver();
 			return true;
 		}
 
@@ -81,16 +84,21 @@ public class Ghost : MonoBehaviour {
 
 					} else if (obj.name[0] == '3') {
 						return false;
+					} else if (obj.name[0] == 'I') {
+						var phase = obj.GetComponent<StartBlock>().phaseCount;
+						if (((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
+							return false;
+						}
+					} else if (obj.name[0] == 'J') {
+						var phase = obj.GetComponent<Goal>().phaseCount;
+						if (((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
+							return false;
+						}
 					}
 				}
 			}
-
-			Player.instance.GhostGameOver();
 			return true;
 		}
-
-
-
 		return false;
 	}
 

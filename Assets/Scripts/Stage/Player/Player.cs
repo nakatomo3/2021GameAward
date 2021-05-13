@@ -357,14 +357,12 @@ public class Player : MonoBehaviour {
 	void GoalCheck() {
 		GameObject obj = Stage.instance.GetStageObject(this.transform.position);
 		if (obj != null && obj.name[0] == 'J') {
-			GhostManager.instance.ResetStage();
-
-
 			var goalPhase = obj.GetComponent<Goal>().phaseCount;
 			var isThisGoal = (goalPhase & (int)Mathf.Pow(2, phase)) > 0;
 			if (isThisGoal == false) {
 				return;
 			}
+			GhostManager.instance.ResetStage();
 
 			int beforePhase = phase - 1;
 

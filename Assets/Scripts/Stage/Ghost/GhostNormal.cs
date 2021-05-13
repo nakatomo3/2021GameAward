@@ -11,7 +11,8 @@ public class GhostNormal : Ghost {
     // Update is called once per frame
     void Update() {
         Vector3 dist = Player.instance.newStepPos - this.transform.position;
-        CheckViewPlayer(this.transform.forward, dist);
-
+		if (CheckViewPlayer(this.transform.forward, dist)) {
+			Player.instance.GhostGameOver();
+		}
     }
 }

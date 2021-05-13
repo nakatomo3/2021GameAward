@@ -70,6 +70,7 @@ public class GhostManager : MonoBehaviour {
 	public void ResetStage() {
 		for (int i = 0; i < ghostCount; i++) {
 			ghosts[i].transform.position = startPositions[i];
+			ghosts[i].transform.localEulerAngles = new Vector3();
 			newPos[i] = startPositions[i];
 			oldPos[i] = startPositions[i];
 			nowSteps[i] = 0;
