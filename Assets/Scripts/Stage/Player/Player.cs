@@ -79,16 +79,16 @@ public class Player : MonoBehaviour {
 
 	private Image filter;
 
-	private bool isAlive = true;
-	private enum GameoverMode {
-		GHOST,
-		TIMEUP,
-	}
-	private GameoverMode gameoverMode;
+	[HideInInspector]
+	public bool isAlive = true;
 
 	public Material timeupIcon;
 	public Material ghostIcon;
 	public GameObject deathReasonIcon;
+
+	private float rewindTimer;
+	private const float rewindInterval = 0.2f;
+	private int rewindIndex;
 
 	private void Awake() {
 		actionRecord = new List<ActionRecord>();
@@ -116,7 +116,7 @@ public class Player : MonoBehaviour {
 			UpdateTurn();
 			Attack();
 		} else {
-
+			Rewind();
 		}
 	}
 
@@ -135,8 +135,7 @@ public class Player : MonoBehaviour {
 			//次の移動先に線形補完で移動する
 			canMove = false;
 			moveIntervalTimer += Time.deltaTime;
-			transform.position = Vector3.Lerp(oldStepPos, newStepPos, moveIntervalMax / moveIntervalMax) + Vector3.up * Mathf.Sin(moveIntervalTimer / moveIntervalMax * Mathf.PI);
-
+			transform.position = Vector3.Lerp(oldStepPos, newStepPos, moveIntervalTimer / moveIntervalMax) + Vector3.up * Mathf.Sin(moveIntervalTimer / moveIntervalMax * Mathf.PI);
 		}
 
 
@@ -384,8 +383,6 @@ public class Player : MonoBehaviour {
 				//フェーズがクリアできない処理
 				GameObject beforStart = Stage.instance.startBlockList[phase];
 
-
-
 				transform.position = beforStart.transform.position;
 				nowTurn = beforStart.GetComponent<StartBlock>().turnMax;
 
@@ -396,15 +393,13 @@ public class Player : MonoBehaviour {
 				Stage.instance.ResetEnemy();
 				canPhaseClear = false;
 				enemyCount = 0;
-
 				return;
 			}
 
 			if (beforePhase == -1) {
-				GhostManager.instance.AddGhost(Stage.instance.startPosition);
+				GhostManager.instance.AddGhost(Stage.instance.startPosition, transform.position);
 			} else {
-				GhostManager.instance.AddGhost(Stage.instance.startBlockList[beforePhase + 1].transform.position);
-
+				GhostManager.instance.AddGhost(Stage.instance.startBlockList[beforePhase + 1].transform.position, transform.position);
 			}
 
 			//--移動方向とアクションをGhostManagerに記録する---//
@@ -417,8 +412,6 @@ public class Player : MonoBehaviour {
 			}
 
 			isMoved = false;
-
-
 
 			if (beforePhase + 2 >= Stage.instance.startBlockList.Count) {
 				return;
@@ -446,21 +439,61 @@ public class Player : MonoBehaviour {
 	//タイムアップ演出
 	private void TimeUp() {
 		GameOver(timeupIcon);
-		gameoverMode = GameoverMode.TIMEUP;
 	}
 
 	//ゴーストでゲームオーバー演出
 	public void GhostGameOver() {
 		GameOver(ghostIcon);
-		gameoverMode = GameoverMode.GHOST;
 	}
 
 	public void GameOver(Material material) {
+		if(isAlive == false) {
+			return;
+		}
 		isAlive = false;
 		Stage.instance.nowMode = Stage.Mode.DEAD;
 		var obj = Instantiate(deathReasonIcon, transform.position + new Vector3(0, 10f, -5) * 0.8f, Quaternion.identity);
 		obj.GetComponent<Renderer>().material = material;
-		//Stage.instance.crt.enabled = true;
+		rewindIndex = actionRecord.Count - 2;
+		rewindTimer = -2;
+	}
+
+	private void Rewind() {
+		rewindTimer += Time.deltaTime;
+		if (rewindTimer >= rewindInterval) {
+			switch (actionRecord[rewindIndex]) {
+				case ActionRecord.UP:
+					transform.position -= Vector3.forward; //逆再生なのでマイナス
+					transform.localEulerAngles = Vector3.up * 180;
+					break;
+				case ActionRecord.DOWN:
+					transform.position -= Vector3.back;
+					transform.localEulerAngles = Vector3.up * -180;
+					break;
+				case ActionRecord.LEFT:
+					transform.position -= Vector3.left;
+					transform.localEulerAngles = Vector3.up * -90;
+					break;
+				case ActionRecord.RIGHT:
+					transform.position -= Vector3.right;
+					transform.localEulerAngles = Vector3.up * 90;
+					break;
+				case ActionRecord.ATTACK:
+				case ActionRecord.DAMAGE:
+				case ActionRecord.NONE:
+					break;
+			}
+			rewindIndex--;
+			rewindTimer = 0;
+			//GhostManager.instance.Rewind();
+		}
+		if(rewindIndex < 0) {
+			Stage.instance.nowMode = Stage.Mode.GAME;
+			isAlive = true;
+			Stage.instance.crt.enabled = false;
+			GhostManager.instance.ResetStage();
+			ResetStage();
+		}
 	}
 
 	public void SetPosition(Vector3 pos) {
@@ -472,5 +505,20 @@ public class Player : MonoBehaviour {
 		this.transform.position += pos;
 		newStepPos += pos;
 		oldStepPos += pos;
+	}
+
+	private void ResetStage() {
+		GameObject beforStart = Stage.instance.startBlockList[phase];
+
+		transform.position = beforStart.transform.position;
+		nowTurn = beforStart.GetComponent<StartBlock>().turnMax;
+
+		oldStepPos = Stage.instance.startBlockList[phase].transform.position;
+		newStepPos = Stage.instance.startBlockList[phase].transform.position;
+		transform.position = Stage.instance.startBlockList[phase].transform.position;
+
+		Stage.instance.ResetEnemy();
+		canPhaseClear = false;
+		enemyCount = 0;
 	}
 }

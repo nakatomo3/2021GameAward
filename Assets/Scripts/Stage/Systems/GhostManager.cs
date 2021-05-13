@@ -11,6 +11,7 @@ public class GhostManager : MonoBehaviour {
 	private List<int> nowSteps;               //ゴーストごとの現在の進んだ回数
 
 	private List<Vector3> startPositions;
+	private List<Vector3> goalPositions;
 
 	public List<Vector3> newPos;
 	public List<Vector3> oldPos;
@@ -29,22 +30,25 @@ public class GhostManager : MonoBehaviour {
 
 		newPos = new List<Vector3>();
 		oldPos = new List<Vector3>();
+
+		goalPositions = new List<Vector3>();
 	}
 
 
 	void Update() {
-		moveStepRate += Time.deltaTime;
-		if (moveStepRate >= Player.instance.moveIntervalMax) {
-			moveStepRate = Player.instance.moveIntervalMax;
+		if (Player.instance.isAlive == true) {
+			moveStepRate += Time.deltaTime;
+			if (moveStepRate >= Player.instance.moveIntervalMax) {
+				moveStepRate = Player.instance.moveIntervalMax;
 
+				for (int i = 0; i < ghosts.Count; ++i) {
+					oldPos[i] = newPos[i];
+				}
+			}
 			for (int i = 0; i < ghosts.Count; ++i) {
-				oldPos[i] = newPos[i];
+				ghosts[i].transform.position = Vector3.Lerp(oldPos[i], newPos[i], moveStepRate / Player.instance.moveIntervalMax);
 			}
 		}
-		for (int i = 0; i < ghosts.Count; ++i) {
-			ghosts[i].transform.position = Vector3.Lerp(oldPos[i], newPos[i], moveStepRate / Player.instance.moveIntervalMax);
-		}
-
 	}
 
 	public void Action() {
@@ -130,7 +134,7 @@ public class GhostManager : MonoBehaviour {
 	}
 
 
-	public void AddGhost(Vector3 startPos) {
+	public void AddGhost(Vector3 startPos, Vector3 goalPos) {
 		ghosts.Add(Instantiate(ghost, startPos, Quaternion.identity));
 		ghostCount++;
 		nowSteps.Add(0);
@@ -141,5 +145,44 @@ public class GhostManager : MonoBehaviour {
 		oldPos[startPositions.Count - 1] = startPos;
 		newPos[startPositions.Count - 1] = startPos;
 		ghosts[ghosts.Count - 1].GetComponent<GhostNormal>().id = ghosts.Count - 1;
+
+		goalPositions.Add(goalPos);
+	}
+
+	public void Rewind() {
+		for (int i = 0; i < ghosts.Count; i++) {
+			switch (moveRecords[i][nowSteps[i]]) {
+				case ActionRecord.UP:
+					ghosts[i].transform.position -= Vector3.forward;
+					ghosts[i].transform.localEulerAngles = Vector3.up * 0;
+					break;
+				case ActionRecord.DOWN:
+					ghosts[i].transform.position -= Vector3.down;
+					ghosts[i].transform.localEulerAngles = Vector3.up * 180;
+					break;
+				case ActionRecord.LEFT:
+					ghosts[i].transform.position -= Vector3.left;
+					ghosts[i].transform.localEulerAngles = Vector3.up * -90;
+					break;
+				case ActionRecord.RIGHT:
+					ghosts[i].transform.position -= Vector3.right;
+					ghosts[i].transform.localEulerAngles = Vector3.up * 90;
+					break;
+				case ActionRecord.NONE:
+				case ActionRecord.ATTACK:
+				case ActionRecord.DAMAGE:
+					//ダメージモーション
+					break;
+			}
+			if (ghosts[i].transform.position == startPositions[i]) {
+				ghosts[i].transform.position = goalPositions[i];
+			}
+			nowSteps[i]--;
+			if (nowSteps[i] < 0) {
+				nowSteps[i] = moveRecords[i].Count - 1;
+				ghosts[i].transform.position = goalPositions[i];
+			}
+		}
+
 	}
 }

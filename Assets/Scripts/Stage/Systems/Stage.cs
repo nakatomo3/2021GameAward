@@ -163,8 +163,6 @@ public class Stage : MonoBehaviour {
             stagePath = StageSelect.stagePath;
         }
 
-
-
         //ステージの生成
         if (ReadCSV(stagePath) == false) {
             Debug.LogError("ステージの読み込みで不具合が発生したため終了しました");
@@ -172,27 +170,9 @@ public class Stage : MonoBehaviour {
         }
 
         pauseWindow = Instantiate(pauseWindow);
-
-        //ーーーーーーーーーーー以下、開始時演出の処理ーーーーーーーーーー
-
-        //チェックポイントをソートしてカメラ順にする
-        checkPoints.Sort((a, b) => SortCehckpoint(a, b));
-        checkPoints.Add(goalPosition);
-        Vector3 centerPos = Vector3.zero;
-        Vector3 endPos = Vector3.zero;
-
-        if (checkPoints.Count == 1) { //startとゴールのみ
-            centerPos = goalPosition / 2;
-            endPos = goalPosition;
-        } else if (checkPoints.Count >= 2) { //中間一個以上
-            centerPos = checkPoints[0];
-            endPos = checkPoints[1];
-        }
     }
 
     void Update() {
-
-
         SystemSupporter.PlaySupport();
         switch (nowMode) {
             case Mode.START: // スタート時の演出
@@ -218,8 +198,7 @@ public class Stage : MonoBehaviour {
                 player.SetActive(!(isEditorMode || isOptionMode));
                 break;
             case Mode.DEAD:
-                player.SetActive(false);
-
+                //player.SetActive(false);
                 //deathUI.SetActive(true);
                 break;
             case Mode.CLEAR:

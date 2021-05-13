@@ -851,7 +851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phase: 0
-  moveIntervalMax: 0.1
+  moveIntervalMax: 0.3
   isMoved: 0
   canAction: 1
   stepTimer: 0
