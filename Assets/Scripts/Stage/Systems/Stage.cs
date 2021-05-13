@@ -342,9 +342,6 @@ public class Stage : MonoBehaviour {
                             int count = 1;
                             while (tmp > 0) {
                                 if ((tmp & 1) > 0) {
-                                    if (startBlockList[count - 1] != null) {
-                                        Debug.LogError("同じフェイズのスタートを検知しました。\n旧座標：" + startBlockList[count - 1].transform.position + "\n新座標：" + detailBase.transform.position);
-                                    }
                                     enemyList[phase - 1].Add(detailBase.gameObject);
                                 }
                                 tmp >>= 1;
