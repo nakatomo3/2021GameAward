@@ -352,8 +352,9 @@ public class Stage : MonoBehaviour {
                             }
                             
                         }
-
-                    }
+						detailBase = null;
+						information = "";
+					}
                     continue;
                 }
                 if (line.Contains("_")) {
