@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PulseField : DetailBase {
 
     [SerializeField]
-    private Renderer render;
+    private Transform spike;
 
     private int pulseTimer;
     private int _modeIntervalOn;
@@ -58,7 +58,6 @@ public class PulseField : DetailBase {
 
     // Start is called before the first frame update
     void Start() {
-        render = GetComponentInChildren<Renderer>();
         pulseTimer = -delay;
         if (modeIntervalOn == 0) {
             modeIntervalOn = 2;
@@ -98,29 +97,19 @@ public class PulseField : DetailBase {
             if (pulseTimer >= modeIntervalOn) {
                 pulseTimer = 0;
                 isPulse = !isPulse;
-                Color color = render.material.color;
-                color.a = 0.2f;
-                render.material.color = color;
+                spike.transform.position +=  new Vector3(0, 0.8f, 0);
                 if (transform.position == Player.instance.transform.position) {
                     if (isDamage == false) {
                         Player.instance.Damage(1); // ダメージ処理
                         isDamage = false;
-                        color = render.material.color;
-                        color.g = 0.0f;
-                        render.material.color = color;
                     }
                 } else { // プレイヤーが離れたらリセット
                     isDamage = true;
-                    color = render.material.color;
-                    color.g = 1.0f;
-                    render.material.color = color;
                 }
             }
         } else { // パルスオフ
             if (pulseTimer >= modeIntervalOff) {
-                Color color = render.material.color;
-                color.a = 1.0f;
-                render.material.color = color;
+                spike.transform.position -= new Vector3(0, 0.8f, 0);
                 pulseTimer = 0;
                 isPulse = !isPulse;
             }
