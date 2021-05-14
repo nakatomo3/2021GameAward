@@ -62,7 +62,11 @@ public class CRT : MonoBehaviour {
 		InvokeRepeating("Random", 0, 0.1f);
 	}
 
-	private void Update() {
+    private void OnEnable() {
+        noiseX = 0;
+    }
+
+    private void Update() {
 		if(noiseX > 0) {
 			noiseX -= Time.deltaTime * 0.5f;
 		}
