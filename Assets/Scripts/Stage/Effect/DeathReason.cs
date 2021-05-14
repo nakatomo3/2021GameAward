@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable CS0108
+
 public class DeathReason : MonoBehaviour {
 
 	public Renderer renderer;
@@ -14,8 +16,8 @@ public class DeathReason : MonoBehaviour {
 		Invoke("Rewind", 1);
 	}
 
-	// Update is called once per frame
-	void Update() {
+    // Update is called once per frame
+    void Update() {
 		timer += Time.deltaTime;
 
 		transform.localScale = Vector3.one * (timer * 0.5f + 0.5f);

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StageEditor : MonoBehaviour {
+#pragma warning disable CS0108
 
-	[SerializeField]
-	private bool isController = false;
+public class StageEditor : MonoBehaviour {
 
 	#region インスペクタ参照部
 	[Disable]
@@ -62,12 +61,6 @@ public class StageEditor : MonoBehaviour {
 	private const float firstInterval = 0.5f;
 	private const float continuousInterval = 0.1f;
 
-	//カメラの遠さの求め方=BaseRange + cameraMode * StepRange
-	private float cameraBaseRange = 10;
-	private int cameraMode = 0;
-	private int cameraMax = 3;
-	private float cameraStepRange = 5;
-
 	private int _objIndex;
 	private int objIndex {
 		get { return _objIndex; }
@@ -116,7 +109,6 @@ public class StageEditor : MonoBehaviour {
 			phaseText.text = "全部";
 		}
 
-		CameraControl();
 		InformationUpdate();
 	}
 
@@ -547,11 +539,6 @@ public class StageEditor : MonoBehaviour {
                 }
                 break;
         }
-	}
-
-	private void CameraControl() {
-		Stage.instance.camera.transform.position = transform.position + new Vector3(0, cameraBaseRange + cameraMode * cameraStepRange, 0);
-		Stage.instance.camera.transform.localEulerAngles = new Vector3(90, 0, 0);
 	}
 
 	private void InformationUpdate() {

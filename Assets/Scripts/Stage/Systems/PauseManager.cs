@@ -95,8 +95,6 @@ public class PauseManager : MonoBehaviour {
 		set { _optionIndex = (value + 5) % 5; }
 	}
 
-	private bool isCheckWindow = false;
-
 	private enum OptionMode {
 		MAIN,
 		CONFIRM_CHECK,
@@ -165,7 +163,6 @@ public class PauseManager : MonoBehaviour {
 		optionIndex = 0;
 
 		isCheckOn = false;
-		isCheckWindow = false;
 	}
 
 	void Update() {

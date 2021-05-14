@@ -14,7 +14,7 @@ public enum ActionRecord {
     NONE,
 }
 
-
+#pragma warning disable CS0414
 
 /// <summary>
 /// プレイヤークラス。この下にPlayerMoveやPlayerStatusなど別クラスを作る予定
@@ -54,7 +54,6 @@ public class Player : MonoBehaviour {
     public Vector3 startPosition;
 
     private bool isEnemyCol;
-    private bool isSafe;
     public bool canPhaseClear = false;
 
     public int enemyCount = 0;
@@ -122,7 +121,6 @@ public class Player : MonoBehaviour {
 
     private void FixedUpdate() {
         isEnemyCol = false;
-        isSafe = false;
     }
 
     void Action() {
@@ -321,10 +319,6 @@ public class Player : MonoBehaviour {
             canAction = true;
         }
 
-
-        if (isMoved == true) {
-            // remainingTime -= Time.deltaTime;
-        }
         var intPart = Mathf.Floor(nowTurn); //整数部分
                                             //小数部分を一応残しておく
                                             //var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
