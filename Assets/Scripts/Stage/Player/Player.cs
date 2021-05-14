@@ -412,8 +412,12 @@ public class Player : MonoBehaviour {
 			isMoved = false;
 
 			if (beforePhase + 2 >= Stage.instance.startBlockList.Count) {
-				return;
+                return;
 			}
+            if(Stage.instance.startBlockList[beforePhase + 2] == null) {
+                Stage.instance.nowMode = Stage.Mode.CLEAR;
+                return;
+            }
 			GameObject newStart = Stage.instance.startBlockList[beforePhase + 2];
 			transform.position = newStart.transform.position;
 			nowTurn = newStart.GetComponent<StartBlock>().turnMax;
