@@ -65,12 +65,12 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NoiseX: 0.029371131
+    - _NoiseX: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RGBNoise: 0
-    - _ScanLineSpeed: 10
-    - _ScanLineTail: 2
+    - _ScanLineSpeed: 0.3
+    - _ScanLineTail: 1.94
     - _SinNoiseOffset: 0
     - _SinNoiseScale: 0
     - _SinNoiseWidth: 0

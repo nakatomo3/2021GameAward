@@ -808,14 +808,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: c9c91ae774b550d4abad570cc573652e, type: 2}
-  noiseX: 0.08333333
+  noiseX: 0
   rgbNoise: 0
   sinNoiseScale: 0
   sinNoiseWidth: 0
   sinNoiseOffset: 0
   offset: {x: 0, y: 0}
-  scanLineTail: 2
-  scanLineSpeed: 10
+  scanLineTail: 1.94
+  scanLineSpeed: 0.3
 --- !u!114 &1594316437
 MonoBehaviour:
   m_ObjectHideFlags: 0

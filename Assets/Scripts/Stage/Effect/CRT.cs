@@ -63,7 +63,7 @@ public class CRT : MonoBehaviour {
 	}
 
     private void OnEnable() {
-        noiseX = 0;
+        noiseX = 0.1f;
     }
 
     private void Update() {

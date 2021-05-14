@@ -205,6 +205,10 @@ public class Player : MonoBehaviour {
         }
 
         GoalCheck();
+        if(nowTurn <= 0 && isGoal == false) {
+            TimeUp();
+        }
+        isGoal = false;
     }
 
     public void Attack() {
@@ -216,6 +220,8 @@ public class Player : MonoBehaviour {
             if (enemyCount >= Stage.instance.enemyList[phase].Count) {
                 canPhaseClear = true;
             }
+        } else {
+            canPhaseClear = true;
         }
     }
 
@@ -320,9 +326,8 @@ public class Player : MonoBehaviour {
             canAction = true;
         }
 
-        var intPart = Mathf.Floor(nowTurn); //整数部分
-                                            //小数部分を一応残しておく
-                                            //var fractionalPart = Mathf.Floor((remainingTime - intPart) * 10);
+        var intPart = Mathf.Floor(nowTurn); 
+
         if (nowTurn >= 10) {
             var ten = Mathf.FloorToInt(nowTurn / 10);
             var one = Mathf.FloorToInt(nowTurn - ten * 10);
@@ -344,13 +349,12 @@ public class Player : MonoBehaviour {
             }
         } else {
             oneOnly.sprite = timerNumbers[0];
-            TimeUp();
         }
 
     }
 
     void GoalCheck() {
-        GameObject obj = Stage.instance.GetStageObject(this.transform.position);
+        GameObject obj = Stage.instance.GetStageObject(newStepPos);
         if (obj != null && obj.name[0] == 'J') {
             var goalPhase = obj.GetComponent<Goal>().phaseCount;
             var isThisGoal = (goalPhase & (int)Mathf.Pow(2, phase)) > 0;
@@ -369,23 +373,11 @@ public class Player : MonoBehaviour {
                     phase++;
                     canPhaseClear = false;
                     enemyCount = 0;
-
                 }
 
             } else {
                 //フェーズがクリアできない処理
-                GameObject beforStart = Stage.instance.startBlockList[phase];
-
-                transform.position = beforStart.transform.position;
-                nowTurn = beforStart.GetComponent<StartBlock>().turnMax;
-
-                oldStepPos = Stage.instance.startBlockList[phase].transform.position;
-                newStepPos = Stage.instance.startBlockList[phase].transform.position;
-                transform.position = Stage.instance.startBlockList[phase].transform.position;
-
-                Stage.instance.ResetEnemy();
-                canPhaseClear = false;
-                enemyCount = 0;
+                ResetStage();
                 return;
             }
 
@@ -407,10 +399,12 @@ public class Player : MonoBehaviour {
             isMoved = false;
 
             if (beforePhase + 2 >= Stage.instance.startBlockList.Count) {
+                isGoal = true;
                 return;
             }
             if (Stage.instance.startBlockList[beforePhase + 2] == null) {
                 Stage.instance.nowMode = Stage.Mode.CLEAR;
+                isGoal = true;
                 return;
             }
             GameObject newStart = Stage.instance.startBlockList[beforePhase + 2];
@@ -522,6 +516,8 @@ public class Player : MonoBehaviour {
         Stage.instance.ResetEnemy();
         canPhaseClear = false;
         enemyCount = 0;
+
+        isGoal = false;
 
         actionRecord.Clear();
     }
