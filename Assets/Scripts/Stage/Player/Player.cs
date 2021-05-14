@@ -89,6 +89,8 @@ public class Player : MonoBehaviour {
     private const float rewindInterval = 0.2f;
     private int rewindIndex;
 
+    private bool isGoal = false;
+
     private void Awake() {
         actionRecord = new List<ActionRecord>();
         startPosition = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
@@ -201,7 +203,6 @@ public class Player : MonoBehaviour {
 
             }
         }
-
 
         GoalCheck();
     }
@@ -419,6 +420,9 @@ public class Player : MonoBehaviour {
             oldStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             newStepPos = Stage.instance.startBlockList[beforePhase + 2].transform.position;
             transform.position = Stage.instance.startBlockList[beforePhase + 2].transform.position;
+
+            isGoal = true;
+
             GhostManager.instance.ResetStage();
         }
     }
@@ -434,7 +438,9 @@ public class Player : MonoBehaviour {
 
     //タイムアップ演出
     private void TimeUp() {
-        GameOver(timeupIcon);
+        if(isGoal == false) {
+            GameOver(timeupIcon);
+        }
     }
 
     //ゴーストでゲームオーバー演出
@@ -516,5 +522,7 @@ public class Player : MonoBehaviour {
         Stage.instance.ResetEnemy();
         canPhaseClear = false;
         enemyCount = 0;
+
+        actionRecord.Clear();
     }
 }
