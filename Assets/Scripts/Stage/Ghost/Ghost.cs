@@ -16,28 +16,21 @@ public class Ghost : MonoBehaviour {
     [HideInInspector]
     public int id = -1; //GhostManager.csÇÃListéQè∆óp
 
-    // Start is called before the first frame update
-    void Start() {
-
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
-
     protected bool CheckViewPlayer(Vector3 viewDirection, Vector3 playerDistance) {
         if (Player.instance.isAlive == false) {
             return false;
         }
 
-        var obj = Stage.instance.GetStageObject(Player.instance.transform.position);
+        var obj = Stage.instance.GetStageObject(Player.instance.newStepPos);
         if (obj != null) {
             var code = obj.name[0];
             int phase;
             if (code == 'I') {
                 phase = obj.GetComponent<StartBlock>().phaseCount;
+                Debug.Log(phase);
+                Debug.Log(Mathf.Pow(2, Player.instance.phase));
                 if (((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
+                    Debug.Log("return");
                     return false;
                 }
             }
