@@ -362,7 +362,7 @@ public class Player : MonoBehaviour {
                 return;
             }
             GhostManager.instance.ResetStage();
-
+            Stage.instance.ResetEnemy();
             int beforePhase = phase - 1;
 
             if (canPhaseClear == true) {
@@ -513,7 +513,6 @@ public class Player : MonoBehaviour {
         newStepPos = Stage.instance.startBlockList[phase].transform.position;
         transform.position = Stage.instance.startBlockList[phase].transform.position;
 
-        Stage.instance.ResetEnemy();
         canPhaseClear = false;
         enemyCount = 0;
 
