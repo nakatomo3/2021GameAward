@@ -321,7 +321,7 @@ public class Stage : MonoBehaviour {
                             int count = 1;
                             while (tmp > 0) {
                                 if ((tmp & 1) > 0) {
-                                    enemyList[phase - 1].Add(detailBase.gameObject);
+                                    enemyList[count - 1].Add(detailBase.gameObject);
                                 }
                                 tmp >>= 1;
                                 count++;
@@ -341,14 +341,6 @@ public class Stage : MonoBehaviour {
                         var pos = new Vector3(float.Parse(posString.Split(',')[0]), 0, float.Parse(posString.Split(',')[1]));
                         var obj = GetStageObject(pos);
                         detailBase = obj.GetComponent<DetailBase>();
-
-                        //スタートブロックを取得
-                        if (code == 'I') {
-                            //startBlockList.Add(obj);
-                        }
-
-
-
                         continue;
                     }
                     information += line + "\n";
