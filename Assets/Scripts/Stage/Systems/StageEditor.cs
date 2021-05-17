@@ -81,11 +81,13 @@ public class StageEditor : MonoBehaviour {
 		set { _optionCount = (value + optionMax) % optionMax; }
 	}
 
+    private GameObject camera;
+
 	#endregion
 
 
 	void Start() {
-
+        camera = Stage.instance.camera;
 	}
 
 
@@ -99,6 +101,8 @@ public class StageEditor : MonoBehaviour {
 				PlaceMode();
 			}
 			objList.SetActive(isObjListMode);
+            camera.transform.position = new Vector3(transform.position.x, 10, transform.position.z);
+            camera.transform.localEulerAngles = Vector3.right * 90;
 		}
 
 		if (InputManager.GetKeyDown(Keys.Y)) {
