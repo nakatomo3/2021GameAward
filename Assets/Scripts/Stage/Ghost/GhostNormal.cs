@@ -14,5 +14,7 @@ public class GhostNormal : Ghost {
 		if (CheckViewPlayer(this.transform.forward, dist)) {
 			Player.instance.GhostGameOver();
 		}
+
+        ChangeViewRange();
     }
 }
