@@ -33,10 +33,14 @@ public class StartBlock : DetailBase {
 		}
 	}
 	public bool isTutorial = false;
-	#endregion
+    #endregion
 
-	private void Update() {
-		startObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0);
+    private void Update() {
+        if (turnMax <= 1) {
+            turnMax = 20;
+        }
+
+        startObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0);
 		if (Stage.instance.isEditorMode == true) {
 			startObject.SetActive((phaseCount & (int)Mathf.Pow(2,StageEditor.editorPhase)) > 0 || StageEditor.editorPhase == 7);
 		}
@@ -45,6 +49,7 @@ public class StartBlock : DetailBase {
 	public override void Action() {
 
 	}
+
 	public override string ToEditorString() {
 		StringBuilder sb = new StringBuilder();
 		var tmp = phaseCount;
