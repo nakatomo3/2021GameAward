@@ -308,7 +308,7 @@ public class Player : MonoBehaviour {
                             }
 
                             //射出されているとこは行けない
-                            if (pos.x == pistonPos[i].x + addPos.x && pos.z == pistonPos[i].z + addPos.z) {
+                            if (pos.x == pistonPos[i].x + addPos.x && pos.z == pistonPos[i].z - addPos.z) {
                                 canStep = false;
                             }
                         }
