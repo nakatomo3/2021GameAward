@@ -11,14 +11,13 @@ public class GhostManager : MonoBehaviour {
 	private List<int> nowSteps;               //ゴーストごとの現在の進んだ回数
 
 	private List<Vector3> startPositions;
-	private List<Vector3> goalPositions;
+    private List<Vector3> goalPositions;
 
 	public List<Vector3> newPos;
 	public List<Vector3> oldPos;
 
 	private float moveStepRate = 0;//移動の線形補完で使う
 
-	private int ghostCount = 0;
 	public GameObject ghost;
 	public List<GameObject> ghosts;
 
@@ -68,7 +67,7 @@ public class GhostManager : MonoBehaviour {
 
 	//全てのゴーストをリセット
 	public void ResetStage() {
-		for (int i = 0; i < ghostCount; i++) {
+		for (int i = 0; i < ghosts.Count; i++) {
 			ghosts[i].transform.position = startPositions[i];
 			ghosts[i].transform.localEulerAngles = new Vector3();
 			newPos[i] = startPositions[i];
@@ -78,7 +77,7 @@ public class GhostManager : MonoBehaviour {
 	}
 
 	//ゴーストの位置をリセット
-	private void ResetGhost(int i) {
+	public void ResetGhost(int i) {
 		ghosts[i].transform.position = startPositions[i];
 		ghosts[i].transform.rotation = Quaternion.identity;
 		nowSteps[i] = 0;
@@ -96,7 +95,6 @@ public class GhostManager : MonoBehaviour {
 		startPositions.Clear();
 		nowSteps.Clear();
 		ghosts.Clear();
-		ghostCount = 0;
 	}
 
 
@@ -137,7 +135,6 @@ public class GhostManager : MonoBehaviour {
 
 	public void AddGhost(Vector3 startPos, Vector3 goalPos) {
 		ghosts.Add(Instantiate(ghost, startPos, Quaternion.identity));
-		ghostCount++;
 		nowSteps.Add(0);
 		startPositions.Add(startPos);
 		oldPos.Add(startPos);
@@ -186,4 +183,17 @@ public class GhostManager : MonoBehaviour {
 		}
 
 	}
+
+    public void PhaseBack() {
+        Destroy(ghosts[ghosts.Count - 1]);
+
+        newPos.RemoveAt(newPos.Count - 1);
+        oldPos.RemoveAt(oldPos.Count - 1);
+        moveRecords.RemoveAt(moveRecords.Count - 1);
+        ghosts.RemoveAt(ghosts.Count - 1);
+        startPositions.RemoveAt(startPositions.Count - 1);
+        goalPositions.RemoveAt(goalPositions.Count - 1);
+
+        
+    }
 }

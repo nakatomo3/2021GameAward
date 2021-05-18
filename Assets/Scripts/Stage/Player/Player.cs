@@ -116,9 +116,12 @@ public class Player : MonoBehaviour {
             SettingStepInterval();
             UpdateTurn();
             Attack();
+            PhaseBack();
         } else {
             Rewind();
         }
+
+
     }
 
     private void FixedUpdate() {
@@ -205,7 +208,7 @@ public class Player : MonoBehaviour {
         }
 
         GoalCheck();
-        if(nowTurn <= 0 && isGoal == false) {
+        if (nowTurn <= 0 && isGoal == false) {
             TimeUp();
         }
         isGoal = false;
@@ -326,7 +329,7 @@ public class Player : MonoBehaviour {
             canAction = true;
         }
 
-        var intPart = Mathf.Floor(nowTurn); 
+        var intPart = Mathf.Floor(nowTurn);
 
         if (nowTurn >= 10) {
             var ten = Mathf.FloorToInt(nowTurn / 10);
@@ -432,7 +435,7 @@ public class Player : MonoBehaviour {
 
     //タイムアップ演出
     private void TimeUp() {
-        if(isGoal == false) {
+        if (isGoal == false) {
             GameOver(timeupIcon);
         }
     }
@@ -519,5 +522,28 @@ public class Player : MonoBehaviour {
         isGoal = false;
 
         actionRecord.Clear();
+        Stage.instance.ResetEnemy();
+    }
+    private void PhaseBack() {
+        if (canMove == true) {
+            if (InputManager.GetKeyDown(Keys.Y)) {
+                Vector3 pos = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
+
+                if (pos == Stage.instance.startBlockList[phase].transform.position) {
+                    if (phase != 0) {
+                        //フェーズを戻す
+                        GhostManager.instance.PhaseBack();
+                        phase--;
+                        ResetStage();
+                    }
+                } else {
+                    //初期位置に戻す
+                    ResetStage();
+                    for (int i = 0; i < GhostManager.instance.ghosts.Count; i++) {
+                        GhostManager.instance.ResetGhost(i);
+                    }
+                }
+            }
+        }
     }
 }
