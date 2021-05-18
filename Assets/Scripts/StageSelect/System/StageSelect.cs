@@ -27,6 +27,9 @@ public class StageSelect : MonoBehaviour {
     [Disable]
     [SerializeField]
     private List<Image> clearStars;
+
+    [SerializeField]
+    private Text stageName;
     #endregion
 
     #region ÉfÅ[É^ïî
@@ -107,8 +110,7 @@ public class StageSelect : MonoBehaviour {
             if(Input.GetKeyDown(KeyCode.Return) == true) {
                 clearIndex = path.Count;
             }
+            stageName.text = path[stageIndex];
         }
-
-        Debug.Log(clearIndex);
     }
 }
