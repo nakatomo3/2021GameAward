@@ -81,6 +81,14 @@ public class Stage : MonoBehaviour {
 
     [SerializeField]
     private GameObject pauseWindow;
+
+    [SerializeField]
+    private RectTransform upSinema;
+
+    [SerializeField]
+    private RectTransform downSinema;
+
+    private Renderer startObjRenderer;
     #endregion
 
 
@@ -114,8 +122,10 @@ public class Stage : MonoBehaviour {
     [Disable]
     public Mode nowMode = Mode.START;
 
-	[Disable]
-	public CRT crt;
+    [Disable]
+    public CRT crt;
+
+    private float startTimer = 0;
 
     #endregion
 
@@ -176,14 +186,16 @@ public class Stage : MonoBehaviour {
         }
 
         pauseWindow = Instantiate(pauseWindow);
+
+        camera.transform.position = player.transform.position + Vector3.up * 10 + Vector3.back * 5;
+        pauseWindow.SetActive(false);
     }
 
     void Update() {
         SystemSupporter.PlaySupport();
         switch (nowMode) {
             case Mode.START: // スタート時の演出
-                nowMode = Mode.GAME;
-                player.SetActive(false);
+                GameStart();
                 break;
             case Mode.GAME:
                 if (InputManager.GetKeyDown(Keys.SELECT)) {
@@ -210,7 +222,7 @@ public class Stage : MonoBehaviour {
             case Mode.CLEAR:
                 player.SetActive(false);
                 clearUI.SetActive(true);
-                if(StageSelect.isStageSelect == true) {
+                if (StageSelect.isStageSelect == true) {
                     PlayerPrefs.SetInt("ClearIndex", StageSelect.playingIndex + 1);
                 }
                 SceneManager.LoadScene("StageSelect");
@@ -334,11 +346,11 @@ public class Stage : MonoBehaviour {
                                 tmp >>= 1;
                                 count++;
                             }
-                            
+
                         }
-						detailBase = null;
-						information = "";
-					}
+                        detailBase = null;
+                        information = "";
+                    }
                     continue;
                 }
                 if (line.Contains("_")) {
@@ -568,7 +580,7 @@ public class Stage : MonoBehaviour {
         return false;
     }
     public void ResetEnemy() {
-        for(int i=0; i < enemyList[Player.instance.phase].Count; i++) {
+        for (int i = 0; i < enemyList[Player.instance.phase].Count; i++) {
             enemyList[Player.instance.phase][i].GetComponent<Krawler>().isDie = false;
         }
     }
@@ -580,5 +592,23 @@ public class Stage : MonoBehaviour {
         }
     }
 
-
+    public void GameStart() {
+        startTimer += Time.deltaTime;
+        player.SetActive(false);
+        if (startTimer <= 0.5f) {
+            //フェードイン、こちらでは何もしない
+        } else if (startTimer <= 3f) {
+            if (startObjRenderer == null) {
+                startObjRenderer = startBlockList[0].transform.GetChild(1).GetChild(0).GetComponent<Renderer>();
+                startObjRenderer.material.EnableKeyword("_EMISSION");
+            }
+            var colorChannel = Mathf.Pow(2, Mathf.Max(Mathf.Min(12 - startTimer * 6f, 7), 1));
+            startObjRenderer.material.SetColor("_EmissionColor", new Color(colorChannel, colorChannel, colorChannel));
+        } else if (startTimer <= 3.7f) {
+            upSinema.anchoredPosition = new Vector2(0, 200 + (startTimer - 3f) * 100);
+            downSinema.anchoredPosition = new Vector2(0, -200 - (startTimer - 3f) * 100);
+        } else {
+            nowMode = Mode.GAME;
+        }
+    }
 }
