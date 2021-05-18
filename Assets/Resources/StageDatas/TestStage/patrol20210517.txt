@@ -44,7 +44,7 @@ moveRangeX:0
 moveRangeZ:0
 interval:0
 damage:0
-phaseCount:2
+phaseCount:14
 
 K_Krawler
 pos:5,-4
@@ -52,7 +52,7 @@ moveRangeX:0
 moveRangeZ:0
 interval:0
 damage:0
-phaseCount:1
+phaseCount:13
 
 K_Krawler
 pos:4,-5
@@ -60,7 +60,7 @@ moveRangeX:0
 moveRangeZ:0
 interval:0
 damage:0
-phaseCount:3
+phaseCount:7
 
 J_Goal
 pos:0,-8
@@ -69,6 +69,6 @@ phaseCount:9
 I_Start
 pos:8,-8
 phaseCount:10
-turnMax:0
+turnMax:25
 isTutorial:False
 
