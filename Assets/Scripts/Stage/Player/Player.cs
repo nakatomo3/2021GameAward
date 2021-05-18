@@ -534,13 +534,24 @@ public class Player : MonoBehaviour {
                         //フェーズを戻す
                         GhostManager.instance.PhaseBack();
                         phase--;
+                        enemyCount = 0;
                         ResetStage();
+
+                        for (int i = 0; i < Stage.instance.enemyScriptList[phase].Count; i++) {
+                            Stage.instance.enemyScriptList[phase][i].ResetEnemy();
+                            Stage.instance.enemyScriptList[phase][i].isDie = false;
+                        }
                     }
                 } else {
                     //初期位置に戻す
                     ResetStage();
+                    enemyCount = 0;
                     for (int i = 0; i < GhostManager.instance.ghosts.Count; i++) {
                         GhostManager.instance.ResetGhost(i);
+                    }
+                    for (int i = 0; i < Stage.instance.enemyScriptList[phase].Count; i++) {
+                        Stage.instance.enemyScriptList[phase][i].ResetEnemy();
+                        Stage.instance.enemyScriptList[phase][i].isDie = false;
                     }
                 }
             }
