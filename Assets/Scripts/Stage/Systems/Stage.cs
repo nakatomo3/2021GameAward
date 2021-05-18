@@ -5,6 +5,7 @@ using UnityEngine;
 using System.IO;
 using UnityEditor;
 using System.Text;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 初期化とロード、ステージ生成のクラス
@@ -87,9 +88,7 @@ public class Stage : MonoBehaviour {
     public GameObject stageParent { get; private set; }
     public List<List<char>> stageData { get; private set; }
     public Vector3 startPosition { get; private set; }
-    public Vector3 goalPosition { get; private set; } = Vector3.one * -1;
 
-    public List<Vector3> checkPoints { get; private set; } = new List<Vector3>();
     public List<int> maxTimes { get; private set; } = new List<int>();
     public List<int> maxLoop { get; private set; } = new List<int>();
     public List<GameObject> startBlockList { get; private set; } = new List<GameObject>(7);
@@ -204,6 +203,10 @@ public class Stage : MonoBehaviour {
             case Mode.CLEAR:
                 player.SetActive(false);
                 clearUI.SetActive(true);
+                if(StageSelect.isStageSelect == true) {
+                    PlayerPrefs.SetInt("ClearIndex", StageSelect.playingIndex + 1);
+                }
+                SceneManager.LoadScene("StageSelect");
                 break;
         }
     }
@@ -271,9 +274,6 @@ public class Stage : MonoBehaviour {
                     if (_code != '0') {
                         Instantiate(objectList[objectIndex.FindIndex(n => _code == n)], new Vector3(posX + i, 0, posY - lineCount), Quaternion.identity, stageParent.transform);
 
-                    }
-                    if (_code == 'Y') {
-                        checkPoints.Add(new Vector3(posX + i, 0, posY - lineCount));
                     }
                 }
                 if (reader.Peek() <= -1) { //Detail終了時

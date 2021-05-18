@@ -7,75 +7,102 @@ using UnityEngine.SceneManagement;
 
 public class StageSelect : MonoBehaviour {
 
-	public static StageSelect instance;
+    public static StageSelect instance;
 
-	#region インスペクタ編集部
-	public List<string> path;
-	#endregion
+    #region インスペクタ編集部
+    public List<string> path;
 
-	#region インスペクタ参照部
-	[Disable]
-	[SerializeField]
-	private Text stageName;
+    public List<Sprite> images;
+    #endregion
 
-	[Disable]
-	[SerializeField]
-	private GameObject createCaution; //ファイル作成しますよ
+    #region インスペクタ参照部
+    [Disable]
+    [SerializeField]
+    private GameObject fadeImage;
 
-	[SerializeField]
-	private GameObject fadeImage;
-	#endregion
+    [Disable]
+    [SerializeField]
+    private List<Image> stageWindows;
 
-	#region データ部
-	private int _stageIndex;
-	private int stageIndex {
-		get { return _stageIndex; }
-		set { _stageIndex = (value + path.Count) % path.Count; }
-	}
+    [Disable]
+    [SerializeField]
+    private List<Image> clearStars;
+    #endregion
 
-	public static bool isStageSelect;
-	public static string stagePath;
-	#endregion
+    #region データ部
+    private int _stageIndex;
+    private int stageIndex {
+        get { return _stageIndex; }
+        set {
+            _stageIndex = value;
+            _stageIndex = Mathf.Min(Mathf.Min(path.Count - 1, clearIndex), _stageIndex);
+            _stageIndex = Mathf.Max(0, _stageIndex);
+        }
+    }
 
-	private void Awake() {
-		instance = this;
-	}
+    public static int playingIndex;
 
-	// Start is called before the first frame update
-	void Start() {
-		gameObject.AddComponent<InputManager>();
-		if (InputManager.isInit == false) {
-			InputManager.Init();
+    public static bool isStageSelect;
+    public static string stagePath;
+
+    public static int clearIndex;
+
+    private float unlockTimer = 0;
+    #endregion
+
+    private void Awake() {
+        instance = this;
+    }
+
+    // Start is called before the first frame update
+    void Start() {
+        gameObject.AddComponent<InputManager>();
+        if (InputManager.isInit == false) {
+            InputManager.Init();
 #if UNITY_EDITOR
-			SystemSupporter.DebugInitInput();
+            SystemSupporter.DebugInitInput();
 #endif
-		}
+        }
 
-		fadeImage.AddComponent<FadeIn>().timeScale = 2;
+        isStageSelect = true;
 
-		isStageSelect = true;
-	}
+        fadeImage.AddComponent<FadeIn>().timeScale = 2;
 
-	// Update is called once per frame
-	void Update() {
-		if (InputManager.GetKeyDown(Keys.LEFT)) {
-			stageIndex--;
-		}
-		if (InputManager.GetKeyDown(Keys.RIGHT)) {
-			stageIndex++;
-		}
-		if (InputManager.GetKeyDown(Keys.A)) {
-			stagePath = path[stageIndex];
-			var fade = fadeImage.AddComponent<FadeOut>();
-			fade.nextStagePath = "Stage";
-			fade.timeScale = 2;
-		}
-		if (!Resources.Load("StageDatas/" + path[stageIndex])) {
-			createCaution.SetActive(true);
-		} else {
-			createCaution.SetActive(false);
-		}
-	
-		stageName.text = path[stageIndex];
-	}
+        clearIndex = PlayerPrefs.GetInt("ClearIndex", 0);
+
+        if(path.Count != images.Count) {
+            Debug.Log("ファイルパスと画像リストのサイズが違います");
+        }
+    }
+
+    // Update is called once per frame
+    void Update() {
+        if (InputManager.GetKeyDown(Keys.LEFT)) {
+            stageIndex--;
+        }
+        if (InputManager.GetKeyDown(Keys.RIGHT)) {
+            stageIndex++;
+        }
+        if (InputManager.GetKeyDown(Keys.B)) {
+            stagePath = path[stageIndex];
+            var fade = fadeImage.AddComponent<FadeOut>();
+            fade.nextStagePath = "Stage";
+            fade.timeScale = 2;
+            playingIndex = stageIndex;
+        }
+        if (InputManager.GetKeyDown(Keys.A)) {
+            var fade = fadeImage.AddComponent<FadeOut>();
+            fade.nextStagePath = "Title";
+            fade.timeScale = 2;
+        }
+        stageWindows[0].gameObject.SetActive(stageIndex != 0);
+        stageWindows[2].gameObject.SetActive(stageIndex < path.Count - 1);
+        stageWindows[3].gameObject.SetActive(stageIndex < path.Count - 2);
+
+        for(int i = 0; i < 3; i++) {
+            clearStars[i + 1].enabled = clearIndex > stageIndex + i;
+        }
+
+        Debug.Log(clearIndex);
+    }
 }
