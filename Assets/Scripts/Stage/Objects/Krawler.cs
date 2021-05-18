@@ -11,6 +11,15 @@ public class Krawler : DetailBase {
     [SerializeField]
     private Transform krawler;
 
+    private Animator animator;
+    private float destroyTimer = 0;
+
+    private Vector3 defaultPos;
+    private Vector3 newStepPos;
+    private Vector3 oldStepPos;
+    private float moveTimer = 0;
+    private float moveTimerMax = 0.2f;
+
     private int krawlerTimerX;
     private int krawlerTimerZ;
     private int _moveRangeX;
@@ -68,6 +77,9 @@ public class Krawler : DetailBase {
     // Start is called before the first frame update
     void Start() {
         instance = this;
+        krawler = GetComponent<Transform>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
+
         krawlerTimerX = 0;
         krawlerTimerZ = 0;
         intervalTimer = 0;
@@ -81,6 +93,10 @@ public class Krawler : DetailBase {
         if (moveRangeZ < 0) {
             isReverseZ = true;
         }
+
+        newStepPos = transform.GetChild(0).transform.localPosition;
+        oldStepPos = transform.GetChild(0).transform.localPosition;
+        defaultPos= transform.GetChild(0).transform.localPosition;
     }
 
     // Update is called once per frame
@@ -88,14 +104,35 @@ public class Krawler : DetailBase {
         //フェーズによって消えたりするやつ(^_-)
         if (Stage.instance.isEditorMode == true) {
             transform.GetChild(0).gameObject.SetActive((phaseCount & (int)Mathf.Pow(2, StageEditor.editorPhase)) > 0 || StageEditor.editorPhase == 7);
+            ResetEnemy();
+            isDie = false;
         } else {
             if (isDie == true) {
-                transform.GetChild(0).gameObject.SetActive(false);
+                destroyTimer += Time.deltaTime;
+                if (destroyTimer > 5) {
+                    transform.GetChild(0).gameObject.SetActive(false);
+                    ResetEnemy();
+                }
 
             } else if (isDie == false) {
                 transform.GetChild(0).gameObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0);
+
+                Vector3 pos = Vector3.Lerp(oldStepPos, newStepPos, moveTimer / moveTimerMax);
+                pos.y += Mathf.Sin((moveTimer / moveTimerMax) * 3.14f) * 0.5f;
+                transform.GetChild(0).transform.localPosition = pos;
+
+                if (moveTimer / moveTimerMax < 1) {
+                    moveTimer += Time.deltaTime;
+                    animator.SetBool("isMove", true);
+                    animator.SetBool("isIdel", false);
+                } else {
+                    moveTimer = moveTimerMax;
+                    animator.SetBool("isMove", false);
+                    animator.SetBool("isIdel", true);
+                }
             }
         }
+        animator.SetBool("isDie", isDie);
     }
 
     public override void Action() { // ターンごとに呼ばれる
@@ -111,9 +148,15 @@ public class Krawler : DetailBase {
                 isReverseX = !isReverseX;
             }
             if (isReverseX == true) {
-                krawler.transform.position += Vector3.left;
+                oldStepPos = newStepPos;
+                newStepPos += Vector3.left;
+                transform.GetChild(0).transform.localEulerAngles = new Vector3(0, 90, 0);
+                moveTimer = 0;
             } else {
-                krawler.transform.position += Vector3.right;
+                oldStepPos = newStepPos;
+                newStepPos += Vector3.right;
+                transform.GetChild(0).transform.localEulerAngles = new Vector3(0, 270, 0);
+                moveTimer = 0;
             }
         }
         if (moveRangeZ != 0) {
@@ -123,9 +166,15 @@ public class Krawler : DetailBase {
                 isReverseZ = !isReverseZ;
             }
             if (isReverseZ == true) {
-                krawler.transform.position += Vector3.back;
+                oldStepPos = newStepPos;
+                newStepPos += Vector3.back;
+                transform.GetChild(0).transform.localEulerAngles = new Vector3(0, 0, 0);
+                moveTimer = 0;
             } else {
-                krawler.transform.position += Vector3.forward;
+                oldStepPos = newStepPos;
+                newStepPos += Vector3.forward;
+                transform.GetChild(0).transform.localEulerAngles = new Vector3(0, 180, 0);
+                moveTimer = 0;
             }
         }
         Stage.instance.DestroyEnemy();
@@ -192,5 +241,18 @@ public class Krawler : DetailBase {
                 }
             }
         }
+    }
+
+    public void ResetEnemy() {
+        moveTimer = 0;
+        krawlerTimerX = 0;
+        krawlerTimerZ = 0;
+        intervalTimer = 0;
+        destroyTimer = 0;
+
+        newStepPos = defaultPos;
+        oldStepPos = defaultPos;
+        transform.GetChild(0).transform.position = defaultPos;
+
     }
 }

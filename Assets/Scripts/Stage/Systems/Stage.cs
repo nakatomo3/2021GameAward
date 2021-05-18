@@ -93,6 +93,8 @@ public class Stage : MonoBehaviour {
     public List<int> maxLoop { get; private set; } = new List<int>();
     public List<GameObject> startBlockList { get; private set; } = new List<GameObject>(7);
     public List<List<GameObject>> enemyList { get; private set; } = new List<List<GameObject>>(7);
+    public List<List<Krawler>> enemyScriptList { get; private set; } = new List<List<Krawler>>(7);
+
     public int visualMode { get; private set; } = 0;
 
 
@@ -139,6 +141,11 @@ public class Stage : MonoBehaviour {
         enemyList = new List<List<GameObject>>();
         for (int i = 0; i < 8; i++) {
             enemyList.Add(new List<GameObject>());
+        }
+
+        enemyScriptList = new List<List<Krawler>>();
+        for (int i = 0; i < 8; i++) {
+            enemyScriptList.Add(new List<Krawler>());
         }
     }
 
@@ -322,6 +329,7 @@ public class Stage : MonoBehaviour {
                             while (tmp > 0) {
                                 if ((tmp & 1) > 0) {
                                     enemyList[count - 1].Add(detailBase.gameObject);
+                                    enemyScriptList[count - 1].Add(detailBase.gameObject.GetComponent<Krawler>());
                                 }
                                 tmp >>= 1;
                                 count++;
@@ -567,7 +575,10 @@ public class Stage : MonoBehaviour {
 
     public void Action() {
         GhostManager.instance.Action();
-        // Krawler.instance.Action();
+        for (int i = 0; i < enemyScriptList[Player.instance.phase].Count; i++) {
+            enemyScriptList[Player.instance.phase][i].Action();
+        }
     }
+
 
 }
