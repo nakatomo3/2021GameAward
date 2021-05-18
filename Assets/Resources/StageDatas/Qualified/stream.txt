@@ -8,17 +8,25 @@ pos:-3,2
 
 #ObjectData
 11111141111111111111
-11111I41K11111411111
+1111IK41K1111K411111
 1J1I111111111111I1J1
-11111K11I14111411111
+11111K11IK4111411111
 11111111114111111111
 
 #Detail
 I_Start
-pos:2,1
+pos:1,1
 phaseCount:2
-turnMax:1
+turnMax:25
 isTutorial:False
+
+K_Krawler
+pos:2,1
+moveRangeX:0
+moveRangeZ:0
+interval:0
+damage:0
+phaseCount:1
 
 K_Krawler
 pos:5,1
@@ -27,6 +35,14 @@ moveRangeZ:0
 interval:0
 damage:0
 phaseCount:6
+
+K_Krawler
+pos:10,1
+moveRangeX:0
+moveRangeZ:0
+interval:0
+damage:0
+phaseCount:1
 
 J_Goal
 pos:-2,0
@@ -41,7 +57,7 @@ isTutorial:False
 I_Start
 pos:13,0
 phaseCount:8
-turnMax:20
+turnMax:25
 isTutorial:False
 
 J_Goal
@@ -61,4 +77,12 @@ pos:5,-1
 phaseCount:4
 turnMax:15
 isTutorial:False
+
+K_Krawler
+pos:6,-1
+moveRangeX:0
+moveRangeZ:0
+interval:0
+damage:0
+phaseCount:1
 
