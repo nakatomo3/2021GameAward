@@ -103,6 +103,12 @@ public class StageSelect : MonoBehaviour {
             clearStars[i + 1].enabled = clearIndex > stageIndex + i;
         }
 
+        if(SystemSupporter.IsUnityEditor() == true) {
+            if(Input.GetKeyDown(KeyCode.Return) == true) {
+                clearIndex = path.Count;
+            }
+        }
+
         Debug.Log(clearIndex);
     }
 }
