@@ -263,7 +263,7 @@ public class StageEditor : MonoBehaviour {
 			if (obj == null) {
 				return;
 			}
-			var code = Stage.GetObjectCode(obj.name);
+			var code = Stage.instance.GetObjectCode(obj.name);
 			if (code >= 'A' && code <= 'Z') { //大文字なら詳細編集可能なコード
 				isDetailMode = true;
 				editingScript = obj.GetComponent<DetailBase>();

@@ -398,8 +398,8 @@ public class Stage : MonoBehaviour {
 #endif
     }
 
-    private static void OnPlayModeStateChanged(PlayModeStateChange state) {
 #if UNITY_EDITOR
+    private static void OnPlayModeStateChanged(PlayModeStateChange state) {
         //再生終了ボタンを押した
         if (instance != null && !EditorApplication.isPlayingOrWillChangePlaymode) {
             instance.WriteCSV();
@@ -543,7 +543,7 @@ public class Stage : MonoBehaviour {
     }
 
 
-    public static char GetObjectCode(string name) {
+    public char GetObjectCode(string name) {
         //命名規則は「コード_名前」なのでコード単独の抽出可能
         return name.Split('_')[0][0];
     }
