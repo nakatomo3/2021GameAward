@@ -76,7 +76,9 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private Image oneDigit;
 
-    private Image filter;
+    [SerializeField]
+    private Text phaseText;
+    private int phaseMax = -1;
 
     [HideInInspector]
     public bool isAlive = true;
@@ -101,7 +103,6 @@ public class Player : MonoBehaviour {
     }
 
     public void Start() {
-        filter = Stage.instance.lastMomentFilter.GetComponent<Image>();
         oldStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
         newStepPos = new Vector3(Stage.instance.startPosition.x, 0, Stage.instance.startPosition.y);
 
@@ -117,6 +118,7 @@ public class Player : MonoBehaviour {
             UpdateTurn();
             Attack();
             PhaseBack();
+            PhaseText();
         } else {
             Rewind();
         }
@@ -556,5 +558,17 @@ public class Player : MonoBehaviour {
                 }
             }
         }
+    }
+
+    private void PhaseText() {
+        if(phaseMax < 0) {
+            phaseMax++;
+            for(int i = 0; i < Stage.instance.startBlockList.Count; i++) {
+                if(Stage.instance.startBlockList[i] != null) {
+                    phaseMax++;
+                }
+            }
+        }
+        phaseText.text = phase + "/" + phaseMax;
     }
 }
