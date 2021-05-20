@@ -69,9 +69,6 @@ public class Stage : MonoBehaviour {
     [SerializeField]
     private GameObject fade;
 
-    [Disable]
-    public GameObject lastMomentFilter; //§ŒÀŠÔ‚ªc‚èƒMƒŠƒMƒŠ‚Å‚·‚æ[
-
     [SerializeField]
     private GameObject[] particles;
 
