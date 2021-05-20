@@ -569,6 +569,6 @@ public class Player : MonoBehaviour {
                 }
             }
         }
-        phaseText.text = phase + "/" + phaseMax;
+        phaseText.text = phase + 1 + "/" + phaseMax;
     }
 }
