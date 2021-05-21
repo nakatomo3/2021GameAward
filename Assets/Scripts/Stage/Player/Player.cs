@@ -119,11 +119,10 @@ public class Player : MonoBehaviour {
             Attack();
             PhaseBack();
             PhaseText();
+            Stage.instance.crt.enabled = false;
         } else {
             Rewind();
         }
-
-
     }
 
     private void FixedUpdate() {
@@ -261,7 +260,7 @@ public class Player : MonoBehaviour {
         if (obj == null) {
             return false; //奈落でも進めるけど落ちる
         }
-        var code = Stage.GetObjectCode(obj.name);
+        var code = Stage.instance.GetObjectCode(obj.name);
         if (canStepCode.Contains(code.ToString())) {
             canStep = true;
         }
