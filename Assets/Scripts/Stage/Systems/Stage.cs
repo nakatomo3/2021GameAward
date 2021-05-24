@@ -564,10 +564,17 @@ public class Stage : MonoBehaviour {
             for (int i = 0; i < enemyList[phase].Count; ++i) {
 
                 //•\Ž¦‚³‚ê‚Ä‚¨‚é“G‚¾‚¯“|‚¹‚é
-                if (enemyList[phase][i].transform.GetChild(0).gameObject.activeSelf == true) {
+                if (enemyScriptList[phase][i].isDie == false) {
 
                     //“|‚·ðŒ(ƒvƒŒƒCƒ„[‚ÌˆÚ“®æ‚ÌÀ•W‚¾‚Á‚½‚ç)
-                    if (enemyList[phase][i].transform.position == Player.instance.newStepPos) {
+                    Vector3 enemyPos = enemyList[phase][i].transform.GetChild(0).transform.position;
+                    enemyPos = new Vector3(Mathf.Round(enemyPos.x), 0, Mathf.Round(enemyPos.z));
+
+                    Vector3 playerPos = Player.instance.transform.position;
+                    playerPos = new Vector3(Mathf.Round(playerPos.x), 0, Mathf.Round(playerPos.z));
+
+                    if (enemyPos == Player.instance.newStepPos ||
+                        enemyPos == Player.instance.oldStepPos) {
                         enemyList[phase][i].GetComponent<Krawler>().isDie = true;
                         return true;
                     }
