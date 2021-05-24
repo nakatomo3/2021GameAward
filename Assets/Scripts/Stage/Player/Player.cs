@@ -244,6 +244,10 @@ public class Player : MonoBehaviour {
 
         if (Stage.instance.enemyList[phase] != null) {
             if (enemyCount >= Stage.instance.enemyList[phase].Count) {
+                if(canPhaseClear == false)
+                {
+                    AudioManeger.instance.Play("KrawlerClear");
+                }
                 canPhaseClear = true;
             }
         } else {
@@ -257,6 +261,10 @@ public class Player : MonoBehaviour {
         canAction = false;
         Stage.instance.Action();
         nowTurn--;
+        if(nowTurn <= 5)
+        {
+            AudioManeger.instance.Play("TurnFew");
+        }
     }
 
     //入力の待ち時間を記録する
@@ -394,15 +402,19 @@ public class Player : MonoBehaviour {
             if (canPhaseClear == true) {
                 if (phase >= Stage.instance.startBlockList.Count) {
                     Stage.instance.nowMode = Stage.Mode.CLEAR;
+                    AudioManeger.instance.Play("GateInFinal");
                     return;
                 } else {
                     phase++;
                     canPhaseClear = false;
-                    enemyCount = 0;
+                    enemyCount = 0; 
+                    AudioManeger.instance.Play("GateInFinal");
+
                 }
 
             } else {
                 //フェーズがクリアできない処理
+                AudioManeger.instance.Play("GateInLoop");
                 ResetStage();
                 return;
             }
@@ -460,12 +472,18 @@ public class Player : MonoBehaviour {
     private void TimeUp() {
         if (isGoal == false) {
             GameOver(timeupIcon);
+            AudioManeger.instance.Play("TurnOver");
+            AudioManeger.instance.Fade("LoopBackStart", false, 4.0f);
+            AudioManeger.instance.Fade("LoopBackLoop", false, 8.0f);
         }
     }
 
     //ゴーストでゲームオーバー演出
     public void GhostGameOver() {
         GameOver(ghostIcon);
+        AudioManeger.instance.Play("Befound");
+        AudioManeger.instance.Fade("LoopBackStart", false, 4.0f);
+        AudioManeger.instance.Fade("LoopBackLoop", false, 8.0f);
     }
 
     public void GameOver(Material material) {
@@ -478,6 +496,7 @@ public class Player : MonoBehaviour {
         obj.GetComponent<Renderer>().material = material;
         rewindIndex = actionRecord.Count - 2;
         rewindTimer = -2;
+
     }
 
     private void Rewind() {
