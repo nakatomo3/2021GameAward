@@ -101,7 +101,7 @@ public class Krawler : DetailBase {
 
     // Update is called once per frame
     void Update() {
-        //フェーズによって消えたりするやつ(^_-)
+        //フェーズによって消えたりするやつ
         if (Stage.instance.isEditorMode == true) {
             transform.GetChild(0).gameObject.SetActive((phaseCount & (int)Mathf.Pow(2, StageEditor.editorPhase)) > 0 || StageEditor.editorPhase == 7);
             ResetEnemy();
@@ -177,7 +177,6 @@ public class Krawler : DetailBase {
                 moveTimer = 0;
             }
         }
-        Stage.instance.DestroyEnemy();
     }
 
     public override string ToFileString() {
