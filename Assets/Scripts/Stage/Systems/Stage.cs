@@ -169,7 +169,6 @@ public class Stage : MonoBehaviour {
         }
 
         player = Instantiate(player);
-        Instantiate(particles[visualMode], camera.transform);
         ghostManager = Instantiate(ghostManager);
 
         if (StageSelect.isStageSelect == true) {
@@ -181,6 +180,8 @@ public class Stage : MonoBehaviour {
             Debug.LogError("ステージの読み込みで不具合が発生したため終了しました");
             SystemSupporter.ExitGame();
         }
+
+        Instantiate(particles[visualMode], camera.transform);
 
         pauseWindow = Instantiate(pauseWindow);
 

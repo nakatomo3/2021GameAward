@@ -378,9 +378,9 @@ MonoBehaviour:
   fade: {fileID: 1209345973}
   particles:
   - {fileID: 4790898720949724305, guid: 9c3058520d29a694aa41e3120796def6, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4790898720949724305, guid: 5a28166edbb437a4d87eee57bd9a5760, type: 3}
+  - {fileID: 4790898720949724305, guid: 30880f63cae0b0d4b98e5b24c1f3e6de, type: 3}
+  - {fileID: 4790898720949724305, guid: b6404f676ee60684abab887edc4fef2a, type: 3}
   turnMax: 20
   pauseWindow: {fileID: 8492830367375691790, guid: aab5a798f53020b4fbdf0f9d28fabfed, type: 3}
   upSinema: {fileID: 1136965315}
