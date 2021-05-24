@@ -352,7 +352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEditorMode: 0
   isOptionMode: 0
-  stagePath: TestStage/spinner
+  stagePath: Stage
   objectIndex: 31003300340041004200640045004600680049004a004b005a00
   objectList:
   - {fileID: 971652173244137915, guid: b7c0680d97a86774fa6363c6ef5237fd, type: 3}
@@ -560,51 +560,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605936701}
   m_CullTransparentMesh: 1
---- !u!1 &626686893
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 626686895}
-  - component: {fileID: 626686894}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &626686894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626686893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a8c2c2c92d2c7b4a900a6ed9349daea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sounds: []
-  fadeOutFlag: 
---- !u!4 &626686895
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626686893}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &670926592
 GameObject:
   m_ObjectHideFlags: 0
