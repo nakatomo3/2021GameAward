@@ -161,6 +161,8 @@ public class GhostManager : MonoBehaviour {
         goalPositions.Add(goalPos);
 
         animators.Add(ghosts[ghosts.Count - 1].transform.GetChild(0).GetChild(0).GetComponent<Animator>());
+
+        AudioManeger.instance.Play("GhostRespawn");
     }
 
     public void Rewind() {

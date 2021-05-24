@@ -103,13 +103,13 @@ public class AudioManeger : MonoBehaviour
     }
 
     //再生中のサウンドをフェードインやフェードアウトさせる関数
-    void Fade(string name, bool isFadeOut, float second)
+    public void Fade(string name, bool isFadeOut, float second)
     {
         AudioElement s = SearchSound(name);
         StartCoroutine(FadeAudio(s, isFadeOut, second));
     }
 
-    void PlayRandom(string name, float pitch)
+    public void PlayRandom(string name, float pitch)
     {
         AudioElement s = SearchSound(name);
         float origin = s.source.pitch;

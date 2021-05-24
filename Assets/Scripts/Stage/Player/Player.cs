@@ -114,6 +114,8 @@ public class Player : MonoBehaviour {
         nowTurn = startObj.GetComponent<StartBlock>().turnMax;
 
         animator = model.GetComponent<Animator>();
+
+     
     }
 
     // Update is called once per frame
@@ -165,54 +167,63 @@ public class Player : MonoBehaviour {
                     actionRecord.Add(ActionRecord.LEFT);
                     newStepPos = transform.position + Vector3.left;
                     UseTurn();
+                    AudioManeger.instance.Play("Move");
                 } else {
                     actionRecord.Add(ActionRecord.NONE);
                     UseTurn();
+                    AudioManeger.instance.Play("Block");
                 }
                 moveIntervalTimer = 0;
 
 
             }
             if (InputManager.GetKey(Keys.UP)) {
-
                 transform.localEulerAngles = Vector3.up * 0;
                 isMoved = true;
+
+
                 if (CanStep(transform.position + Vector3.forward)) {
                     actionRecord.Add(ActionRecord.UP);
                     newStepPos = transform.position + Vector3.forward;
                     UseTurn();
+                    AudioManeger.instance.Play("Move");
                 } else {
                     actionRecord.Add(ActionRecord.NONE);
                     UseTurn();
+                    AudioManeger.instance.Play("Block");
                 }
                 moveIntervalTimer = 0;
 
             }
             if (InputManager.GetKey(Keys.RIGHT)) {
-
                 transform.localEulerAngles = Vector3.up * 90;
                 isMoved = true;
+
                 if (CanStep(transform.position + Vector3.right)) {
                     actionRecord.Add(ActionRecord.RIGHT);
                     newStepPos = transform.position + Vector3.right;
                     UseTurn();
+                    AudioManeger.instance.Play("Move");
                 } else {
                     actionRecord.Add(ActionRecord.NONE);
                     UseTurn();
+                    AudioManeger.instance.Play("Block");
                 }
                 moveIntervalTimer = 0;
             }
             if (InputManager.GetKey(Keys.DOWN)) {
-
                 transform.localEulerAngles = Vector3.up * 180;
                 isMoved = true;
+
                 if (CanStep(transform.position + Vector3.back)) {
                     actionRecord.Add(ActionRecord.DOWN);
                     newStepPos = transform.position + Vector3.back;
                     UseTurn();
+                    AudioManeger.instance.Play("Move");
                 } else {
                     actionRecord.Add(ActionRecord.NONE);
                     UseTurn();
+                    AudioManeger.instance.Play("Block");
                 }
                 moveIntervalTimer = 0;
 

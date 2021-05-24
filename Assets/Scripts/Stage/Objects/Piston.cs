@@ -142,6 +142,8 @@ public class Piston : DetailBase {
                 }
                 pistonTimer = 0;
                 isPush = true;
+
+                AudioManeger.instance.Play("Door");
             }
         } else {
             if (pistonTimer >= pistonIntervalOn) {

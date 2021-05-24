@@ -211,6 +211,7 @@ public class PauseManager : MonoBehaviour {
 							message.text = messageTexts[3];
 							void Func() {
 								PlayerPrefs.DeleteAll();
+                                AudioManeger.instance.Play("SceneChange");
 								SceneManager.LoadScene("Title");
 							}
 							SubmitWindow(Func, () => optionMode = OptionMode.MAIN);
@@ -232,25 +233,30 @@ public class PauseManager : MonoBehaviour {
 
 		if (InputManager.GetKeyDown(Keys.UP)) {
 			mainIndex--;
+            AudioManeger.instance.Play("Cursor");
 		}
 		if (InputManager.GetKeyDown(Keys.DOWN)) {
 			mainIndex++;
-		}
+            AudioManeger.instance.Play("Cursor");
+        }
 		cursor.anchoredPosition = new Vector2(-440, 175 + 120 * -mainIndex);
 
 		if (InputManager.GetKeyDown(Keys.A)) { //戻るボタン
 			Stage.instance.isOptionMode = false;
-		}
+            AudioManeger.instance.Play("Cancel");
+        }
 
 		if (InputManager.GetKeyDown(Keys.B)) { //決定
-			nowMode = (PauseMode)mainIndex;
+            nowMode = (PauseMode)mainIndex;
 			isMain = false;
 
 			nowSize = (ScreenSize)PlayerPrefs.GetInt("ScreenSize", (int)ScreenSize.HD);
 			isFullScreen = PlayerPrefs.GetInt("IsFullScreen", 0) == 1 ? true : false;
 			bgmVolume = PlayerPrefs.GetInt("BGMVolume", 50);
 			seVolume = PlayerPrefs.GetInt("SEVolume", 50);
-		}
+
+            AudioManeger.instance.Play("Decide");
+        }
 	}
 
 	private void EraseCheck() {
@@ -274,10 +280,12 @@ public class PauseManager : MonoBehaviour {
 	private void ChangeOption() {
 		if (InputManager.GetKeyDown(Keys.UP)) {
 			optionIndex--;
-		}
+            AudioManeger.instance.Play("Cursor");
+        }
 		if (InputManager.GetKeyDown(Keys.DOWN)) {
 			optionIndex++;
-		}
+            AudioManeger.instance.Play("Cursor");
+        }
 		cursor.anchoredPosition = new Vector2(-440, 295 + 120 * -optionIndex);
 
 		bool isRightInput = InputManager.GetKeyDown(Keys.RIGHT);
@@ -316,7 +324,8 @@ public class PauseManager : MonoBehaviour {
 				cursor.anchoredPosition = new Vector2(-440, -250);
 				if (InputManager.GetKeyDown(Keys.B)) {
 					optionMode = OptionMode.CONFIRM_CHECK;
-				}
+                    AudioManeger.instance.Play("Decide");
+                }
 				break;
 		}
 	}
@@ -367,10 +376,13 @@ public class PauseManager : MonoBehaviour {
 			} else {
 				offFunc();
 			}
-		}
+            AudioManeger.instance.Play("Decide");
+        }
 		if (InputManager.GetKeyDown(Keys.A)) {
 			offFunc();
-		}
+            AudioManeger.instance.Play("Cancel");
+        }
+
 	}
 
 	private void ChangeSubmit() {
