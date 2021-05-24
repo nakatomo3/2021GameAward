@@ -27,10 +27,7 @@ public class Ghost : MonoBehaviour {
             int phase;
             if (code == 'I') {
                 phase = obj.GetComponent<StartBlock>().phaseCount;
-                Debug.Log(phase);
-                Debug.Log(Mathf.Pow(2, Player.instance.phase));
                 if (((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
-                    Debug.Log("return");
                     return false;
                 }
             }
