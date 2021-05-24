@@ -223,6 +223,7 @@ public class Stage : MonoBehaviour {
                     PlayerPrefs.SetInt("ClearIndex", StageSelect.playingIndex + 1);
                 }
                 SceneManager.LoadScene("StageSelect");
+                AudioManeger.instance.Play("SceneChange");
                 break;
         }
     }
