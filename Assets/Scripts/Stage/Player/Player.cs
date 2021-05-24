@@ -38,8 +38,6 @@ public class Player : MonoBehaviour {
 
     private float moveIntervalTimer = 0;
 
-    [SerializeField]
-    private float turnIntervalMax;
     private float turnIntervalTimer = 0;
     private bool canMove = true;
 
