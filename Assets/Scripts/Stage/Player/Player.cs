@@ -66,6 +66,10 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private Sprite[] timerNumbers;
 
+    [SerializeField]
+    private GameObject model;
+    private Animator animator;
+
     [Disable]
     [SerializeField]
     private Image oneOnly;
@@ -108,6 +112,8 @@ public class Player : MonoBehaviour {
 
         GameObject startObj = Stage.instance.GetStageObject(this.transform.position);
         nowTurn = startObj.GetComponent<StartBlock>().turnMax;
+
+        animator = model.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -131,15 +137,20 @@ public class Player : MonoBehaviour {
 
     void Action() {
 
-        if (moveIntervalTimer > moveIntervalMax / 5) {
+        if (moveIntervalTimer / moveIntervalMax >= 1) {
+            moveIntervalTimer = moveIntervalMax;
             transform.position = newStepPos;
             oldStepPos = newStepPos;
             canMove = true;
+            animator.SetBool("isIdel", true);
+            animator.SetBool("isMove", false);
         } else {
             //次の移動先に線形補完で移動する
             canMove = false;
             moveIntervalTimer += Time.deltaTime;
             transform.position = Vector3.Lerp(oldStepPos, newStepPos, moveIntervalTimer / moveIntervalMax) + Vector3.up * Mathf.Sin(moveIntervalTimer / moveIntervalMax * Mathf.PI);
+            animator.SetBool("isIdel", false);
+            animator.SetBool("isMove", true);
         }
 
 
