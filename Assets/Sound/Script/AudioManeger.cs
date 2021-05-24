@@ -16,8 +16,7 @@ public class AudioManeger : MonoBehaviour
 
     public AudioElement[] sounds;
     public static AudioManeger instance;
-    public bool[] fadeOutFlag;
-
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -40,11 +39,12 @@ public class AudioManeger : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+            s.source.playOnAwake = false;
         }
     }
     void Start()
     {
-
+        Play("Move");
     }
 
     private void Update()
@@ -70,7 +70,9 @@ public class AudioManeger : MonoBehaviour
         {
             return;
         }
-        s.source.Play();
+        if(s.source.isPlaying == false)
+            s.source.Play();
+        Debug.Log("Play" + name);
     }
 
     public void Play(AudioElement sound)
@@ -118,11 +120,24 @@ public class AudioManeger : MonoBehaviour
         Play(s);
         StartCoroutine(ResetAudioPitch(s, origin));
     }
+    public void Stop(string name)
+    {
+        AudioElement s = SearchSound(name);
+        if (SearchSound(name) == null)
+        {
+            return;
+        }
+        s.source.Stop();
+    }
 
     public void StopAllSound()
     {
-
+        foreach(AudioElement s in sounds)
+        {
+            s.source.Stop();
+        }
     }
+
     IEnumerator FadeAudio(AudioElement sound, bool isFadeOut, float second)
     {
         float t = 0.0f;

@@ -473,8 +473,7 @@ public class Player : MonoBehaviour {
         if (isGoal == false) {
             GameOver(timeupIcon);
             AudioManeger.instance.Play("TurnOver");
-            AudioManeger.instance.Fade("LoopBackStart", false, 4.0f);
-            AudioManeger.instance.Fade("LoopBackLoop", false, 8.0f);
+            AudioManeger.instance.Play("LoopBackStart");
         }
     }
 
@@ -482,8 +481,7 @@ public class Player : MonoBehaviour {
     public void GhostGameOver() {
         GameOver(ghostIcon);
         AudioManeger.instance.Play("Befound");
-        AudioManeger.instance.Fade("LoopBackStart", false, 4.0f);
-        AudioManeger.instance.Fade("LoopBackLoop", false, 8.0f);
+        AudioManeger.instance.Play("LoopBackStart");
     }
 
     public void GameOver(Material material) {
@@ -534,6 +532,7 @@ public class Player : MonoBehaviour {
             Stage.instance.crt.enabled = false;
             GhostManager.instance.ResetStage();
             ResetStage();
+            AudioManeger.instance.Stop("LoopBackLoop");
         }
     }
 
