@@ -39,11 +39,25 @@ public class Ghost : MonoBehaviour {
             }
         }
 
-        //プレイヤーと同じ位置にいる
-        if (GhostManager.instance.newPos[id] == Player.instance.newStepPos ||
-            GhostManager.instance.oldPos[id] == Player.instance.newStepPos) {
-            return true;
+        //ゴーストがスタートブロック、ゴールブロックにいたらどこも見えない
+        obj = Stage.instance.GetStageObject(new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z)));
+        if (obj != null) {
+            var code = obj.name[0];
+            int phase;
+            if (code == 'I') {
+                phase = obj.GetComponent<StartBlock>().phaseCount;
+                if (((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
+                    return false;
+                }
+            }
+            if (code == 'J') {
+                phase = obj.GetComponent<Goal>().phaseCount;
+                if (((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
+                    return false;
+                }
+            }
         }
+
 
         //視線方向にいるか
         Vector3 distance = playerDistance;
@@ -92,6 +106,13 @@ public class Ghost : MonoBehaviour {
             }
             return true;
         }
+
+        //プレイヤーと同じ位置にいる
+        if (GhostManager.instance.newPos[id] == Player.instance.newStepPos ||
+            GhostManager.instance.oldPos[id] == Player.instance.newStepPos) {
+            return true;
+        }
+
         return false;
     }
     protected void ChangeViewRange() {
