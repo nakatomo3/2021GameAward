@@ -568,32 +568,27 @@ public class Player : MonoBehaviour {
     private void PhaseBack() {
         if (canMove == true) {
             if (InputManager.GetKeyDown(Keys.Y)) {
-                Vector3 pos = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
+                //初期位置に戻す
+                ResetStage();
+                enemyCount = 0;
+                for (int i = 0; i < GhostManager.instance.ghosts.Count; i++) {
+                    GhostManager.instance.ResetGhost(i);
+                }
+                for (int i = 0; i < Stage.instance.enemyScriptList[phase].Count; i++) {
+                    Stage.instance.enemyScriptList[phase][i].ResetEnemy();
+                    Stage.instance.enemyScriptList[phase][i].isDie = false;
+                }
+            }
+            if (InputManager.GetKeyDown(Keys.X)) {
+                //フェーズを戻す
+                GhostManager.instance.PhaseBack();
+                phase--;
+                enemyCount = 0;
+                ResetStage();
 
-                if (pos == Stage.instance.startBlockList[phase].transform.position) {
-                    if (phase != 0) {
-                        //フェーズを戻す
-                        GhostManager.instance.PhaseBack();
-                        phase--;
-                        enemyCount = 0;
-                        ResetStage();
-
-                        for (int i = 0; i < Stage.instance.enemyScriptList[phase].Count; i++) {
-                            Stage.instance.enemyScriptList[phase][i].ResetEnemy();
-                            Stage.instance.enemyScriptList[phase][i].isDie = false;
-                        }
-                    }
-                } else {
-                    //初期位置に戻す
-                    ResetStage();
-                    enemyCount = 0;
-                    for (int i = 0; i < GhostManager.instance.ghosts.Count; i++) {
-                        GhostManager.instance.ResetGhost(i);
-                    }
-                    for (int i = 0; i < Stage.instance.enemyScriptList[phase].Count; i++) {
-                        Stage.instance.enemyScriptList[phase][i].ResetEnemy();
-                        Stage.instance.enemyScriptList[phase][i].isDie = false;
-                    }
+                for (int i = 0; i < Stage.instance.enemyScriptList[phase].Count; i++) {
+                    Stage.instance.enemyScriptList[phase][i].ResetEnemy();
+                    Stage.instance.enemyScriptList[phase][i].isDie = false;
                 }
             }
         }
