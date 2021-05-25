@@ -21,6 +21,7 @@ public class Ghost : MonoBehaviour {
             return false;
         }
 
+        //プレイヤーが見えなくなるブロックの上にいる
         var obj = Stage.instance.GetStageObject(Player.instance.newStepPos);
         if (obj != null) {
             var code = obj.name[0];
@@ -37,6 +38,7 @@ public class Ghost : MonoBehaviour {
                     return false;
                 }
             }
+
         }
 
         //ゴーストがスタートブロック、ゴールブロックにいたらどこも見えない
@@ -53,6 +55,12 @@ public class Ghost : MonoBehaviour {
             if (code == 'J') {
                 phase = obj.GetComponent<Goal>().phaseCount;
                 if (((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
+                    return false;
+                }
+            }
+            if (code == 'B') {
+                Vector3 pos = obj.transform.GetChild(1).transform.localPosition;
+                if (pos.y >= -0.2f) {
                     return false;
                 }
             }
@@ -102,6 +110,12 @@ public class Ghost : MonoBehaviour {
                             return false;
                         }
                     }
+                    if (obj.name[0] == 'B') {
+                        Vector3 pos = obj.transform.GetChild(1).transform.localPosition;
+                        if (pos.y >= -0.2f) {
+                            return false;
+                        }
+                    }
                 }
             }
             return true;
@@ -118,7 +132,7 @@ public class Ghost : MonoBehaviour {
     protected void ChangeViewRange() {
         GameObject obj;
         Vector3 defaultSize = new Vector3(0.1f, 1, 0.3f);
-        Vector3 defaultPos = new Vector3(0, -0.5f, 2);
+        Vector3 defaultPos = new Vector3(0, -0.3f, 2);
         for (int i = 0; i < 4; i++) {
             Vector3 getBlockPos = transform.position + transform.forward * i;
             getBlockPos.x = Mathf.Round(getBlockPos.x);
@@ -142,6 +156,13 @@ public class Ghost : MonoBehaviour {
                 } else if (obj.name[0] == 'J') {
                     var phase = obj.GetComponent<Goal>().phaseCount;
                     if (((int)Mathf.Pow(2, Player.instance.phase) & phase) > 0) {
+                        isOcclution = true;
+                    }
+                }
+
+                if (obj.name[0] == 'B') {
+                    Vector3 pos = obj.transform.GetChild(1).transform.localPosition;
+                    if (pos.y >= -0.2f) {
                         isOcclution = true;
                     }
                 }
