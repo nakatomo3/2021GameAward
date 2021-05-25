@@ -44,7 +44,6 @@ public class AudioManeger : MonoBehaviour
     }
     void Start()
     {
-        Play("Move");
     }
 
     private void Update()
