@@ -30,6 +30,13 @@ public class StageSelect : MonoBehaviour {
 
     [SerializeField]
     private Text stageName;
+
+    [SerializeField]
+    private List<Image> lockImages; 
+
+    [Disable]
+    [SerializeField]
+    private List<Sprite> unlockAnimations;
     #endregion
 
     #region データ部
@@ -51,6 +58,8 @@ public class StageSelect : MonoBehaviour {
     public static int clearIndex;
 
     private float unlockTimer = 0;
+
+    private bool isUnlock = false;
     #endregion
 
     private void Awake() {
@@ -73,44 +82,87 @@ public class StageSelect : MonoBehaviour {
 
         clearIndex = PlayerPrefs.GetInt("ClearIndex", 0);
 
-        if(path.Count != images.Count) {
+        if (path.Count != images.Count) {
             Debug.Log("ファイルパスと画像リストのサイズが違います");
+        }
+
+        if (PlayerPrefs.GetInt("IsUnlock", 0) == 1) {
+            isUnlock = true;
+        }
+        PlayerPrefs.SetInt("IsUnlock", 0);
+
+        stageIndex = clearIndex - 1;
+
+        stageWindows[0].gameObject.SetActive(stageIndex != 0);
+        stageWindows[2].gameObject.SetActive(stageIndex < path.Count - 1);
+        stageWindows[3].gameObject.SetActive(stageIndex < path.Count - 2);
+
+        for (int i = 0; i < 3; i++) {
+            clearStars[i + 1].enabled = clearIndex > stageIndex + i + 1;
+            if (clearIndex > stageIndex + i) {
+                stageWindows[i + 1].color = Color.white;
+            } else {
+                stageWindows[i + 1].color = new Color(0.3f, 0.3f, 0.3f, 1);
+            }
+        }
+
+        for(int i = 0; i < 2; i++) {
+            lockImages[i].enabled = clearIndex >= stageIndex + i;
         }
     }
 
     // Update is called once per frame
     void Update() {
-        if (InputManager.GetKeyDown(Keys.LEFT)) {
-            stageIndex--;
-        }
-        if (InputManager.GetKeyDown(Keys.RIGHT)) {
-            stageIndex++;
-        }
-        if (InputManager.GetKeyDown(Keys.B)) {
-            stagePath = path[stageIndex];
-            var fade = fadeImage.AddComponent<FadeOut>();
-            fade.nextStagePath = "Stage";
-            fade.timeScale = 2;
-            playingIndex = stageIndex;
-        }
-        if (InputManager.GetKeyDown(Keys.A)) {
-            var fade = fadeImage.AddComponent<FadeOut>();
-            fade.nextStagePath = "Title";
-            fade.timeScale = 2;
-        }
-        stageWindows[0].gameObject.SetActive(stageIndex != 0);
-        stageWindows[2].gameObject.SetActive(stageIndex < path.Count - 1);
-        stageWindows[3].gameObject.SetActive(stageIndex < path.Count - 2);
-
-        for(int i = 0; i < 3; i++) {
-            clearStars[i + 1].enabled = clearIndex > stageIndex + i;
-        }
-
-        if(SystemSupporter.IsUnityEditor() == true) {
-            if(Input.GetKeyDown(KeyCode.Return) == true) {
-                clearIndex = path.Count;
+        if (isUnlock == true) {
+            unlockTimer += Time.deltaTime;
+            if((int)(unlockTimer / 0.05f) >= unlockAnimations.Count - 1) {
+                isUnlock = false;
+                stageIndex = clearIndex - 1;
+                AudioManeger.instance.Play("Unlock");
             }
-            stageName.text = path[stageIndex];
+            lockImages[0].sprite = unlockAnimations[(int)(unlockTimer / 0.05f)];
+        } else {
+            if (InputManager.GetKeyDown(Keys.LEFT)) {
+                stageIndex--;
+            }
+            if (InputManager.GetKeyDown(Keys.RIGHT)) {
+                stageIndex++;
+            }
+            if (InputManager.GetKeyDown(Keys.B)) {
+                stagePath = path[stageIndex];
+                var fade = fadeImage.AddComponent<FadeOut>();
+                fade.nextStagePath = "Stage";
+                fade.timeScale = 2;
+                playingIndex = stageIndex;
+            }
+            if (InputManager.GetKeyDown(Keys.A)) {
+                var fade = fadeImage.AddComponent<FadeOut>();
+                fade.nextStagePath = "Title";
+                fade.timeScale = 2;
+            }
+            stageWindows[0].gameObject.SetActive(stageIndex != 0);
+            stageWindows[2].gameObject.SetActive(stageIndex < path.Count - 1);
+            stageWindows[3].gameObject.SetActive(stageIndex < path.Count - 2);
+
+            for (int i = 0; i < 3; i++) {
+                clearStars[i + 1].enabled = clearIndex > stageIndex + i;
+                if (clearIndex >= stageIndex + i) {
+                    stageWindows[i + 1].color = Color.white;
+                } else {
+                    stageWindows[i + 1].color = new Color(0.3f, 0.3f, 0.3f, 1);
+                }
+            }
+
+            for (int i = 0; i < 2; i++) {
+                lockImages[i].enabled = clearIndex <= stageIndex + i;
+            }
+
+            if (SystemSupporter.IsUnityEditor() == true) {
+                if (Input.GetKeyDown(KeyCode.Return) == true) {
+                    clearIndex = path.Count;
+                }
+                stageName.text = path[stageIndex];
+            }
         }
     }
 }

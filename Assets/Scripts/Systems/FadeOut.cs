@@ -22,7 +22,7 @@ public class FadeOut : MonoBehaviour {
 
 		image.color = new Color(0, 0, 0, timer * timeScale);
 		if (timer >= 1 / timeScale && nextStagePath != "") {
-            AudioManeger.instance.Play("SceneChange");
+            //AudioManeger.instance.Play("SceneChange");
             SceneManager.LoadScene(nextStagePath);
 		}
 	}
