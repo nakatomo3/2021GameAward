@@ -72,6 +72,9 @@ public class Krawler : DetailBase {
     bool isReverseX;
     bool isReverseZ;
 
+    bool defaultIsReverseZ;
+    bool defaultIsReverseX;
+
     public bool isDie = false;
 
     // Start is called before the first frame update
@@ -93,6 +96,9 @@ public class Krawler : DetailBase {
         if (moveRangeZ < 0) {
             isReverseZ = true;
         }
+
+        defaultIsReverseZ = isReverseZ;
+        defaultIsReverseX = isReverseX;
 
         newStepPos = transform.GetChild(0).transform.localPosition;
         oldStepPos = transform.GetChild(0).transform.localPosition;
@@ -248,6 +254,9 @@ public class Krawler : DetailBase {
         krawlerTimerZ = 0;
         intervalTimer = 0;
         destroyTimer = 0;
+
+        isReverseZ = defaultIsReverseZ;
+        isReverseX = defaultIsReverseX;
 
         newStepPos = defaultPos;
         oldStepPos = defaultPos;
