@@ -27,10 +27,10 @@ public class PlayerCamera : MonoBehaviour {
 			deltaPosition = new Vector3(deltaPosition.x, 0, Mathf.Sign(deltaPosition.z) * maxRange);
 		}
 		if(moveVector.magnitude < 0.1f) {
-			deltaPosition = Vector3.Lerp(deltaPosition, Vector3.zero, 0.1f);
+			deltaPosition = Vector3.Lerp(deltaPosition, Vector3.zero, 0);
 		}
 
-		camera.transform.position = Vector3.Lerp(camera.transform.position, new Vector3(gameObject.transform.position.x, 10, gameObject.transform.position.z + -5) + deltaPosition, 0.1f);
+		camera.transform.position = Vector3.Lerp(camera.transform.position, new Vector3(gameObject.transform.position.x + 0.5f, 10, gameObject.transform.position.z + -4.5f) + deltaPosition, 0.1f);
 		camera.transform.localEulerAngles = new Vector3(70, 0, 0);
 	}
 }
