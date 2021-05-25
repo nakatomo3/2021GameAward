@@ -176,8 +176,7 @@ public class Player : MonoBehaviour {
                 moveIntervalTimer = 0;
 
 
-            }
-            if (InputManager.GetKey(Keys.UP)) {
+            }else if (InputManager.GetKey(Keys.UP)) {
                 transform.localEulerAngles = Vector3.up * 0;
                 isMoved = true;
 
@@ -194,8 +193,7 @@ public class Player : MonoBehaviour {
                 }
                 moveIntervalTimer = 0;
 
-            }
-            if (InputManager.GetKey(Keys.RIGHT)) {
+            }else if (InputManager.GetKey(Keys.RIGHT)) {
                 transform.localEulerAngles = Vector3.up * 90;
                 isMoved = true;
 
@@ -210,8 +208,7 @@ public class Player : MonoBehaviour {
                     AudioManeger.instance.Play("Block");
                 }
                 moveIntervalTimer = 0;
-            }
-            if (InputManager.GetKey(Keys.DOWN)) {
+            }else if (InputManager.GetKey(Keys.DOWN)) {
                 transform.localEulerAngles = Vector3.up * 180;
                 isMoved = true;
 
