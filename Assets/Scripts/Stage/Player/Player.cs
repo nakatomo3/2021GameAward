@@ -38,6 +38,8 @@ public class Player : MonoBehaviour {
 
     private float moveIntervalTimer = 0;
 
+    [SerializeField]
+    private float turnIntervalMax;
     private float turnIntervalTimer = 0;
     private bool canMove = true;
 
@@ -472,6 +474,7 @@ public class Player : MonoBehaviour {
             GameOver(timeupIcon);
             AudioManeger.instance.Play("TurnOver");
             AudioManeger.instance.Play("LoopBackStart");
+            AudioManeger.instance.Fade("LoopBackLoop", false, 0.25f);
         }
     }
 
@@ -480,6 +483,7 @@ public class Player : MonoBehaviour {
         GameOver(ghostIcon);
         AudioManeger.instance.Play("Befound");
         AudioManeger.instance.Play("LoopBackStart");
+        AudioManeger.instance.Fade("LoopBackLoop", false, 0.25f);
     }
 
     public void GameOver(Material material) {
@@ -530,6 +534,7 @@ public class Player : MonoBehaviour {
             Stage.instance.crt.enabled = false;
             GhostManager.instance.ResetStage();
             ResetStage();
+            AudioManeger.instance.Stop("LoopBackStart");
             AudioManeger.instance.Stop("LoopBackLoop");
         }
     }
