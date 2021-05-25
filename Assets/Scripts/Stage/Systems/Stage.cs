@@ -59,14 +59,6 @@ public class Stage : MonoBehaviour {
 
     [Disable]
     [SerializeField]
-    private GameObject deathUI;
-
-    [Disable]
-    [SerializeField]
-    private GameObject clearUI;
-
-    [Disable]
-    [SerializeField]
     private GameObject fade;
 
     [SerializeField]

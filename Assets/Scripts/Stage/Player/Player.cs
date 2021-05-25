@@ -89,6 +89,7 @@ public class Player : MonoBehaviour {
 
     public Material timeupIcon;
     public Material ghostIcon;
+    public Material loopIcon;
     public GameObject deathReasonIcon;
 
     private float rewindTimer;
@@ -411,8 +412,8 @@ public class Player : MonoBehaviour {
 
             } else {
                 //フェーズがクリアできない処理
-                AudioManeger.instance.Play("GateInLoop");
-                ResetStage();
+                
+                Loop();
                 return;
             }
 
@@ -465,6 +466,13 @@ public class Player : MonoBehaviour {
     public void Damage(float value) {
     }
 
+    private void Loop() {
+        GameOver(loopIcon);
+        AudioManeger.instance.Play("GateInLoop");
+        AudioManeger.instance.Play("LoopBackStart");
+        AudioManeger.instance.Fade("LoopBackLoop", false, 0.25f);
+    }
+
     //タイムアップ演出
     private void TimeUp() {
         if (isGoal == false) {
@@ -489,7 +497,7 @@ public class Player : MonoBehaviour {
         }
         isAlive = false;
         Stage.instance.nowMode = Stage.Mode.DEAD;
-        var obj = Instantiate(deathReasonIcon, transform.position + new Vector3(0, 10f, -5) * 0.8f, Quaternion.identity);
+        var obj = Instantiate(deathReasonIcon, transform.position + new Vector3(0.5f, 10f, -4.5f) * 0.8f, Quaternion.identity);
         obj.GetComponent<Renderer>().material = material;
         rewindIndex = actionRecord.Count - 2;
         rewindTimer = -2;
@@ -581,6 +589,9 @@ public class Player : MonoBehaviour {
             }
             if (InputManager.GetKeyDown(Keys.X)) {
                 //フェーズを戻す
+                if(phase == 0) {
+                    return;
+                }
                 GhostManager.instance.PhaseBack();
                 phase--;
                 enemyCount = 0;
