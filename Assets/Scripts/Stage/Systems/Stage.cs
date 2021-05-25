@@ -86,6 +86,9 @@ public class Stage : MonoBehaviour {
     private RectTransform downSinema;
 
     private Renderer startObjRenderer;
+    private Renderer goalObjRenderer;
+
+    private bool isSetClearFadeOut;
     #endregion
 
 
@@ -185,7 +188,7 @@ public class Stage : MonoBehaviour {
 
         pauseWindow = Instantiate(pauseWindow);
 
-        camera.transform.position = player.transform.position + Vector3.up * 10 + Vector3.back * 5;
+        camera.transform.position = player.transform.position + new Vector3(0.5f, 10, -4.5f);
         pauseWindow.SetActive(false);
     }
 
@@ -214,17 +217,17 @@ public class Stage : MonoBehaviour {
                 player.SetActive(!(isEditorMode || isOptionMode));
                 break;
             case Mode.DEAD:
-                //player.SetActive(false);
-                //deathUI.SetActive(true);
+
                 break;
             case Mode.CLEAR:
-                player.SetActive(false);
-                clearUI.SetActive(true);
-                if (StageSelect.isStageSelect == true) {
-                    PlayerPrefs.SetInt("ClearIndex", StageSelect.playingIndex + 1);
-                }
-                SceneManager.LoadScene("StageSelect");
-                AudioManeger.instance.Play("SceneChange");
+                StageClear();
+                //player.SetActive(false);
+                //clearUI.SetActive(true);
+                //if (StageSelect.isStageSelect == true) {
+                //    PlayerPrefs.SetInt("ClearIndex", StageSelect.playingIndex + 1);
+                //}
+                //SceneManager.LoadScene("StageSelect");
+                //AudioManeger.instance.Play("SceneChange");
                 break;
         }
     }
@@ -615,6 +618,38 @@ public class Stage : MonoBehaviour {
             downSinema.anchoredPosition = new Vector2(0, -200 - (startTimer - 3f) * 100);
         } else {
             nowMode = Mode.GAME;
+            startTimer = 0;
+        }
+    }
+
+    public void StageClear() {
+        startTimer += Time.deltaTime;
+        player.SetActive(false);
+        if (startTimer <= 0.5f) {
+            upSinema.anchoredPosition = new Vector2(0, 250 - startTimer * 100);
+            downSinema.anchoredPosition = new Vector2(0, -250 + startTimer * 100);
+        } else if (startTimer <= 2f) {
+            if (goalObjRenderer == null) {
+                goalObjRenderer = GetStageObject(Player.instance.newStepPos).transform.GetChild(1).GetChild(0).GetComponent<Renderer>();
+                goalObjRenderer.material.EnableKeyword("_EMISSION");
+            }
+            var colorChannel = Mathf.Pow(2, Mathf.Max(2 + startTimer * 5f, 1));
+            goalObjRenderer.material.SetColor("_EmissionColor", new Color(colorChannel, colorChannel, colorChannel));
+        } else if (startTimer <= 4f) {
+            var colorChannel = Mathf.Pow(2, Mathf.Max(12 - (startTimer - 2) * 5f, 1));
+            goalObjRenderer.material.SetColor("_EmissionColor", new Color(colorChannel, colorChannel, colorChannel));
+        } else if (startTimer <= 5f) {
+            if (isSetClearFadeOut == false) {
+                var fadeOut = fade.AddComponent<FadeOut>();
+                fadeOut.nextStagePath = "StageSelect";
+                isSetClearFadeOut = true;
+            }
+        } else {
+            if (StageSelect.isStageSelect == true) {
+                PlayerPrefs.SetInt("ClearIndex", StageSelect.playingIndex + 1);
+                PlayerPrefs.SetInt("IsUnlock", 1);
+            }
+            AudioManeger.instance.Play("SceneChange");
         }
     }
 }
