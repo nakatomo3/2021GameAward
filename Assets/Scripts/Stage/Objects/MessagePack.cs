@@ -6,81 +6,101 @@ using System.Text;
 
 public class MessagePack : DetailBase {
 
-	#region data
-	private int _index;
-	public int index {
-		get { return _index; }
-		set {
-			var num = value;
-			num = (num + images.Count) % images.Count;
-		}
-	}
+    #region data
+    private int _index;
+    public int index {
+        get { return _index; }
+        set {
+            var num = value;
+            num = (num + images.Count) % images.Count;
+            _index = num;
+        }
+    }
 
-	//入れる
-	public List<Sprite> images;
+    //入れる
+    public List<Sprite> images;
 
-	#endregion
+    #endregion
 
-	private float timer = 0;
-	private const float maxTime = 0.3f;
+    private float timer = 0;
+    private const float maxTime = 0.3f;
 
-	private static Image window;
+    private static Image window;
 
-	private bool isOnPlayer;
+    private bool isOnPlayer;
 
-	private void Start() {
-		if (window == null) {
-			window = GameObject.Find("MessagePackWindow").GetComponent<Image>();
-			window.color = new Color(0, 0, 0, 0);
-		}
-	}
+    private void Start() {
+        if (window == null) {
+            window = GameObject.Find("MessagePackWindow").GetComponent<Image>();
+            window.color = Color.white;
+        }
+    }
 
-	public override void Action() {
-		if (transform.position == Player.instance.transform.position) {
-			isOnPlayer = true;
-			window.sprite = images[index];
-		} else {
+    public override void Action() {
 
-		}
-	}
+    }
 
-	void Update() {
-		if (isOnPlayer) {
-			timer += Time.deltaTime;
-		}
-		window.color = new Color(1, 1, 1, timer / maxTime); //フェードインする
-		if (timer > 0 && isOnPlayer == false) { //離れたらフェードアウト
-			timer -= Time.deltaTime;
-		}
-	}
+    void Update() {
+        if (transform.position == Player.instance.newStepPos) {
+            isOnPlayer = true;
+            window.sprite = images[index];
+        } else {
+            isOnPlayer = false;
+        }
 
-	public override string ToFileString() {
-		StringBuilder sb = new StringBuilder();
-		sb.AppendLine("Z_MessagePack");
-		sb.AppendLine("pos:" + ConvertPos());
-		sb.AppendLine("image:" + index);
-		return sb.ToString();
-	}
+        if (isOnPlayer) {
+            timer += Time.deltaTime;
+            window.color = Color.white;
+        }
+        if (timer > 0 && isOnPlayer == false) { //離れたらフェードアウト
+            timer -= Time.deltaTime;
+        }
+        if (timer >= 1) {
+            timer = 1;
+        }
+        window.rectTransform.sizeDelta = new Vector2(200, 300) * EaseOutElastic(timer);
+    }
 
-	public override string ToEditorString() {
-		StringBuilder sb = new StringBuilder();
-		sb.AppendLine("画像インデックス:" + index);
-		return sb.ToString();
-	}
+    public override string ToFileString() {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("Z_MessagePack");
+        sb.AppendLine("pos:" + ConvertPos());
+        sb.AppendLine("image:" + index);
+        return sb.ToString();
+    }
 
-	public override void SetData(string information) {
-		var options = information.Split('\n');
-		for (int i = 0; i < options.Length; i++) {
-			var option = options[i];
-			if (option.Contains(":")) {
-				var key = option.Split(':')[0];
-				var value = option.Split(':')[1];
-				switch (key) {
-					case "image":
-						index = int.Parse(value);
-						break;
-				}
-			}
-		}
-	}
+    public override string ToEditorString() {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("画像インデックス:" + index);
+        return sb.ToString();
+    }
+
+    public override void SetData(string information) {
+        var options = information.Split('\n');
+        for (int i = 0; i < options.Length; i++) {
+            var option = options[i];
+            if (option.Contains(":")) {
+                var key = option.Split(':')[0];
+                var value = option.Split(':')[1];
+                switch (key) {
+                    case "image":
+                        index = int.Parse(value);
+                        break;
+                }
+            }
+        }
+    }
+
+
+    private float EaseOutElastic(float x) {
+        const float c5 = (2 * Mathf.PI) / 4.5f;
+
+        return x == 0
+          ? 0
+          : x == 1
+          ? 1
+          : x < 0.5f
+          ? -(Mathf.Pow(2, 20 * x - 10) * Mathf.Sin((20 * x - 11.125f) * c5)) / 2
+          : (Mathf.Pow(2, -20 * x + 10) * Mathf.Sin((20 * x - 11.125f) * c5)) / 2 + 1;
+    }
 }

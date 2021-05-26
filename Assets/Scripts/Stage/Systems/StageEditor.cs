@@ -542,6 +542,15 @@ public class StageEditor : MonoBehaviour {
                         break;
                 }
                 break;
+            case 'Z': //MessagePack
+                optionMax = 1;
+                if (isRightInput) {
+                    ((MessagePack)editingScript).index++;
+                }
+                if (isLeftInput) {
+                    ((MessagePack)editingScript).index--;
+                }
+                break;
         }
 	}
 
@@ -586,6 +595,9 @@ public class StageEditor : MonoBehaviour {
 					break;
                 case 'K':
                     detailObjectName.text = "クローラ";
+                    break;
+                case 'Z':
+                    detailObjectName.text = "メッセージパック";
                     break;
             }
 		} else {
