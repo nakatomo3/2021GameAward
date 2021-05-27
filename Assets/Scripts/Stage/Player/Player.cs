@@ -116,7 +116,7 @@ public class Player : MonoBehaviour {
 
         animator = model.GetComponent<Animator>();
 
-     
+
     }
 
     // Update is called once per frame
@@ -177,7 +177,7 @@ public class Player : MonoBehaviour {
                 moveIntervalTimer = 0;
 
 
-            }else if (InputManager.GetKey(Keys.UP)) {
+            } else if (InputManager.GetKey(Keys.UP)) {
                 transform.localEulerAngles = Vector3.up * 0;
                 isMoved = true;
 
@@ -194,7 +194,7 @@ public class Player : MonoBehaviour {
                 }
                 moveIntervalTimer = 0;
 
-            }else if (InputManager.GetKey(Keys.RIGHT)) {
+            } else if (InputManager.GetKey(Keys.RIGHT)) {
                 transform.localEulerAngles = Vector3.up * 90;
                 isMoved = true;
 
@@ -209,7 +209,7 @@ public class Player : MonoBehaviour {
                     AudioManeger.instance.Play("Block");
                 }
                 moveIntervalTimer = 0;
-            }else if (InputManager.GetKey(Keys.DOWN)) {
+            } else if (InputManager.GetKey(Keys.DOWN)) {
                 transform.localEulerAngles = Vector3.up * 180;
                 isMoved = true;
 
@@ -242,8 +242,7 @@ public class Player : MonoBehaviour {
 
         if (Stage.instance.enemyList[phase] != null) {
             if (enemyCount >= Stage.instance.enemyList[phase].Count) {
-                if(canPhaseClear == false)
-                {
+                if (canPhaseClear == false) {
                     AudioManeger.instance.Play("KrawlerClear");
                 }
                 canPhaseClear = true;
@@ -259,8 +258,7 @@ public class Player : MonoBehaviour {
         canAction = false;
         Stage.instance.Action();
         nowTurn--;
-        if(nowTurn <= 5)
-        {
+        if (nowTurn <= 5) {
             AudioManeger.instance.Play("TurnFew");
         }
     }
@@ -406,13 +404,13 @@ public class Player : MonoBehaviour {
                     SwitchManager.instance.Goal();
                     phase++;
                     canPhaseClear = false;
-                    enemyCount = 0; 
+                    enemyCount = 0;
                     AudioManeger.instance.Play("GateInFinal");
                 }
 
             } else {
                 //フェーズがクリアできない処理
-                
+
                 Loop();
                 return;
             }
@@ -499,7 +497,7 @@ public class Player : MonoBehaviour {
         Stage.instance.nowMode = Stage.Mode.DEAD;
         var obj = Instantiate(deathReasonIcon, transform.position + new Vector3(0.5f, 10f, -4.5f) * 0.8f, Quaternion.identity);
         obj.GetComponent<Renderer>().material = material;
-        rewindIndex = actionRecord.Count - 2;
+        rewindIndex = actionRecord.Count - 1;
         rewindTimer = -2;
 
     }
@@ -590,7 +588,7 @@ public class Player : MonoBehaviour {
             }
             if (InputManager.GetKeyDown(Keys.X)) {
                 //フェーズを戻す
-                if(phase == 0) {
+                if (phase == 0) {
                     return;
                 }
                 GhostManager.instance.PhaseBack();
@@ -607,10 +605,10 @@ public class Player : MonoBehaviour {
     }
 
     private void PhaseText() {
-        if(phaseMax < 0) {
+        if (phaseMax < 0) {
             phaseMax++;
-            for(int i = 0; i < Stage.instance.startBlockList.Count; i++) {
-                if(Stage.instance.startBlockList[i] != null) {
+            for (int i = 0; i < Stage.instance.startBlockList.Count; i++) {
+                if (Stage.instance.startBlockList[i] != null) {
                     phaseMax++;
                 }
             }
