@@ -6,10 +6,10 @@ using System;
 
 public class Krawler : DetailBase {
 
-    public static Krawler instance;
-
     [SerializeField]
     private Transform krawler;
+
+    public GameObject destroyEffect;
 
     private Animator animator;
     private float destroyTimer = 0;
@@ -79,8 +79,6 @@ public class Krawler : DetailBase {
 
     // Start is called before the first frame update
     void Start() {
-        instance = this;
-        krawler = GetComponent<Transform>();
         animator = transform.GetChild(0).GetComponent<Animator>();
 
         krawlerTimerX = 0;
@@ -109,13 +107,13 @@ public class Krawler : DetailBase {
     void Update() {
         //フェーズによって消えたりするやつ
         if (Stage.instance.isEditorMode == true) {
-            transform.GetChild(0).gameObject.SetActive((phaseCount & (int)Mathf.Pow(2, StageEditor.editorPhase)) > 0 || StageEditor.editorPhase == 7);
+            transform.GetChild(0).gameObject.SetActive(StageEditor.editorPhase == 7);
             ResetEnemy();
             isDie = false;
         } else {
             if (isDie == true) {
                 destroyTimer += Time.deltaTime;
-                if (destroyTimer > 5) {
+                if (destroyTimer > 2.5f) {
                     transform.GetChild(0).gameObject.SetActive(false);
                     ResetEnemy();
                 }
