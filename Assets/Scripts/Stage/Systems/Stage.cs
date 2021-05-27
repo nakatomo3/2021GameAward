@@ -68,23 +68,25 @@ public class Stage : MonoBehaviour {
     [SerializeField]
     public int turnMax;
 
+    [Disable]
     [SerializeField]
     private GameObject pauseWindow;
 
+    [Disable]
     [SerializeField]
     private RectTransform upSinema;
 
+    [Disable]
     [SerializeField]
     private RectTransform downSinema;
+    #endregion
 
+    #region データ部
     private Renderer startObjRenderer;
     private Renderer goalObjRenderer;
 
     private bool isSetClearFadeOut;
-    #endregion
 
-
-    #region データ部
     public GameObject stageParent { get; private set; }
     public List<List<char>> stageData { get; private set; }
     public Vector3 startPosition { get; private set; }
