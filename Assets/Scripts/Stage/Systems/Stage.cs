@@ -215,13 +215,6 @@ public class Stage : MonoBehaviour {
                 break;
             case Mode.CLEAR:
                 StageClear();
-                //player.SetActive(false);
-                //clearUI.SetActive(true);
-                //if (StageSelect.isStageSelect == true) {
-                //    PlayerPrefs.SetInt("ClearIndex", StageSelect.playingIndex + 1);
-                //}
-                //SceneManager.LoadScene("StageSelect");
-                //AudioManeger.instance.Play("SceneChange");
                 break;
         }
     }

@@ -35,7 +35,7 @@ public class Goal : DetailBase {
 
     // Update is called once per frame
     void Update() {
-        goalObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0);
+        goalObject.SetActive((phaseCount & (int)Mathf.Pow(2, Player.instance.phase)) > 0 || Stage.instance.nowMode == Stage.Mode.CLEAR);
         if (Stage.instance.isEditorMode == true) {
             goalObject.SetActive((phaseCount & (int)Mathf.Pow(2, StageEditor.editorPhase)) > 0 || StageEditor.editorPhase == 7);
         }
