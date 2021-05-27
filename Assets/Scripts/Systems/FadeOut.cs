@@ -15,14 +15,14 @@ public class FadeOut : MonoBehaviour {
 
 	private void Awake() {
 		image = gameObject.GetComponent<Image>();
-	}
+        AudioManeger.instance.Play("SceneChange");
+    }
 
 	void Update() {
 		timer += Time.deltaTime;
 
 		image.color = new Color(0, 0, 0, timer * timeScale);
 		if (timer >= 1 / timeScale && nextStagePath != "") {
-            //AudioManeger.instance.Play("SceneChange");
             SceneManager.LoadScene(nextStagePath);
 		}
 	}
