@@ -403,11 +403,11 @@ public class Player : MonoBehaviour {
                     AudioManeger.instance.Play("GateInFinal");
                     return;
                 } else {
+                    SwitchManager.instance.Goal();
                     phase++;
                     canPhaseClear = false;
                     enemyCount = 0; 
                     AudioManeger.instance.Play("GateInFinal");
-
                 }
 
             } else {
@@ -572,6 +572,7 @@ public class Player : MonoBehaviour {
 
         actionRecord.Clear();
         Stage.instance.ResetEnemy();
+        SwitchManager.instance.ResetStage();
     }
     private void PhaseBack() {
         if (canMove == true) {
