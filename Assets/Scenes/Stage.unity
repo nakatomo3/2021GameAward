@@ -5153,7 +5153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEditorMode: 0
   isOptionMode: 0
-  stagePath: Stage
+  stagePath: TestStage/prison
   objectIndex: 31003300340041004200640045004600680049004a004b005a00
   objectList:
   - {fileID: 971652173244137915, guid: b7c0680d97a86774fa6363c6ef5237fd, type: 3}
