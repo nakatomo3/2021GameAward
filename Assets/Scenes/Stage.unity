@@ -5153,8 +5153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEditorMode: 0
   isOptionMode: 0
-  stagePath: TestStage/prison
-  objectIndex: 31003300340041004200640045004600680049004a004b005a00
+  stagePath: Stage
+  objectIndex: 3100330034004100420064004500680049004a004b005a00
   objectList:
   - {fileID: 971652173244137915, guid: b7c0680d97a86774fa6363c6ef5237fd, type: 3}
   - {fileID: 3297577982655666641, guid: ad2584f05d2b72e46ac8da32d897d92c, type: 3}
@@ -5164,7 +5164,6 @@ MonoBehaviour:
   - {fileID: 2386440019043748282, guid: b1e8ee3f66b806148988131b8e07a81d, type: 3}
   - {fileID: 4970078883280676290, guid: d679e8fcbff91454b84db6924e365997, type: 3}
   - {fileID: 1743349554945457667, guid: 10b74e6d59806b34baf7c0899ab3543a, type: 3}
-  - {fileID: 5784270443847477316, guid: 2d4a1f97a4ad6d14ba604e63cf6c7cb1, type: 3}
   - {fileID: 7256783851628133017, guid: 23eddfe741f86cb4189e2b3d10cdacea, type: 3}
   - {fileID: 705572110283291162, guid: b412dfc3dd96f774cada943631966793, type: 3}
   - {fileID: 9105554769854463881, guid: 5c892ddfd0a1088429a3c6da1da54f5c, type: 3}
