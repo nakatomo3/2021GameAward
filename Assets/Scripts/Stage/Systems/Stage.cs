@@ -574,7 +574,9 @@ public class Stage : MonoBehaviour {
 
                     if (enemyPos == Player.instance.newStepPos ||
                         enemyPos == Player.instance.oldStepPos) {
-                        enemyList[phase][i].GetComponent<Krawler>().isDie = true;
+                        var krawler = enemyList[phase][i].GetComponent<Krawler>();
+                        krawler.isDie = true;
+                        krawler.destroyEffect.SetActive(true);
                         return true;
                     }
                 }
