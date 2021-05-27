@@ -508,7 +508,7 @@ public class Player : MonoBehaviour {
             switch (actionRecord[rewindIndex]) {
                 case ActionRecord.UP:
                     transform.position -= Vector3.forward; //逆再生なのでマイナス
-                    transform.localEulerAngles = Vector3.up * 180;
+                    transform.localEulerAngles = Vector3.up * 0;
                     break;
                 case ActionRecord.DOWN:
                     transform.position -= Vector3.back;
