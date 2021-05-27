@@ -32,7 +32,6 @@ public class MessagePack : DetailBase {
     private void Start() {
         if (window == null) {
             window = GameObject.Find("MessagePackWindow").GetComponent<Image>();
-            window.color = Color.white;
         }
     }
 
