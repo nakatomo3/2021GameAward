@@ -592,6 +592,10 @@ public class Player : MonoBehaviour {
                     return;
                 }
                 GhostManager.instance.PhaseBack();
+                for (int i = 0; i < Stage.instance.enemyScriptList[phase].Count; i++) {
+                    Stage.instance.enemyScriptList[phase][i].ResetEnemy();
+                    Stage.instance.enemyScriptList[phase][i].isDie = false;
+                }
                 phase--;
                 enemyCount = 0;
                 ResetStage();
