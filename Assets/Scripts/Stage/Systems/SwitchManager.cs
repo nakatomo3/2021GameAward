@@ -37,7 +37,12 @@ public class SwitchManager : MonoBehaviour {
             }
         } else if (channels.Count == Player.instance.phase) { //一個前のフェーズに戻る
             for (int i = 0; i < 16; i++) {
-                channel[i] = channels[Player.instance.phase][i];
+                channel[i] = channels[Player.instance.phase - 1][i];
+            }
+            channels.RemoveAt(channels.Count - 1);
+        } else if (channels.Count == Player.instance.phase + 2) {
+            for (int i = 0; i < 16; i++) {
+                channel[i] = channels[Player.instance.phase + 1][i];
             }
             channels.RemoveAt(channels.Count - 1);
         }
