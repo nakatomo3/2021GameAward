@@ -36,7 +36,7 @@ public class Player : MonoBehaviour {
     [Disable]
     public float stepTimer = 0;
 
-    private float moveIntervalTimer = 0;
+    public float moveIntervalTimer = 0;
 
     [SerializeField]
     private float turnIntervalMax;
