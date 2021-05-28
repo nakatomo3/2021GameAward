@@ -229,7 +229,7 @@ public class Player : MonoBehaviour {
         }
 
         GoalCheck();
-        if (nowTurn <= 0 && isGoal == false) {
+        if (nowTurn <= 0 && isGoal == false && moveIntervalTimer / moveIntervalMax >= 1) {
             TimeUp();
         }
         isGoal = false;
