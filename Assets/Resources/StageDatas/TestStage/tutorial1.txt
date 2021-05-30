@@ -39,12 +39,12 @@ image:0
 I_Start
 pos:3,3
 phaseCount:2
-turnMax:10
+turnMax:8
 isTutorial:False
 
 I_Start
 pos:0,0
 phaseCount:1
-turnMax:20
+turnMax:6
 isTutorial:False
 
