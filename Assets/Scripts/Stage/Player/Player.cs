@@ -600,6 +600,9 @@ public class Player : MonoBehaviour {
                 enemyCount = 0;
                 ResetStage();
 
+                //バグ回避でもう一回
+                SwitchManager.instance.ResetStage();
+
                 for (int i = 0; i < Stage.instance.enemyScriptList[phase].Count; i++) {
                     Stage.instance.enemyScriptList[phase][i].ResetEnemy();
                     Stage.instance.enemyScriptList[phase][i].isDie = false;
