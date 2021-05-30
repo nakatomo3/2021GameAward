@@ -188,7 +188,7 @@ public class PauseManager : MonoBehaviour {
 			switch (nowMode) {
 				case PauseMode.STAGE_SELECT:
 					message.text = messageTexts[0];
-					SubmitWindow(() => SceneManager.LoadScene("Title"), () => isMain = true);
+					SubmitWindow(() => SceneManager.LoadScene("StageSelect"), () => isMain = true);
 					break;
 				case PauseMode.OPTION:
 					EraseCheck();
