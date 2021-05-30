@@ -52,7 +52,7 @@ phaseCount:2
 I_Start
 pos:0,0
 phaseCount:1
-turnMax:15
+turnMax:8
 isTutorial:False
 
 J_Goal
@@ -74,6 +74,6 @@ phaseCount:2
 I_Start
 pos:10,0
 phaseCount:2
-turnMax:20
+turnMax:8
 isTutorial:False
 
