@@ -31,7 +31,7 @@ isTutorial:False
 
 Z_MessagePack
 pos:10,4
-image:0
+image:1
 
 K_Krawler
 pos:2,2
