@@ -420,17 +420,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path:
-  - Stage
-  - A
-  - A
-  - A
-  - A
+  - TestStage/tutorial1
+  - TestStage/tutorial2
+  - TestStage/X
+  - TestStage/ShutDown
+  - Qualified/tsukikake101
+  - Qualified/sugimoto1
+  - TestStage/Slide
+  - Qualified/stream
+  - TestStage/minimum
+  - TestStage/yasasime
+  - TestStage/patrol20210517
+  - TestStage/sugimoto2
+  - TestStage/simple
+  - TestStage/extreme
+  - TestStage/crystal
+  - Qualified/daruma
+  - TestStage/4goal
+  - TestStage/SFT
+  - Qualified/spinner
+  - TestStage/prison
   images:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: c33ae4562bd5f6f40a1938674f6b98dc, type: 3}
+  - {fileID: 21300000, guid: 0d82758ff6ddc804681292a617b1c7f5, type: 3}
+  - {fileID: 21300000, guid: d0279276f9ca16d4d85d27308fb3c5b4, type: 3}
+  - {fileID: 21300000, guid: 5cc6688d83b1994458bd49d5d36e8fcd, type: 3}
+  - {fileID: 21300000, guid: 7547007c634146f4fb987d469f09ad44, type: 3}
+  - {fileID: 21300000, guid: d36f69dd719c3d945b47177f839cec57, type: 3}
+  - {fileID: 21300000, guid: acab30314d055374e80babf0cff0696f, type: 3}
+  - {fileID: 21300000, guid: ea1983b15ae449e4bbc7bb20f0d59691, type: 3}
+  - {fileID: 21300000, guid: 6907c9d2f038f1a48bce57da463a7109, type: 3}
+  - {fileID: 21300000, guid: a80f1aade2022e3459dc80b1b39481ab, type: 3}
+  - {fileID: 21300000, guid: 97da2149a29b7464cb753938549d424b, type: 3}
+  - {fileID: 21300000, guid: d8b2819fcde7ea248bbe93d98ff90deb, type: 3}
+  - {fileID: 21300000, guid: 43a81a17d42d90547a9ba3247d4407c5, type: 3}
+  - {fileID: 21300000, guid: 5b31b6e74658a234fb578ff310be68a8, type: 3}
+  - {fileID: 21300000, guid: 5c2ad5a16db1d4741a6632b52af51127, type: 3}
+  - {fileID: 21300000, guid: 0c2b1108259131f4d98af27ddf934653, type: 3}
+  - {fileID: 21300000, guid: 58e2311487a3bbb4497e5e27d2fe5f67, type: 3}
+  - {fileID: 21300000, guid: 978d98577c967d644be4d61e2eabf8b9, type: 3}
+  - {fileID: 21300000, guid: 22a6901f41acc004e9900abb7e9bed44, type: 3}
+  - {fileID: 21300000, guid: 55ae3591fa005294ca2dccb65a4fbaa4, type: 3}
   fadeImage: {fileID: 1809244810}
   stageWindows:
   - {fileID: 1147528513}
