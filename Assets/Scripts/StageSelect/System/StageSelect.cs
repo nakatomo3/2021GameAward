@@ -72,8 +72,8 @@ public class StageSelect : MonoBehaviour {
         if (InputManager.isInit == false) {
             InputManager.Init();
 #if UNITY_EDITOR
-            SystemSupporter.DebugInitInput();
 #endif
+            SystemSupporter.DebugInitInput();
         }
 
         isStageSelect = true;
