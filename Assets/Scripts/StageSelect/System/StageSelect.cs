@@ -106,7 +106,7 @@ public class StageSelect : MonoBehaviour {
             }
         }
         for (int i = 0; i < 4; i++) {
-            if (stageIndex + i - 1 >= 0) {
+            if (stageIndex + i - 1 >= 0 && stageIndex + i <= 20) {
                 stageWindows[i].sprite = images[stageIndex + i - 1];
             }
         }
@@ -158,7 +158,7 @@ public class StageSelect : MonoBehaviour {
                 }
             }
             for (int i = 0; i < 4; i++) {
-                if (stageIndex + i - 1 >= 0) {
+                if (stageIndex + i - 1 >= 0 && stageIndex + i <= 20) {
                     stageWindows[i].sprite = images[stageIndex + i - 1];
                 }
             }
