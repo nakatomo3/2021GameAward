@@ -57,7 +57,11 @@ public class MessagePack : DetailBase {
         if (timer >= 1) {
             timer = 1;
         }
-        window.rectTransform.sizeDelta = new Vector2(200, 300) * EaseOutElastic(timer);
+        if (window == null) {
+            window = GameObject.Find("MessagePackWindow").GetComponent<Image>();
+        } else {
+            window.rectTransform.sizeDelta = new Vector2(200, 300) * EaseOutElastic(timer);
+        }
     }
 
     public override string ToFileString() {
