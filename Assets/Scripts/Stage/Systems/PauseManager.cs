@@ -334,7 +334,7 @@ public class PauseManager : MonoBehaviour {
 		var size = "";
 		switch (nowSize) {
 			case ScreenSize.SD:
-				size = "◀720×480▶";
+				size = "◀768×432▶";
 				break;
 			case ScreenSize.HD:
 				size = "◀1280×720▶";
@@ -343,7 +343,7 @@ public class PauseManager : MonoBehaviour {
 				size = "◀1920×1080▶";
 				break;
 			case ScreenSize.QHD:
-				size = "◀2560×1480▶";
+				size = "◀2560×1440▶";
 				break;
 		}
 		screenSizeText.text = size;
@@ -362,6 +362,22 @@ public class PauseManager : MonoBehaviour {
 		PlayerPrefs.SetInt("IsFullScreen", screenMode);
 		PlayerPrefs.SetInt("BGMVolume", bgmVolume);
 		PlayerPrefs.SetInt("SEVolume", seVolume);
+
+        switch (nowSize) {
+            case ScreenSize.SD:
+                Screen.SetResolution(768, 432, (FullScreenMode)(3 - screenMode * 2));
+                break;
+            case ScreenSize.HD:
+                Screen.SetResolution(1280, 720, (FullScreenMode)(3 - screenMode * 2));
+                break;
+            case ScreenSize.FHD:
+                Screen.SetResolution(1920, 1080, (FullScreenMode)(3 - screenMode * 2));
+                break;
+            case ScreenSize.QHD:
+                Screen.SetResolution(2560, 1440, (FullScreenMode)(3 - screenMode * 2));
+                break;
+        }
+        
 
 		optionMode = OptionMode.MAIN;
 		isMain = true;
