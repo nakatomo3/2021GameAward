@@ -637,7 +637,9 @@ public class Stage : MonoBehaviour {
             }
         } else {
             if (StageSelect.isStageSelect == true) {
-                PlayerPrefs.SetInt("ClearIndex", StageSelect.playingIndex + 1);
+                if(PlayerPrefs.GetInt("ClearIndex", 0) <= StageSelect.playingIndex) {
+                    PlayerPrefs.SetInt("ClearIndex", StageSelect.playingIndex + 1);
+                }
                 PlayerPrefs.SetInt("IsUnlock", 1);
             }
             AudioManeger.instance.Play("SceneChange");
