@@ -17,13 +17,13 @@ IB11I
 I_Start
 pos:0,4
 phaseCount:8
-turnMax:22
+turnMax:12
 isTutorial:False
 
 I_Start
 pos:4,4
 phaseCount:4
-turnMax:20
+turnMax:12
 isTutorial:False
 
 K_Krawler
@@ -73,7 +73,7 @@ channel:0
 I_Start
 pos:0,0
 phaseCount:1
-turnMax:99
+turnMax:12
 isTutorial:False
 
 B_Door
@@ -84,6 +84,6 @@ reverse:False
 I_Start
 pos:4,0
 phaseCount:2
-turnMax:20
+turnMax:12
 isTutorial:False
 
