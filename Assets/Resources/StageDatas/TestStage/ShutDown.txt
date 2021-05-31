@@ -1,37 +1,29 @@
 #StageData
 size:9,10
-design:0
+design:1
 pos:-1,1
 
 
 #Comment
 
 #ObjectData
-1111A1111
-1I11A11K1
-1111A1111
-BBB444111
+111111111
+1I11111K1
+111111111
+4B4444111
 1111K1111
 1111K1111
-111444BBB
-1111A1111
-1K11A11J1
-1111A1111
+111444444
+111111A11
+1K1111AJ1
+111111A11
 
 #Detail
-A_Switch
-pos:3,1
-channel:0
-
 I_Start
 pos:0,0
 phaseCount:7
 turnMax:27
 isTutorial:False
-
-A_Switch
-pos:3,0
-channel:0
 
 K_Krawler
 pos:6,0
@@ -41,22 +33,8 @@ interval:0
 damage:0
 phaseCount:1
 
-A_Switch
-pos:3,-1
-channel:0
-
-B_Door
-pos:-1,-2
-channel:1
-reverse:False
-
 B_Door
 pos:0,-2
-channel:1
-reverse:False
-
-B_Door
-pos:1,-2
 channel:1
 reverse:False
 
@@ -76,23 +54,8 @@ interval:0
 damage:0
 phaseCount:2
 
-B_Door
-pos:5,-5
-channel:0
-reverse:True
-
-B_Door
-pos:6,-5
-channel:0
-reverse:True
-
-B_Door
-pos:7,-5
-channel:0
-reverse:True
-
 A_Switch
-pos:3,-6
+pos:5,-6
 channel:1
 
 K_Krawler
@@ -104,7 +67,7 @@ damage:0
 phaseCount:4
 
 A_Switch
-pos:3,-7
+pos:5,-7
 channel:1
 
 J_Goal
@@ -112,6 +75,6 @@ pos:6,-7
 phaseCount:7
 
 A_Switch
-pos:3,-8
+pos:5,-8
 channel:1
 

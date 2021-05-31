@@ -1,6 +1,6 @@
 #StageData
 size:17,15
-design:0
+design:3
 pos:-9,8
 
 

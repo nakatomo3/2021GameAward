@@ -1,6 +1,6 @@
 #StageData
 size:12,12
-design:0
+design:1
 pos:-5,6
 
 
@@ -70,6 +70,6 @@ isTutorial:False
 I_Start
 pos:4,-3
 phaseCount:4
-turnMax:20
+turnMax:7
 isTutorial:False
 
