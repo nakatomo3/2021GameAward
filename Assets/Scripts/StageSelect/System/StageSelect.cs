@@ -114,6 +114,8 @@ public class StageSelect : MonoBehaviour {
         for (int i = 0; i < 2; i++) {
             lockImages[i].enabled = clearIndex >= stageIndex + i;
         }
+
+        AudioManeger.instance.PlayBGM(5);
     }
 
     // Update is called once per frame
