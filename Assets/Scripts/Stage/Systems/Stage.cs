@@ -594,6 +594,7 @@ public class Stage : MonoBehaviour {
         startTimer += Time.deltaTime;
         player.SetActive(false);
         if (startTimer <= 0.5f) {
+            AudioManeger.instance.Play("Start");
             //フェードイン、こちらでは何もしない
         } else if (startTimer <= 3f) {
             if (startObjRenderer == null) {

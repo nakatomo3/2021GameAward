@@ -16,7 +16,8 @@ public class FadeOut : MonoBehaviour {
 	private void Awake() {
 		image = gameObject.GetComponent<Image>();
         AudioManeger.instance.Play("SceneChange");
-    }
+		AudioManeger.instance.FadeAllBGM();
+	}
 
 	void Update() {
 		timer += Time.deltaTime;
