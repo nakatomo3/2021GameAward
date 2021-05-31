@@ -632,7 +632,11 @@ public class Stage : MonoBehaviour {
         } else if (startTimer <= 5f) {
             if (isSetClearFadeOut == false) {
                 var fadeOut = fade.AddComponent<FadeOut>();
-                fadeOut.nextStagePath = "StageSelect";
+                if(StageSelect.isStageSelect == true && StageSelect.playingIndex == 19) {
+                    fadeOut.nextStagePath = "Clear";
+                } else {
+                    fadeOut.nextStagePath = "StageSelect";
+                }
                 isSetClearFadeOut = true;
             }
         } else {
