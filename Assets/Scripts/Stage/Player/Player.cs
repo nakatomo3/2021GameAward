@@ -576,6 +576,7 @@ public class Player : MonoBehaviour {
         if (canMove == true) {
             if (InputManager.GetKeyDown(Keys.Y)) {
                 //初期位置に戻す
+                AudioManeger.instance.Play("Reset");
                 ResetStage();
                 enemyCount = 0;
                 for (int i = 0; i < GhostManager.instance.ghosts.Count; i++) {
@@ -588,6 +589,7 @@ public class Player : MonoBehaviour {
             }
             if (InputManager.GetKeyDown(Keys.X)) {
                 //フェーズを戻す
+                AudioManeger.instance.Play("Reset");
                 if (phase == 0) {
                     return;
                 }
