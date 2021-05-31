@@ -171,7 +171,6 @@ public class StageSelect : MonoBehaviour {
                 if (Input.GetKeyDown(KeyCode.Return) == true) {
                     clearIndex = path.Count;
                 }
-                stageName.text = path[stageIndex];
             }
         }
     }
