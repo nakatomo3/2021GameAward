@@ -32,7 +32,7 @@ public class StageSelect : MonoBehaviour {
     private Text stageName;
 
     [SerializeField]
-    private List<Image> lockImages; 
+    private List<Image> lockImages;
 
     [Disable]
     [SerializeField]
@@ -105,8 +105,13 @@ public class StageSelect : MonoBehaviour {
                 stageWindows[i + 1].color = new Color(0.3f, 0.3f, 0.3f, 1);
             }
         }
+        for (int i = 0; i < 4; i++) {
+            if (stageIndex + i - 1 >= 0) {
+                stageWindows[i].sprite = images[stageIndex + i - 1];
+            }
+        }
 
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             lockImages[i].enabled = clearIndex >= stageIndex + i;
         }
     }
@@ -115,7 +120,7 @@ public class StageSelect : MonoBehaviour {
     void Update() {
         if (isUnlock == true) {
             unlockTimer += Time.deltaTime;
-            if((int)(unlockTimer / 0.05f) >= unlockAnimations.Count - 1) {
+            if ((int)(unlockTimer / 0.05f) >= unlockAnimations.Count - 1) {
                 isUnlock = false;
                 stageIndex = clearIndex - 1;
                 AudioManeger.instance.Play("Unlock");
@@ -150,6 +155,11 @@ public class StageSelect : MonoBehaviour {
                     stageWindows[i + 1].color = Color.white;
                 } else {
                     stageWindows[i + 1].color = new Color(0.3f, 0.3f, 0.3f, 1);
+                }
+            }
+            for (int i = 0; i < 4; i++) {
+                if (stageIndex + i - 1 >= 0) {
+                    stageWindows[i].sprite = images[stageIndex + i - 1];
                 }
             }
 
