@@ -23,6 +23,8 @@ public class AudioElement
     public float pitch;
     [Tooltip("ループフラグ")]
     public bool loop;
+    [Tooltip("BGMタグ")]
+    public bool isBGM;
     [HideInInspector]
     public AudioSource source;
         #endregion

@@ -52,6 +52,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a8c2c2c92d2c7b4a900a6ed9349daea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: 114bcaae134445840b5d221f551f718a, type: 2}
+  bgmBus: {fileID: 1225725916454749634, guid: 114bcaae134445840b5d221f551f718a, type: 2}
+  seBus: {fileID: 4498181308493475179, guid: 114bcaae134445840b5d221f551f718a, type: 2}
   bgmNameList:
   - World1
   - World2
@@ -69,184 +72,215 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: Cancel
     clip: {fileID: 8300000, guid: 2c311d458342dee4795778723f4770de, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: Cursor
     clip: {fileID: 8300000, guid: 7be8bc7036851d04c9c91639ca1d4366, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: SceneChange
     clip: {fileID: 8300000, guid: 9ec379104e44fcc4299c240bfa629dae, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: Move
     clip: {fileID: 8300000, guid: 643db18fa6721954583913010ef74353, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: Block
     clip: {fileID: 8300000, guid: 836adce2506ab164cbcf4b463b065c65, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: Door
     clip: {fileID: 8300000, guid: fe334d8da06ac75478b8bca6dc08747f, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: GhostRespawn
     clip: {fileID: 8300000, guid: 2b1fcc8a03dc3654cbdac30af00ea458, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: GateIn
     clip: {fileID: 8300000, guid: e4ec176ad3dea284089bc61fe14b97af, type: 3}
     volume: 1
     pitch: 0
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: GateInLoop
     clip: {fileID: 8300000, guid: 862f903a1698f8f478e242916149ef07, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: GateInFinal
     clip: {fileID: 8300000, guid: 99d7536c767571b4c81ba6c2a536426c, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: Befound
     clip: {fileID: 8300000, guid: d6d795673703676468a24dd3539dd2d1, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: TurnOver
     clip: {fileID: 8300000, guid: ae981635271aa4f4cb2d54d2be617cdf, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: LoopBackStart
     clip: {fileID: 8300000, guid: f763c4d7f9045b54aac3dbf6c25ebffc, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: LoopBackLoop
     clip: {fileID: 8300000, guid: fdfd1c9d825b89e4cbdde9d39b4cc0c5, type: 3}
     volume: 0.2
     pitch: 1
     loop: 1
+    isBGM: 0
     source: {fileID: 0}
   - name: TurnFew
     clip: {fileID: 8300000, guid: fbcda480832a443488b17933c396ba3d, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: Unlock
     clip: {fileID: 8300000, guid: 10eaeb5553bd41641a6fe08b07b42b01, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: GameStart
     clip: {fileID: 8300000, guid: b1921490599dd5a48b8917f3a1635c93, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: KrawlerClear
     clip: {fileID: 8300000, guid: 875bee8193482794ca06756116f62865, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: Start
     clip: {fileID: 8300000, guid: 8a4f36d8fec678d479590145b5f49527, type: 3}
     volume: 1
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: Reset
     clip: {fileID: 8300000, guid: e5f8a3e90e91fa04188a3c550ecb3658, type: 3}
     volume: 0.5
     pitch: 1
     loop: 0
+    isBGM: 0
     source: {fileID: 0}
   - name: World1
     clip: {fileID: 8300000, guid: 48d625b2c281f4c49a8c17776aacbbc2, type: 3}
     volume: 0.25
     pitch: 1
     loop: 1
+    isBGM: 1
     source: {fileID: 0}
   - name: World2
     clip: {fileID: 8300000, guid: 9b0b2352390dc004bbc5cb92df1646c8, type: 3}
     volume: 0.2
     pitch: 1
     loop: 1
+    isBGM: 1
     source: {fileID: 0}
   - name: World3
     clip: {fileID: 8300000, guid: 873f150e80900af48ad015ecf2358f0e, type: 3}
     volume: 0.25
     pitch: 1
     loop: 1
+    isBGM: 1
     source: {fileID: 0}
   - name: World4
     clip: {fileID: 8300000, guid: 873f150e80900af48ad015ecf2358f0e, type: 3}
     volume: 0.15
     pitch: 1
     loop: 1
+    isBGM: 1
     source: {fileID: 0}
   - name: World1Envior
     clip: {fileID: 8300000, guid: 048ad49822cde984eb9dfe0ceed54079, type: 3}
     volume: 0.1
     pitch: 1
     loop: 1
+    isBGM: 1
     source: {fileID: 0}
   - name: World2Envior
     clip: {fileID: 8300000, guid: e3a7556905dba8243931fc5b8abb5ca6, type: 3}
     volume: 0.5
     pitch: 0.8
     loop: 1
+    isBGM: 1
     source: {fileID: 0}
   - name: World3Envior
     clip: {fileID: 8300000, guid: 703d5cb9f7e3f0746842049d85c22471, type: 3}
     volume: 0.5
     pitch: 1
     loop: 1
+    isBGM: 1
     source: {fileID: 0}
   - name: World4Envior
     clip: {fileID: 8300000, guid: 14fdb03a54b88d04896375860d0842ae, type: 3}
     volume: 0.5
     pitch: 0.75
     loop: 1
+    isBGM: 1
     source: {fileID: 0}
   - name: Title
     clip: {fileID: 8300000, guid: 6c536d8d7ac33a9489c25e86a3f3d185, type: 3}
     volume: 0.2
     pitch: 1.2
     loop: 1
+    isBGM: 1
     source: {fileID: 0}
   - name: StageSelect
     clip: {fileID: 8300000, guid: d11a99ce09792374b8fed6d0c5e6ae72, type: 3}
     volume: 0.15
     pitch: 0.9
     loop: 1
+    isBGM: 1
     source: {fileID: 0}

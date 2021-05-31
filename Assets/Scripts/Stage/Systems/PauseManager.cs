@@ -377,6 +377,9 @@ public class PauseManager : MonoBehaviour {
                 Screen.SetResolution(2560, 1440, (FullScreenMode)(3 - screenMode * 2));
                 break;
         }
+
+        AudioManeger.instance.ChangeBGMVol(bgmVolume / 100.0f);
+        AudioManeger.instance.ChangeSEVol(seVolume / 100.0f);
         
 
 		optionMode = OptionMode.MAIN;

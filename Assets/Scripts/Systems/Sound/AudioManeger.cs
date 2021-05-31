@@ -13,6 +13,9 @@ public class AudioManeger : MonoBehaviour {
     //Original by Brackeys
     //https://www.youtube.com/watch?v=6OT43pvUyfY
 
+    public AudioMixer mixer;
+    public AudioMixerGroup bgmBus;
+    public AudioMixerGroup seBus;
     public string[] bgmNameList;
     public AudioElement[] sounds;
     public static AudioManeger instance;
@@ -27,7 +30,6 @@ public class AudioManeger : MonoBehaviour {
         }
 
         DontDestroyOnLoad(gameObject);
-
         foreach (AudioElement s in sounds) {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
@@ -35,18 +37,25 @@ public class AudioManeger : MonoBehaviour {
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
             s.source.playOnAwake = false;
+            if (s.isBGM) {
+                s.source.outputAudioMixerGroup = bgmBus;
+            } else {
+                s.source.outputAudioMixerGroup = seBus;
+            }
         }
     }
     void Start() {
     }
 
     private void Update() {
-        //if (Input.GetKeyDown(KeyCode.Alpha1)) { PlayBGM(0); }
-        //if (Input.GetKeyDown(KeyCode.Alpha2)) { PlayBGM(1); }
-        //if (Input.GetKeyDown(KeyCode.Alpha3)) { PlayBGM(2); }
-        //if (Input.GetKeyDown(KeyCode.Alpha4)) { PlayBGM(3); }
-        //if (Input.GetKeyDown(KeyCode.Alpha5)) { PlayBGM(4); }
-        //if (Input.GetKeyDown(KeyCode.Alpha6)) { PlayBGM(5); }
+
+    }
+    float ConvertToDecibel(float volume) => Mathf.Clamp(20f * Mathf.Log10(Mathf.Clamp(volume, 0f, 1f)), -80f, 0f);
+    public void ChangeBGMVol(float vol) {
+        mixer.SetFloat("BGMVolume", ConvertToDecibel(vol));
+    }
+    public void ChangeSEVol(float vol) {
+        mixer.SetFloat("SEVolume", ConvertToDecibel(vol));
     }
 
     AudioElement SearchSound(string name) {
