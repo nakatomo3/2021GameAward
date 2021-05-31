@@ -609,6 +609,7 @@ public class Stage : MonoBehaviour {
         } else {
             nowMode = Mode.GAME;
             startTimer = 0;
+            AudioManeger.instance.PlayBGM(visualMode);
         }
     }
 
